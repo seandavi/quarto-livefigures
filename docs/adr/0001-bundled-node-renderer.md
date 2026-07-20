@@ -18,7 +18,13 @@ Candidates considered:
   that cannot be installed via `quarto add`. Rejected.
 - **Kroki HTTP service** — no local runtime, but network-dependent, unpinnable
   on the public instance, and sends unpublished figures to a third party.
-  Deferred to an optional `renderer: kroki` backend later. Rejected for default.
+  Rejected for default. **Spike result (2026-07-20):** kroki.io's Excalidraw
+  renderer returns HTTP 500 for every non-empty scene tested (modern schema,
+  legacy pre-2022 schema, bare rectangle, bare text); only an empty scene
+  renders. Control test (graphviz) succeeded, so the service itself was
+  healthy. Kroki is therefore NOT a viable Excalidraw fallback at all; it
+  remains interesting only as a phase-2 backend for other engines
+  (Mermaid/Graphviz/PlantUML), which do work.
 - **Deno** — Quarto ships one internally but extensions cannot invoke it;
   requiring a separate user Deno install is strictly worse than Node. Rejected.
 
