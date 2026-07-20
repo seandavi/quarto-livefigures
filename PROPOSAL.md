@@ -154,13 +154,14 @@ Suggested defaults:
 | -------- | -------------------------------------------------- |
 | HTML     | Embedded SVG (fonts embedded, works offline)       |
 | RevealJS | Embedded SVG                                       |
-| PDF      | SVG converted for LaTeX consumption (see below)    |
+| PDF      | High-res PNG from the bundled rasterizer (ADR 0004)|
 | DOCX     | PNG export                                         |
 | EPUB     | SVG export                                         |
 
-Note: LaTeX does not consume SVG directly. The PDF path must either export
-PDF/PNG directly or document the `rsvg-convert` dependency that Quarto uses
-for SVG conversion.
+Note: LaTeX does not consume SVG directly, and librsvg (pandoc's SVG
+converter) does not reliably honor embedded webfonts, so LaTeX formats get
+a high-resolution PNG rasterized inside the extension's own renderer. See
+docs/adr/0004-pdf-via-bundled-png.md.
 
 An interactive Excalidraw viewer for HTML/RevealJS is a roadmap item, not
 MVP. An `<iframe>`-based embed is an acceptable quick first version of it.
@@ -456,7 +457,7 @@ The project is complete when:
 * Fonts are embedded in generated SVGs: output renders correctly offline and in PDF.
 * `theme` and `background` rendering options work, including sensible behavior in dark-mode HTML themes.
 * Output is correct with `embed-resources: true` (self-contained HTML).
-* External runtime dependencies (e.g. Node, `rsvg-convert` for PDF) are documented, and a missing dependency fails with a clear, actionable error message.
+* External runtime dependencies (Node >= 18) are documented, and a missing dependency fails with a clear, actionable error message.
 
 ---
 
