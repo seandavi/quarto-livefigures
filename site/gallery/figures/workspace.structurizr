@@ -1,0 +1,15 @@
+workspace {
+  model {
+    author = person "Author"
+    quarto = softwareSystem "Quarto" {
+      lf = container "livefigures" "Renders figure sources"
+    }
+    author -> lf "references .d2, .puml, ..."
+  }
+  views {
+    container quarto {
+      include *
+      autolayout lr
+    }
+  }
+}

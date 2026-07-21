@@ -2,20 +2,119 @@
 title: "More kroki formats"
 ---
 
-Beyond [PlantUML](plantuml.qmd), a batch of formats renders through the
-same [kroki](https://kroki.io/) backend: D2, C4-PlantUML, Structurizr,
-erd, ditaa, pikchr [@kernighan1984pic], svgbob, and TikZ. Each was
-verified working end-to-end before being enabled — and several kroki
-formats were deliberately excluded as broken or unsuitable (see
-[Formats](../formats.qmd)). @fig-d2 is a D2 diagram authored inline:
+Beyond [PlantUML](plantuml.qmd), eight formats render through the same
+[kroki](https://kroki.io/) backend: D2, C4-PlantUML, Structurizr, erd,
+ditaa, pikchr [@kernighan1984pic], svgbob, and TikZ. Each was verified
+working end-to-end before being enabled — and several kroki formats were
+deliberately excluded as broken or unsuitable (see
+[Formats](../formats.qmd)). One example of each, below; click to zoom.
+
+## D2
+
+[D2](https://d2lang.com/) ([docs](https://d2lang.com/tour/intro)) is
+Terrastruct's declarative diagram language — the most modern entry in
+the boxes-and-arrows space, with clean syntax, first-class containers,
+and multiple layout engines. It excels at software architecture and
+system diagrams where you want good-looking output without thinking
+about layout. @fig-d2 is authored inline in this page's source:
 
 ```{.d2 #fig-d2 fig-cap="The render pipeline, in D2"}
+direction: right
 filter -> cache: lookup
 cache -> renderer: miss
 renderer -> svg: emit
 svg -> document: native figure
 ```
 
-Every kroki format also works as a file reference
-(`![](figures/arch.d2)`) with the same captions, cross-references, and
-caching as local backends.
+## C4-PlantUML
+
+[C4-PlantUML](https://github.com/plantuml-stdlib/C4-PlantUML) layers the
+[C4 model](https://c4model.com/)'s vocabulary — person, system,
+container, component — over PlantUML as ready-made macros. It excels at
+architecture documentation that stays visually consistent across teams,
+because the notation enforces C4's abstraction levels instead of leaving
+styling to each author.
+
+![System context in C4](figures/context.c4){#fig-c4}
+
+[view source: `context.c4`](https://github.com/seandavi/quarto-livefigures/blob/main/site/gallery/figures/context.c4){.source-link}
+
+## Structurizr
+
+The [Structurizr DSL](https://docs.structurizr.com/dsl)
+takes C4 further with a model-once, view-many philosophy: you describe
+the *model* (people, systems, containers, relationships) and then
+declare as many views of it as you need, each auto-laid-out. It excels
+when an architecture is documented from multiple angles that must never
+drift apart.
+
+![The same idea in the Structurizr DSL](figures/workspace.structurizr){#fig-struct}
+
+[view source: `workspace.structurizr`](https://github.com/seandavi/quarto-livefigures/blob/main/site/gallery/figures/workspace.structurizr){.source-link}
+
+## erd
+
+[erd](https://github.com/BurntSushi/erd) is a minimal
+entity-relationship notation: entities in brackets, one attribute per
+line, cardinality in a single `1--*` line. It excels at quick relational
+sketches during schema design — when DBML feels like more ceremony than
+the idea deserves.
+
+![Entity-relationship, tersely](figures/schema.erd){#fig-erd}
+
+[view source: `schema.erd`](https://github.com/seandavi/quarto-livefigures/blob/main/site/gallery/figures/schema.erd){.source-link}
+
+## ditaa
+
+[ditaa](https://ditaa.sourceforge.net/) converts ASCII-art boxes and
+arrows into polished, rounded, color-tagged diagrams (`cGRE`, `cBLU`
+mark fill colors). It excels when the source must stay legible as plain
+text — README diagrams, code comments — while still rendering nicely in
+published output.
+
+![ASCII art in, polished boxes out](figures/flow.ditaa){#fig-ditaa}
+
+[view source: `flow.ditaa`](https://github.com/seandavi/quarto-livefigures/blob/main/site/gallery/figures/flow.ditaa){.source-link}
+
+## pikchr
+
+[pikchr](https://pikchr.org/) ([manual](https://pikchr.org/home/doc/trunk/doc/userman.md))
+is D. Richard Hipp's modern descendant of Kernighan's PIC
+[@kernighan1984pic], built for and used throughout the SQLite and Fossil
+documentation. It excels at precise technical line diagrams where
+relative placement ("arrow; box; arrow right") beats coordinates.
+
+![PIC's modern descendant](figures/pipeline.pikchr){#fig-pikchr}
+
+[view source: `pipeline.pikchr`](https://github.com/seandavi/quarto-livefigures/blob/main/site/gallery/figures/pipeline.pikchr){.source-link}
+
+## svgbob
+
+[svgbob](https://github.com/ivanceras/svgbob) vectorizes ASCII drawings
+while *preserving* their hand-typed aesthetic — where ditaa polishes,
+svgbob stays faithful. It excels when the ASCII drawing itself is the
+artifact you care about and you just want it crisp at any size.
+
+![ASCII art, faithfully vectorized](figures/boxes.svgbob){#fig-svgbob}
+
+[view source: `boxes.svgbob`](https://github.com/seandavi/quarto-livefigures/blob/main/site/gallery/figures/boxes.svgbob){.source-link}
+
+## TikZ
+
+[TikZ](https://tikz.dev/) is LaTeX's native graphics system and the
+gold standard for publication figures: mathematical precision,
+typographic consistency with the surrounding document, and an enormous
+package ecosystem. It excels at academic figures that must match the
+paper's typography exactly. Sources must be complete
+`\documentclass{standalone}` documents.
+
+![A complete standalone LaTeX document](figures/nodes.tikz){#fig-tikz}
+
+[view source: `nodes.tikz`](https://github.com/seandavi/quarto-livefigures/blob/main/site/gallery/figures/nodes.tikz){.source-link}
+
+---
+
+Every kroki format also works as a file reference or inline block, with
+the same captions, cross-references, and caching as local backends.
+Network is needed only on cache misses; self-host with
+`livefigures: kroki-url:` for private diagrams.

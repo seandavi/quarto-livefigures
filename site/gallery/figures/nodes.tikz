@@ -1,0 +1,10 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\begin{document}
+\begin{tikzpicture}
+\node[draw, rounded corners, fill=blue!10] (a) {source};
+\node[draw, rounded corners, fill=green!10, right=2cm of a] (b) {figure};
+\draw[->, thick] (a) -- (b) node[midway, above] {\small render};
+\end{tikzpicture}
+\end{document}
