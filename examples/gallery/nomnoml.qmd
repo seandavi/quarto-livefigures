@@ -4,10 +4,16 @@ title: "nomnoml"
 
 Node-edge and UML diagrams from terse text. A pipeline (@fig-pipe), a
 state machine (@fig-states), and a class diagram (@fig-classes) — each a
-handful of lines.
+handful of lines. Click to zoom.
 
 ![Rendering pipeline](figures/pipeline.noml){#fig-pipe}
 
+[view source: `pipeline.noml`](https://github.com/seandavi/quarto-livefigures/blob/main/examples/gallery/figures/pipeline.noml){.source-link}
+
 ![Render lifecycle](figures/states.noml){#fig-states}
 
+[view source: `states.noml`](https://github.com/seandavi/quarto-livefigures/blob/main/examples/gallery/figures/states.noml){.source-link}
+
 ![Filter/backend/cache structure](figures/classes.noml){#fig-classes}
+
+[view source: `classes.noml`](https://github.com/seandavi/quarto-livefigures/blob/main/examples/gallery/figures/classes.noml){.source-link}

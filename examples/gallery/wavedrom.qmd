@@ -3,8 +3,12 @@ title: "WaveDrom"
 ---
 
 Digital timing diagrams (@fig-hs) and register/bit-field layouts
-(@fig-reg) from JSON.
+(@fig-reg) from JSON. Click to zoom.
 
 ![Valid/ready handshake](figures/handshake.wavedrom.json){#fig-hs}
 
+[view source: `handshake.wavedrom.json`](https://github.com/seandavi/quarto-livefigures/blob/main/examples/gallery/figures/handshake.wavedrom.json){.source-link}
+
 ![Instruction encoding](figures/register.wavedrom.json){#fig-reg}
+
+[view source: `register.wavedrom.json`](https://github.com/seandavi/quarto-livefigures/blob/main/examples/gallery/figures/register.wavedrom.json){.source-link}

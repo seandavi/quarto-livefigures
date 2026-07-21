@@ -9,3 +9,7 @@ book:
 
 filters:
   - livefigures
+
+format:
+  html:
+    lightbox: true

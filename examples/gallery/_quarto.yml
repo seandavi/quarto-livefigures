@@ -13,5 +13,9 @@ website:
       - bytefield.qmd
       - plantuml.qmd
 
+format:
+  html:
+    lightbox: true
+
 filters:
   - livefigures

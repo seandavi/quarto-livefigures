@@ -3,3 +3,7 @@ project:
 
 filters:
   - livefigures
+
+format:
+  html:
+    lightbox: true
