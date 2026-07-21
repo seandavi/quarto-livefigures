@@ -29,6 +29,22 @@ await build({
   entryPoints: [join(HERE, 'src', 'render-kroki.mjs')],
   outfile: join(EXT, 'renderer-kroki.mjs'),
 });
+await build({
+  ...common,
+  entryPoints: [join(HERE, 'src', 'render-graphviz.mjs')],
+  outfile: join(EXT, 'renderer-graphviz.mjs'),
+});
+await build({
+  ...common,
+  entryPoints: [join(HERE, 'src', 'render-dbml.mjs')],
+  outfile: join(EXT, 'renderer-dbml.mjs'),
+  banner: {
+    // dbml-renderer's CJS internals expect __dirname at runtime
+    js: "import { createRequire as __cr } from 'node:module'; const require = __cr(import.meta.url); " +
+      "import { fileURLToPath as __fu } from 'node:url'; import { dirname as __dn } from 'node:path'; " +
+      "const __filename = __fu(import.meta.url); const __dirname = __dn(__filename);",
+  },
+});
 
 cpSync(join(HERE, 'node_modules', '@resvg', 'resvg-wasm', 'index_bg.wasm'), join(EXT, 'resvg.wasm'));
 

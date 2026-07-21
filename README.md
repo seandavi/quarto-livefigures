@@ -21,6 +21,8 @@ Supported source formats:
 | [nomnoml](https://nomnoml.com/) | `.noml`, `.nomnoml` | node-edge/UML diagrams from terse text |
 | [WaveDrom](https://wavedrom.com/) | `.wavedrom`, `.wavedrom.json` | digital timing & register diagrams |
 | [bytefield](https://bytefield-svg.deepsymmetry.org/) | `.bytefield` | byte/packet layout diagrams |
+| [Graphviz](https://graphviz.org/) | `.dot`, `.gv` | classic graph layouts (file-referenced; complements Quarto's code-cell dot) |
+| [DBML](https://dbml.dbdiagram.io/) | `.dbml` | database schema diagrams |
 | [PlantUML](https://plantuml.com/) † | `.puml`, `.plantuml` | UML: sequence, class, activity … |
 | [D2](https://d2lang.com/) † | `.d2` | modern declarative diagrams |
 | [C4-PlantUML](https://github.com/plantuml-stdlib/C4-PlantUML) † | `.c4` | C4 architecture diagrams |
@@ -85,8 +87,8 @@ same pipeline, cache, and figure semantics:
 ````
 
 Block classes: `.excalidraw`, `.vega-lite`, `.vega`, `.nomnoml`,
-`.wavedrom`, `.bytefield`, `.plantuml`, `.d2`, `.c4`, `.structurizr`,
-`.erd`, `.ditaa`, `.pikchr`, `.svgbob`, `.tikz`.
+`.wavedrom`, `.bytefield`, `.dot`, `.dbml`, `.plantuml`, `.d2`, `.c4`,
+`.structurizr`, `.erd`, `.ditaa`, `.pikchr`, `.svgbob`, `.tikz`.
 
 - **HTML formats** (articles, websites, books, dashboards, RevealJS): SVG
   with the hand-drawn fonts embedded — correct offline and in

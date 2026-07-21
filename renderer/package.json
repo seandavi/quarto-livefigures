@@ -7,7 +7,9 @@
   },
   "devDependencies": {
     "@excalidraw/excalidraw": "0.18.1",
+    "@hpcc-js/wasm-graphviz": "1.27.0",
     "@resvg/resvg-wasm": "2.6.2",
+    "@softwaretechnik/dbml-renderer": "1.0.31",
     "bytefield-svg": "1.11.0",
     "esbuild": "0.25.5",
     "nomnoml": "1.7.0",

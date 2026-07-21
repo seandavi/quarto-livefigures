@@ -1,0 +1,10 @@
+Table authors {
+  id int [pk]
+  name varchar
+}
+
+Table figures {
+  id int [pk]
+  author_id int [ref: > authors.id]
+  format varchar
+}
