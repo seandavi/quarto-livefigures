@@ -1,0 +1,10 @@
+[Author]
+*id
+name
+
+[Figure]
+*id
++author_id
+format
+
+Author 1--* Figure

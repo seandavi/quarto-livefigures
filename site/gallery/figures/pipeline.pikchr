@@ -1,0 +1,5 @@
+box "source" fit rad 3px
+arrow
+box "cache" fit rad 3px
+arrow
+box "figure" fit rad 3px

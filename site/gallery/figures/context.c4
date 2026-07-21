@@ -1,0 +1,8 @@
+@startuml
+!include <C4/C4_Context>
+Person(author, "Author", "Writes documents")
+System(quarto, "Quarto", "Publishing system")
+System_Ext(lf, "livefigures", "Figure rendering")
+Rel(author, quarto, "quarto render")
+Rel(quarto, lf, "delegates figures")
+@enduml
