@@ -8,7 +8,11 @@
   "devDependencies": {
     "@excalidraw/excalidraw": "0.18.1",
     "@resvg/resvg-wasm": "2.6.2",
+    "bytefield-svg": "1.11.0",
     "esbuild": "0.25.5",
+    "nomnoml": "1.7.0",
+    "onml": "2.1.0",
+    "wavedrom": "3.6.2",
     "happy-dom": "18.0.1",
     "vega": "6.2.0",
     "vega-lite": "6.4.0",

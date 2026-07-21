@@ -18,6 +18,12 @@ await build({
   outfile: join(EXT, 'renderer-vega.mjs'),
   external: ['canvas'], // vega's optional native dep; headless metrics suffice
 });
+await build({
+  ...common,
+  entryPoints: [join(HERE, 'src', 'render-text.mjs')],
+  outfile: join(EXT, 'renderer-text.mjs'),
+  external: ['canvas'],
+});
 
 cpSync(join(HERE, 'node_modules', '@resvg', 'resvg-wasm', 'index_bg.wasm'), join(EXT, 'resvg.wasm'));
 

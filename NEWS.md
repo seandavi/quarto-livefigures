@@ -1,5 +1,21 @@
 # quarto-livefigures release notes
 
+## 0.3.0 (2026-07-20)
+
+- **Three new backends** (ADR 0011), selected for agent fluency — formats
+  LLMs author reliably, none with existing Quarto support:
+  - **nomnoml** (`.noml`, `.nomnoml`): terse node-edge/UML diagrams with
+    automatic dagre layout.
+  - **WaveDrom** (`.wavedrom`, `.wavedrom.json`): digital timing and
+    register diagrams from JSON.
+  - **bytefield** (`.bytefield`): byte/packet layout diagrams.
+- All three are pure JS in one shared ~1 MB bundle; PDFs use the shared
+  deterministic rasterizer.
+- These formats have no dark/scene variants: `theme=dark` or
+  `background=scene` on them fails loudly rather than rendering wrong.
+- Deferred with rationale (see ADR 0011): PlantUML (Java-vs-kroki decision
+  pending), Penrose, DBML, ABC notation.
+
 ## 0.2.0 (2026-07-20)
 
 - **New backend: Vega-Lite / Vega** (`.vl.json`, `.vg.json`). Charts render

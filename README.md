@@ -17,7 +17,10 @@ Supported source formats:
 | ------ | --------- | -------- |
 | [Excalidraw](https://excalidraw.com/) | `.excalidraw` | hand-drawn diagrams and sketches |
 | [Vega-Lite](https://vega.github.io/vega-lite/) | `.vl.json` | data-driven charts (and LLM/agent-authored figures) |
-| [Vega](https://vega.github.io/vega/) | `.vg.json` | low-level chart specs |
+| [Vega](https://vega.github.io/vega/) | `.vg.json` | low-level chart specs, force-directed graphs |
+| [nomnoml](https://nomnoml.com/) | `.noml`, `.nomnoml` | node-edge/UML diagrams from terse text |
+| [WaveDrom](https://wavedrom.com/) | `.wavedrom`, `.wavedrom.json` | digital timing & register diagrams |
+| [bytefield](https://bytefield-svg.deepsymmetry.org/) | `.bytefield` | byte/packet layout diagrams |
 
 The source file is the single source of truth. Captions, labels,
 cross-references, sizing, layout, subfigures, and lightbox all work exactly

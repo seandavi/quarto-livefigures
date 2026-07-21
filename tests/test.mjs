@@ -86,6 +86,28 @@ test('vega backend: .vl.json renders as SVG figure without auto-dark CSS', () =>
   assert.match(svg, /alpha/, 'axis labels present');
 });
 
+test('text backends: nomnoml/wavedrom/bytefield render as SVG figures', () => {
+  writeFileSync(join(proj, 'text.qmd'),
+    '---\ntitle: text\n---\n\n![Pipeline](figures/pipeline.noml){#fig-p}\n\n' +
+    '![Timing](figures/timing.wavedrom.json){#fig-t}\n\n![Packet](figures/packet.bytefield){#fig-b}\n');
+  render();
+  const html = readFileSync(join(proj, 'text.html'), 'utf8');
+  for (const stem of ['pipeline', 'timing', 'packet']) {
+    const m = html.match(new RegExp(`<img src="(_livefigures/${stem}-[0-9a-f]{8}\\.svg)"`));
+    assert.ok(m, `${stem} rewritten to content-addressed svg`);
+    assert.match(readFileSync(join(proj, m[1]), 'utf8'), /<svg/);
+  }
+  assert.ok(!html.includes('livefigure-auto'), 'text diagrams do not get the CSS dark filter');
+});
+
+test('text backends: theme=dark hard-fails with a clear message', () => {
+  writeFileSync(join(proj, 'textdark.qmd'),
+    '---\ntitle: td\n---\n\n![](figures/pipeline.noml){theme=dark}\n');
+  const r = spawnSync('quarto', ['render', 'textdark.qmd'], { cwd: proj, encoding: 'utf8' });
+  assert.notEqual(r.status, 0);
+  assert.match(r.stderr + r.stdout, /theme=dark is not supported for nomnoml/);
+});
+
 test('errors: corrupt scene aborts the render', () => {
   writeFileSync(join(proj, 'figures', 'bad.excalidraw'), '{not json');
   writeFileSync(join(proj, 'bad.qmd'), '---\ntitle: bad\n---\n\n![](figures/bad.excalidraw)\n');
