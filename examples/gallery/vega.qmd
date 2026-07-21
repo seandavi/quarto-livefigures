@@ -1,0 +1,15 @@
+---
+title: "Vega-Lite & Vega"
+---
+
+Charts from `.vl.json` specs: a bar chart (@fig-bar), a multi-series
+trend (@fig-trend), and a scatter (@fig-scatter). Raw Vega (`.vg.json`)
+handles force-directed node-edge graphs (@fig-net).
+
+![Category totals](figures/chart.vl.json){#fig-bar}
+
+![Renders vs cache hits](figures/trend.vl.json){#fig-trend}
+
+![Render time by scene size](figures/scatter.vl.json){#fig-scatter}
+
+![The pipeline as a force-directed graph](figures/network.vg.json){#fig-net}

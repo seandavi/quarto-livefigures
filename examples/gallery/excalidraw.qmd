@@ -1,0 +1,11 @@
+---
+title: "Excalidraw"
+---
+
+Hand-drawn diagrams from `.excalidraw` scene files (@fig-arch,
+@fig-flow). Edit them at [excalidraw.com](https://excalidraw.com/) or in
+VS Code; the file is the figure.
+
+![Architecture sketch](figures/arch.excalidraw){#fig-arch width=60%}
+
+![Flow with its scene background](figures/flow.excalidraw){#fig-flow background=scene}

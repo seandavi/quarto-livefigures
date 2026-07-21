@@ -1,0 +1,10 @@
+{
+  "reg": [
+    { "bits": 4, "name": "opcode", "attr": "RW" },
+    { "bits": 4, "name": "mode" },
+    { "bits": 8, "name": "address", "attr": "RO" },
+    { "bits": 12, "name": "immediate" },
+    { "bits": 4, "name": "flags", "type": 2 }
+  ],
+  "config": { "bits": 32, "lanes": 2 }
+}

@@ -1,0 +1,8 @@
+---
+title: "bytefield"
+---
+
+Byte and packet layout diagrams from a compact DSL — @fig-tcp is the
+classic TCP header.
+
+![TCP header layout](figures/tcp-header.bytefield){#fig-tcp}

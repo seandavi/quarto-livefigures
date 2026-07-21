@@ -1,0 +1,6 @@
+[Filter|detect(src); rewrite(img)]
+[Backend|name; renderer|render(scene)]
+[Cache|key(scene, opts); lookup(key)]
+[Filter] -> [Cache]
+[Filter] o-> [Backend]
+[Backend] --> [<note> one bundle per family]

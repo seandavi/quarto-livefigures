@@ -1,0 +1,7 @@
+project:
+  type: default
+  render:
+    - "*.qmd"
+
+filters:
+  - livefigures
