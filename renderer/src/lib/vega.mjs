@@ -1,7 +1,9 @@
 // Vega/Vega-Lite spec -> SVG. Pure Node, no DOM needed — vega renders
 // headless with renderer:'none' (text measurement falls back to built-in
 // metrics; 'canvas' stays external in the bundle).
-export async function renderVegaSvg(source, { kind, theme = 'light', background = 'transparent', label = 'spec' }) {
+// csp: parse to AST and evaluate with vega-interpreter instead of generated
+// Function()s — required where dynamic code generation is banned (workerd).
+export async function renderVegaSvg(source, { kind, theme = 'light', background = 'transparent', label = 'spec', csp = false }) {
   let spec;
   try {
     spec = JSON.parse(source);
@@ -32,8 +34,10 @@ export async function renderVegaSvg(source, { kind, theme = 'light', background 
   }
 
   try {
-    const runtime = vega.parse(vgSpec, isVegaLite ? undefined : config);
-    return await new vega.View(runtime, { renderer: 'none' }).toSVG();
+    const runtime = vega.parse(vgSpec, isVegaLite ? undefined : config, csp ? { ast: true } : undefined);
+    const viewOpts = { renderer: 'none' };
+    if (csp) viewOpts.expr = (await import('vega-interpreter')).expressionInterpreter;
+    return await new vega.View(runtime, viewOpts).toSVG();
   } catch (e) {
     throw new Error(`vega rendering failed for ${label}: ${e.message}`);
   }

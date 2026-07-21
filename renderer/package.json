@@ -12,13 +12,14 @@
     "@softwaretechnik/dbml-renderer": "1.0.31",
     "bytefield-svg": "1.11.0",
     "esbuild": "0.25.5",
+    "happy-dom": "18.0.1",
     "nomnoml": "1.7.0",
     "onml": "2.1.0",
-    "wavedrom": "3.6.2",
-    "happy-dom": "18.0.1",
     "vega": "6.2.0",
+    "vega-interpreter": "^2.2.1",
     "vega-lite": "6.4.0",
     "vega-themes": "3.0.0",
+    "wavedrom": "3.6.2",
     "wawoff2": "2.0.1"
   }
 }

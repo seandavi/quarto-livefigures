@@ -45,11 +45,16 @@ async function installShims(assets) {
 
     // Serve font assets locally; excalidraw never touches the real network
     // (offline determinism — verified byte-identical in the spike).
+    // excalidraw reads window.EXCALIDRAW_ASSET_PATH; set globalThis too for
+    // any free-variable lookup.
+    win.EXCALIDRAW_ASSET_PATH = 'https://livefigures.invalid/';
     globalThis.EXCALIDRAW_ASSET_PATH = 'https://livefigures.invalid/';
     const realFetch = globalThis.fetch?.bind(globalThis);
     globalThis.fetch = async (url, init) => {
       const u = String(url?.url ?? url);
-      if (!u.includes('livefigures.invalid')) return realFetch(url, init);
+      // font requests are intercepted on ANY host — excalidraw's CDN
+      // fallback base must never reach the network (embedding + determinism)
+      if (!u.includes('livefigures.invalid') && !/fonts\/[^?#]+\.woff2/.test(u)) return realFetch(url, init);
       const m = u.match(/fonts\/([^?#]+\.woff2)/);
       const bytes = m ? await shimAssets.font(m[1]) : null;
       if (!bytes) {

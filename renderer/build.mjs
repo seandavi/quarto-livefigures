@@ -70,4 +70,7 @@ for (const family of readdirSync(join(EXCALIDRAW_DIST, 'fonts'))) {
     writeFileSync(join(fontsOut, 'ttf', `${family}-${file.replace(/\.woff2$/, '')}.ttf`), Buffer.from(ttf));
   }
 }
+// ttf manifest: the MCP worker has no readdir over static assets (ADR 0015)
+writeFileSync(join(fontsOut, 'ttf', 'manifest.json'),
+  JSON.stringify(readdirSync(join(fontsOut, 'ttf')).filter((f) => f.endsWith('.ttf'))));
 console.log('built', EXT);
