@@ -2,9 +2,14 @@
 title: "nomnoml"
 ---
 
-Node-edge and UML diagrams from terse text. A pipeline (@fig-pipe), a
-state machine (@fig-states), and a class diagram (@fig-classes) — each a
-handful of lines. Click to zoom.
+nomnoml turns remarkably terse text — `[a] -> [b]` is a complete
+diagram — into UML-flavored node-edge drawings, laid out automatically
+in the layered Sugiyama style [@sugiyama1981methods]. It occupies a
+sweet spot: expressive enough for state machines and class structure,
+terse enough that writing a diagram is faster than opening a drawing
+tool. Below: a pipeline (@fig-pipe), a state machine (@fig-states), and
+a class diagram (@fig-classes) — each a handful of lines. Click to
+zoom.
 
 ![Rendering pipeline](figures/pipeline.noml){#fig-pipe}
 

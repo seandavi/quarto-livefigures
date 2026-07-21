@@ -4,8 +4,10 @@ title: "More kroki formats"
 
 Beyond [PlantUML](plantuml.qmd), a batch of formats renders through the
 same [kroki](https://kroki.io/) backend: D2, C4-PlantUML, Structurizr,
-erd, ditaa, pikchr, svgbob, and TikZ. @fig-d2 is a D2 diagram authored
-inline:
+erd, ditaa, pikchr [@kernighan1984pic], svgbob, and TikZ. Each was
+verified working end-to-end before being enabled — and several kroki
+formats were deliberately excluded as broken or unsuitable (see
+[Formats](../formats.qmd)). @fig-d2 is a D2 diagram authored inline:
 
 ```{.d2 #fig-d2 fig-cap="The render pipeline, in D2"}
 filter -> cache: lookup

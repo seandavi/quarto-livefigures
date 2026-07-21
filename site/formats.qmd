@@ -1,0 +1,63 @@
+---
+title: "Formats"
+---
+
+livefigures supports eighteen figure source formats through one pipeline.
+The unifying idea: each is a **plain-text or JSON notation with real
+authoring communities and — critically — high LLM fluency**, so both
+humans and AI agents can create, review, and diff figure sources the same
+way they handle code. Formats marked *kroki* render through a
+[kroki](https://kroki.io/) endpoint (network on cache misses only,
+self-hostable); everything else renders locally and offline.
+
+## Sketching & general diagrams
+
+| Format | Extensions | Rendering | Covers |
+| --- | --- | --- | --- |
+| [Excalidraw](https://excalidraw.com/) | `.excalidraw` | local | Freehand whiteboard sketches: architecture drawings, annotated mockups, anything you'd draw for a colleague. The scene file is JSON; the editor is free and browser-based. |
+| [D2](https://d2lang.com/) | `.d2` | kroki | A modern declarative diagram language with clean syntax and automatic layout — a good default for boxes-and-arrows when you aren't sketching by hand. |
+| [ditaa](https://ditaa.sourceforge.net/) | `.ditaa` | kroki | Turns ASCII-art boxes into polished raster-style diagrams; useful when the source must remain readable as plain text. |
+| [svgbob](https://github.com/ivanceras/svgbob) | `.svgbob` | kroki | ASCII art to faithful SVG, preserving the hand-typed aesthetic. |
+| [pikchr](https://pikchr.org/) | `.pikchr` | kroki | The modern descendant of Kernighan's PIC language [@kernighan1984pic], used throughout SQLite and Fossil documentation. |
+| [TikZ](https://tikz.dev/) | `.tikz` | kroki | Publication-grade LaTeX graphics. Sources must be complete `standalone` documents. |
+
+## Charts & data graphics
+
+| Format | Extensions | Rendering | Covers |
+| --- | --- | --- | --- |
+| [Vega-Lite](https://vega.github.io/vega-lite/) | `.vl.json` | local | A grammar of interactive graphics [@satyanarayan2017vegalite], descended from Wilkinson's *Grammar of Graphics* [@wilkinson2005grammar]. The most agent-fluent chart format there is: concise, declarative JSON. |
+| [Vega](https://vega.github.io/vega/) | `.vg.json` | local | The lower-level dataflow language beneath Vega-Lite [@satyanarayan2016reactive]. Reaches things Vega-Lite can't, including force-directed network layouts [@fruchterman1991graph]. |
+
+## Graphs, networks & software structure
+
+| Format | Extensions | Rendering | Covers |
+| --- | --- | --- | --- |
+| [Graphviz](https://graphviz.org/) | `.dot`, `.gv` | local | The canonical graph-layout system [@gansner2000graphviz]. Dependency graphs, state machines, pipelines — `dot` has four decades of mindshare and correspondingly deep LLM fluency. |
+| [nomnoml](https://nomnoml.com/) | `.noml`, `.nomnoml` | local | UML-ish boxes and arrows from remarkably terse text, laid out hierarchically in the Sugiyama style [@sugiyama1981methods]. The fastest path from idea to node-edge diagram. |
+| [PlantUML](https://plantuml.com/) | `.puml`, `.plantuml` | kroki | The workhorse of software UML: sequence, class, activity, state, component diagrams and more. |
+| [C4-PlantUML](https://github.com/plantuml-stdlib/C4-PlantUML) | `.c4` | kroki | C4-model architecture diagrams (context/container/component) in PlantUML syntax. |
+| [Structurizr](https://structurizr.com/) | `.structurizr` | kroki | C4 architecture from the dedicated Structurizr DSL — model once, view many. |
+
+## Data modeling
+
+| Format | Extensions | Rendering | Covers |
+| --- | --- | --- | --- |
+| [DBML](https://dbml.dbdiagram.io/) | `.dbml` | local | Database schemas — tables, columns, relationships — in the popular DBML language. |
+| [erd](https://github.com/BurntSushi/erd) | `.erd` | kroki | Compact entity-relationship diagrams in a minimal text notation. |
+
+## Hardware & protocol
+
+| Format | Extensions | Rendering | Covers |
+| --- | --- | --- | --- |
+| [WaveDrom](https://wavedrom.com/) | `.wavedrom`, `.wavedrom.json` | local | Digital timing diagrams and register/bit-field layouts from JSON — the de-facto standard in hardware documentation. |
+| [bytefield](https://bytefield-svg.deepsymmetry.org/) | `.bytefield` | local | Byte- and packet-layout diagrams, in the tradition of RFC header figures. |
+
+## What we deliberately left out
+
+Selection is documented in the project's
+[ADRs](https://github.com/seandavi/quarto-livefigures/tree/main/docs/adr):
+formats requiring hand-placed coordinates (UMLet, BPMN-DI) fail the
+agent-authorability test; tldraw's SDK license prohibits open-source
+redistribution; the blockdiag family is broken on public kroki; Mermaid
+and code-cell Graphviz are already native to Quarto. SMILES (chemistry)
+and ABC notation (music) are queued next.

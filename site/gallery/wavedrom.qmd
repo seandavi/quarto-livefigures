@@ -2,8 +2,12 @@
 title: "WaveDrom"
 ---
 
-Digital timing diagrams (@fig-hs) and register/bit-field layouts
-(@fig-reg) from JSON. Click to zoom.
+WaveDrom is the de-facto standard for digital timing diagrams in
+hardware documentation: signals, clocks, and buses described as JSON,
+with per-cycle wave strings that read almost like the waveform itself.
+The same engine draws register and bit-field layouts. Below: a
+valid/ready handshake with an annotated transfer window (@fig-hs) and a
+two-lane instruction encoding (@fig-reg). Click to zoom.
 
 ![Valid/ready handshake](figures/handshake.wavedrom.json){#fig-hs}
 

@@ -10,12 +10,16 @@ website:
     left:
       - text: "Get started"
         href: install.qmd
+      - text: "Formats"
+        href: formats.qmd
       - text: "Options"
         href: options.qmd
       - text: "Gallery"
         href: gallery/index.qmd
       - text: "Limitations"
         href: limitations.qmd
+      - text: "References"
+        href: references.qmd
     right:
       - icon: github
         href: "https://github.com/seandavi/quarto-livefigures"
@@ -36,6 +40,8 @@ website:
         - gallery/kroki.qmd
   page-footer:
     center: "livefigures — every figure on this site renders from an editable source in [the repo](https://github.com/seandavi/quarto-livefigures)."
+
+bibliography: references.bib
 
 format:
   html:
