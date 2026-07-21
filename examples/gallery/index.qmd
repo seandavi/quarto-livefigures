@@ -1,0 +1,18 @@
+---
+title: "livefigures gallery"
+---
+
+Every figure in this gallery renders at build time from an editable,
+version-controlled source file — no exported images anywhere in the repo.
+Each page shows one source format; the source files live in
+[`figures/`](figures/).
+
+- [Excalidraw](excalidraw.qmd) — hand-drawn diagrams
+- [Vega-Lite & Vega](vega.qmd) — charts and force-directed graphs
+- [nomnoml](nomnoml.qmd) — node-edge and UML diagrams from terse text
+- [WaveDrom](wavedrom.qmd) — timing and register diagrams
+- [bytefield](bytefield.qmd) — byte and packet layouts
+
+All of these formats were chosen for **agent fluency**: they're plain text
+or JSON that AI coding agents author and edit reliably. Every figure here
+was written by an agent.

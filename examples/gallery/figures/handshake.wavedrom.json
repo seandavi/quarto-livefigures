@@ -1,0 +1,11 @@
+{
+  "signal": [
+    { "name": "clk", "wave": "p......" },
+    { "name": "valid", "wave": "01...0." },
+    { "name": "ready", "wave": "0.1..0." },
+    { "name": "data", "wave": "x.=.=.x", "data": ["D0", "D1"] },
+    {},
+    { "name": "xfer", "wave": "0.1..0.", "node": "..a..b" }
+  ],
+  "edge": ["a<->b two beats"]
+}

@@ -1,0 +1,10 @@
+---
+title: "WaveDrom"
+---
+
+Digital timing diagrams (@fig-hs) and register/bit-field layouts
+(@fig-reg) from JSON.
+
+![Valid/ready handshake](figures/handshake.wavedrom.json){#fig-hs}
+
+![Instruction encoding](figures/register.wavedrom.json){#fig-reg}

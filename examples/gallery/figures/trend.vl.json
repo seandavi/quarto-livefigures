@@ -1,0 +1,24 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Multi-series line chart",
+  "width": 400,
+  "height": 220,
+  "data": {
+    "values": [
+      { "month": "Jan", "series": "renders", "value": 120 },
+      { "month": "Feb", "series": "renders", "value": 210 },
+      { "month": "Mar", "series": "renders", "value": 380 },
+      { "month": "Apr", "series": "renders", "value": 610 },
+      { "month": "Jan", "series": "cache hits", "value": 30 },
+      { "month": "Feb", "series": "cache hits", "value": 140 },
+      { "month": "Mar", "series": "cache hits", "value": 310 },
+      { "month": "Apr", "series": "cache hits", "value": 560 }
+    ]
+  },
+  "mark": { "type": "line", "point": true },
+  "encoding": {
+    "x": { "field": "month", "type": "ordinal", "sort": ["Jan", "Feb", "Mar", "Apr"], "axis": { "labelAngle": 0 } },
+    "y": { "field": "value", "type": "quantitative" },
+    "color": { "field": "series", "type": "nominal" }
+  }
+}

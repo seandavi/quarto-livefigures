@@ -1,0 +1,13 @@
+---
+title: "nomnoml"
+---
+
+Node-edge and UML diagrams from terse text. A pipeline (@fig-pipe), a
+state machine (@fig-states), and a class diagram (@fig-classes) — each a
+handful of lines.
+
+![Rendering pipeline](figures/pipeline.noml){#fig-pipe}
+
+![Render lifecycle](figures/states.noml){#fig-states}
+
+![Filter/backend/cache structure](figures/classes.noml){#fig-classes}
