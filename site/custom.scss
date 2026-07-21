@@ -10,6 +10,12 @@ $navbar-bg: #fdfcf9;
 $navbar-fg: #1e1e1e;
 $code-block-bg: #f5f3ee;
 
+// palette tokens (see ADR-free design plan: paper/ink/violet, graphite secondary)
+$violet-deep: #4a46a8;
+$violet-wash: #efedff;
+$graphite: #55534e;
+$paper-line: #e9e6dd;
+
 /*-- scss:rules --*/
 
 @font-face {
@@ -25,16 +31,202 @@ $code-block-bg: #f5f3ee;
   color: #1e1e1e;
 }
 
-.hero-wordmark {
-  font-size: 3.2rem;
-  line-height: 1.1;
-  margin-bottom: 0.3rem;
+// ---------------------------------------------------------------- hero band
+// full-bleed band on the excalidraw canvas: paper with a faint dotted grid
+.hero-band {
+  margin-inline: calc(50% - 50vw);
+  padding: 3.2rem calc(50vw - 50%) 2.6rem;
+  background:
+    radial-gradient(circle, rgba(105, 101, 219, 0.18) 1px, transparent 1.4px)
+      0 0 / 22px 22px,
+    #fdfcf9;
+  border-bottom: 1px solid $paper-line;
+  text-align: center;
 }
 
-.hero-tagline {
-  font-size: 1.35rem;
-  color: #4a4a4a;
-  max-width: 40rem;
+.hero-eyebrow {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: $violet-deep;
+  margin-bottom: 0.9rem;
+}
+
+.hero-wordmark {
+  font-size: clamp(3rem, 6vw, 4.2rem);
+  line-height: 1.05;
+  margin-bottom: 0.4rem;
+}
+
+.hero-thesis {
+  font-size: clamp(1.6rem, 3.4vw, 2.3rem);
+  font-weight: 700;
+  line-height: 1.15;
+  text-wrap: balance;
+  margin: 0.4rem auto 0.9rem;
+  max-width: 46rem;
+}
+
+.hero-sub {
+  font-size: 1.12rem;
+  color: $graphite;
+  max-width: 42rem;
+  margin: 0 auto 1.4rem;
+  text-wrap: pretty;
+}
+
+.hero-ctas {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+
+  a {
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.55rem 1.3rem;
+    // slightly irregular corners, echoing excalidraw strokes
+    border-radius: 9px 11px 8px 12px / 12px 8px 11px 9px;
+    border: 2px solid #1e1e1e;
+    transition: transform 0.08s ease, box-shadow 0.08s ease;
+  }
+  a:hover {
+    transform: translate(-1px, -2px);
+    box-shadow: 3px 4px 0 $violet-wash;
+  }
+}
+
+.cta-primary a,
+a.cta-primary {
+  background: $primary;
+  border-color: $primary !important;
+  color: #ffffff !important;
+}
+.cta-ink a,
+a.cta-ink {
+  background: transparent;
+  color: #1e1e1e !important;
+}
+
+.hero-install {
+  font-family: var(--bs-font-monospace);
+  font-size: 0.92rem;
+  color: $graphite;
+
+  code {
+    background: #ffffff;
+    border: 1px solid $paper-line;
+    border-radius: 6px;
+    padding: 0.3rem 0.7rem;
+    color: #1e1e1e;
+  }
+}
+
+// ------------------------------------------------- hero demo: source → figure
+.hero-demo {
+  align-items: center;
+  margin-top: 0.6rem;
+
+  .demo-arrow {
+    font-family: "Virgil", cursive;
+    font-size: 1.15rem;
+    color: $violet-deep;
+    text-align: center;
+    white-space: nowrap;
+  }
+  // the source reads as a file card, equal partner to the figure card
+  .demo-source {
+    border: 2px solid #1e1e1e;
+    border-radius: 10px 8px 11px 9px / 9px 11px 8px 10px;
+    background: #ffffff;
+    overflow: hidden;
+
+    .demo-filename {
+      font-family: var(--bs-font-monospace);
+      font-size: 0.78rem;
+      color: $graphite;
+      background: $violet-wash;
+      border-bottom: 1px solid $paper-line;
+      padding: 0.3rem 0.8rem;
+    }
+    div.sourceCode {
+      margin: 0;
+      border: none;
+      background: #ffffff;
+      text-align: left;
+    }
+    pre {
+      margin: 0;
+      padding: 0.8rem 0.9rem;
+    }
+  }
+}
+
+// ------------------------------------------------------- deliverable cards
+.deliverable-card {
+  border: 2px solid #1e1e1e;
+  border-radius: 8px 12px 9px 11px / 11px 9px 12px 8px;
+  background: #ffffff;
+  padding: 1.1rem 1.2rem 1rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+
+  h3 {
+    font-size: 1.08rem;
+    margin: 0 0 0.4rem;
+    border: none;
+  }
+  p {
+    font-size: 0.95rem;
+    color: $graphite;
+    margin-bottom: 0.6rem;
+  }
+  code {
+    font-size: 0.8rem;
+    background: $violet-wash;
+    color: $violet-deep;
+    border-radius: 5px;
+    padding: 0.1rem 0.35rem;
+  }
+  .card-go {
+    margin-top: auto;
+    font-weight: 600;
+    font-size: 0.92rem;
+  }
+}
+.deliverable-card:hover {
+  transform: translate(-1px, -3px);
+  box-shadow: 4px 5px 0 $violet-wash;
+}
+
+// ------------------------------------------------------- section headings
+// hand-drawn violet squiggle instead of a hairline rule
+#quarto-content main h2 {
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 0.9rem;
+}
+#quarto-content main h2::after {
+  content: "";
+  display: block;
+  width: 130px;
+  height: 9px;
+  margin-top: 0.25rem;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 9"><path d="M3 6 C 24 2, 46 8, 66 4 S 108 3, 127 6" fill="none" stroke="%236965db" stroke-width="2.5" stroke-linecap="round"/></svg>')
+    no-repeat;
+}
+
+// ------------------------------------------------------------ routing strip
+.route-line {
+  text-align: center;
+  font-size: 1.05rem;
+  color: $graphite;
+  max-width: 44rem;
+  margin: 2.2rem auto 0;
 }
 
 // sketchy card frame for figures, echoing excalidraw strokes

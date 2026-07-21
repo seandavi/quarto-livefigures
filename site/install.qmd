@@ -16,7 +16,9 @@ quarto add seandavi/quarto-livefigures@v0.7.0
 
 The only external requirement is **Node.js ≥ 18** on your PATH.
 Everything else — renderers, fonts, the rasterizer — ships inside the
-extension, and all local formats render fully offline.
+extension, and all local formats render fully offline. livefigures is
+listed in the official [Quarto extension
+listing](https://quarto.org/docs/extensions/).
 
 ## Enable
 

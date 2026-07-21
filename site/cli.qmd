@@ -1,0 +1,68 @@
+---
+title: "CLI"
+---
+
+The same rendering pipeline as the extension and the [MCP
+server](mcp.qmd), as shell commands. Render a figure source to SVG or
+PNG, validate sources in CI, list formats, or host the MCP server —
+with output byte-for-byte identical to what `quarto render` produces.
+
+## Install
+
+Nothing to install with `npx`:
+
+```bash
+npx livefigures --help
+```
+
+Or use the copy that ships inside the extension — every project that
+ran `quarto add` already has it:
+
+```bash
+node _extensions/seandavi/livefigures/cli.mjs --help
+```
+
+Node ≥ 18 is the only requirement, same as the extension.
+
+## Commands
+
+```bash
+# render a source file (format inferred from the extension)
+livefigures render figures/arch.excalidraw -o arch.png
+livefigures render figures/deps.dot -o deps.svg
+
+# render from stdin
+echo 'digraph { a -> b }' | livefigures render - --format graphviz > g.svg
+
+# check sources without producing output — exit 1 + the exact
+# quarto render error on a bad source
+livefigures validate figures/*.dot figures/*.vl.json
+
+# what can I write?
+livefigures formats
+livefigures formats --json
+
+# host the MCP server (stdio)
+livefigures mcp
+```
+
+Render options mirror the extension: `--theme light|dark`,
+`--background transparent|scene` (Excalidraw/Vega only), `--scale <n>`
+for PNG.
+
+## Validate figures in CI
+
+`validate` exits non-zero on the first bad source, so a one-line CI
+step keeps broken figures out of `main`:
+
+```yaml
+- name: Validate figure sources
+  run: npx -y livefigures validate figures/*
+```
+
+## See also
+
+- [MCP server](mcp.qmd) — the same tools, callable by your agent, with
+  images the agent can see.
+- [Agent skill](agents.qmd) — teach an agent when and how to use all of
+  this.

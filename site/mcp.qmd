@@ -1,0 +1,67 @@
+---
+title: "MCP server"
+---
+
+Writing a figure is half the loop; the other half is *looking at it*.
+The livefigures MCP server gives any MCP-capable agent three tools —
+and `render` returns the drawn figure as an **image**, so a
+vision-capable agent checks and fixes its own work before the figure
+ever lands in your document.
+
+Rendering uses the same engines, fonts, and options as `quarto render`:
+what the agent previews is what you publish.
+
+## Connect
+
+**Public server** — nothing to install:
+
+```bash
+claude mcp add --transport http livefigures https://mcp.livefigures.seandavis.net/mcp
+```
+
+**Local and offline** — the server ships inside the extension itself:
+
+```bash
+claude mcp add livefigures -- node _extensions/seandavi/livefigures/mcp.mjs
+```
+
+Or via npm, from anywhere:
+
+```bash
+claude mcp add livefigures -- npx -y livefigures mcp
+```
+
+Claude Code shown; any MCP client works — the endpoint is stateless
+streamable HTTP.
+
+## The tools
+
+| Tool | What it does |
+| --- | --- |
+| `render` | Figure source in → **PNG image block** (default) or SVG text out. The agent sees what it wrote. |
+| `validate` | Cheap correctness check — reports `valid` or the exact error `quarto render` would give. |
+| `list_formats` | All 18 formats: extensions, block classes, what each is for, docs links, option support. |
+
+The server also serves the [agent skill](agents.qmd) as the
+`livefigures://skill` resource, and its `instructions` teach connected
+agents the Quarto syntax automatically — inserting a figure into a
+`.qmd` is then just a text edit the agent already knows how to make.
+
+## What the workflow looks like
+
+> "Add a timing diagram of the bus handshake to `hardware.qmd`."
+
+The agent drafts a WaveDrom spec, calls `render`, *sees* that the clock
+edge labels collide, fixes the spec, re-renders, and only then writes
+the fenced block into your document. The figure that lands in review is
+one the agent has already looked at.
+
+## Parity notes
+
+- The public server renders **graphviz** and **dbml** via
+  [kroki](https://kroki.io) (Cloudflare Workers cannot run their wasm
+  engines); every other format runs the extension's own bundled
+  engines. The local server has full parity for all formats.
+- kroki-backed formats (PlantUML, D2, …) need network in every setup —
+  same as in the extension.
+- Design and spike details: [ADR 0015](https://github.com/seandavi/quarto-livefigures/blob/main/docs/adr/0015-mcp-server.md).
