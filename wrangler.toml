@@ -5,12 +5,12 @@
 name = "livefigures-docs"
 compatibility_date = "2026-07-20"
 
-[assets]
-# `site/` is the Quarto website project (to be built); _site is its output
-directory = "./site/_site"
-html_handling = "auto-trailing-slash"
-not_found_handling = "404-page"  # quarto websites emit 404.html
-
+# top-level keys must precede table headers, or TOML folds them into [assets]
 routes = [
   { pattern = "livefigures.seandavis.net", custom_domain = true }
 ]
+
+[assets]
+directory = "./site/_site"
+html_handling = "auto-trailing-slash"
+not_found_handling = "404-page"  # quarto websites emit 404.html
