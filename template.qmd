@@ -1,0 +1,32 @@
+---
+title: "livefigures template"
+filters:
+  - at: pre-ast
+    path: livefigures
+---
+
+Reference an editable figure source with normal Quarto image syntax —
+`![](figures/diagram.excalidraw)` — or write small diagrams inline as
+fenced blocks. This template uses inline blocks so it renders with no
+extra files (Node ≥ 18 required):
+
+See @fig-pipeline and @fig-graph.
+
+```{.nomnoml #fig-pipeline fig-cap="Sources render at build time"}
+#direction: right
+[edit source] -> [quarto render]
+[quarto render] -> [figure]
+```
+
+```{.dot #fig-graph fig-cap="Graphviz works too — 18 formats in all"}
+digraph {
+  rankdir=LR;
+  node [shape=box, style=rounded];
+  excalidraw -> livefigures;
+  "vega-lite" -> livefigures;
+  plantuml -> livefigures;
+  livefigures -> {HTML PDF slides};
+}
+```
+
+Full documentation: <https://livefigures.seandavis.net>
