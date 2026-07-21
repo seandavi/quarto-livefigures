@@ -1,0 +1,14 @@
+---
+title: "Slides with live figures"
+format: revealjs
+filters:
+  - livefigures
+---
+
+## Architecture
+
+![](figures/arch.excalidraw){width=80%}
+
+## Flow
+
+![](figures/flow.excalidraw){background=scene}

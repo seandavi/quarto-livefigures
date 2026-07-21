@@ -1,0 +1,5 @@
+# Design
+
+Compare with @fig-arch from the introduction.
+
+![The flow](figures/flow.excalidraw){#fig-flow background=scene}

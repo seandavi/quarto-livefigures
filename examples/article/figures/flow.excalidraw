@@ -1,0 +1,32 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "quarto-livefigures-fixture",
+  "elements": [
+    {"id": "e1", "type": "ellipse", "x": 10, "y": 10, "width": 160, "height": 90,
+     "angle": 0, "strokeColor": "#e03131", "backgroundColor": "#ffc9c9", "fillStyle": "hachure",
+     "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+     "seed": 777, "version": 1, "versionNonce": 1, "isDeleted": false,
+     "groupIds": [], "frameId": null, "roundness": null, "boundElements": null,
+     "updated": 1, "link": null, "locked": false},
+    {"id": "a1", "type": "arrow", "x": 180, "y": 55, "width": 120, "height": 0,
+     "angle": 0, "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+     "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+     "seed": 778, "version": 1, "versionNonce": 2, "isDeleted": false,
+     "groupIds": [], "frameId": null, "roundness": {"type": 2}, "boundElements": null,
+     "updated": 1, "link": null, "locked": false,
+     "points": [[0, 0], [120, 0]], "lastCommittedPoint": null,
+     "startBinding": null, "endBinding": null, "startArrowhead": null, "endArrowhead": "arrow"},
+    {"id": "t2", "type": "text", "x": 320, "y": 40, "width": 120, "height": 25,
+     "angle": 0, "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+     "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+     "seed": 779, "version": 1, "versionNonce": 3, "isDeleted": false,
+     "groupIds": [], "frameId": null, "roundness": null, "boundElements": null,
+     "updated": 1, "link": null, "locked": false,
+     "text": "the flow", "fontSize": 20, "fontFamily": 1,
+     "textAlign": "left", "verticalAlign": "top", "baseline": 18,
+     "containerId": null, "originalText": "the flow", "lineHeight": 1.25}
+  ],
+  "appState": {"viewBackgroundColor": "#fff9db", "gridSize": null},
+  "files": {}
+}

@@ -1,0 +1,7 @@
+# Introduction
+
+The architecture in @fig-arch is rendered straight from its
+`.excalidraw` source. Cross-references work across chapters — see
+@fig-flow in the design chapter.
+
+![Overall architecture](figures/arch.excalidraw){#fig-arch}

@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          tinytex: true
+      - name: Install poppler (pdftotext for PDF assertions)
+        run: sudo apt-get update && sudo apt-get install -y poppler-utils
+      - name: End-to-end tests
+        run: node --test tests/test.mjs
+      - name: Render examples
+        run: |
+          quarto render examples/article
+          quarto render examples/book
+          quarto render examples/revealjs/slides.qmd
+
+  bundle-check:
+    # The committed renderer bundle must match a fresh build (ADR 0009).
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+        working-directory: renderer
+      - run: npm run build
+        working-directory: renderer
+      - name: Committed bundle is current
+        run: git diff --exit-code --stat -- _extensions

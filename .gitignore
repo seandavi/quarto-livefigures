@@ -1,0 +1,12 @@
+node_modules/
+_livefigures/
+_site/
+_book/
+/.quarto/
+.quarto/
+*_files/
+tests/fixtures/**/*.html
+tests/fixtures/**/*.pdf
+tests/fixtures/**/*.tex
+examples/**/*.html
+examples/**/*.pdf
