@@ -1,0 +1,4 @@
+(draw-column-headers)
+(draw-box "opcode" {:span 2})
+(draw-box "length" {:span 2})
+(draw-box "payload" {:span 12})

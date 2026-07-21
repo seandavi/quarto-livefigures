@@ -4,17 +4,26 @@
 -- image target so Quarto's native figure pipeline handles everything else.
 -- See docs/ARCHITECTURE.md and docs/adr/ for the decisions behind this.
 
-local VERSION = "0.2.0"
+local VERSION = "0.3.0"
 
 local path = pandoc.path
 local ext_dir = path.directory(PANDOC_SCRIPT_FILE)
 
--- Backend registry (ADR 0010). dark_css: theme=auto restyles via CSS filter
--- (right for hand-drawn content, wrong for data-encoded chart colors).
+-- Backend registry (ADR 0010, 0011). dark_css: theme=auto restyles via CSS
+-- filter (right for hand-drawn content, wrong for data-encoded chart colors).
+-- dark_ok/scene_ok: whether theme=dark / background=scene are supported;
+-- unsupported values hard-fail rather than silently rendering wrong.
+-- absent flags default to false
 local BACKENDS = {
-  { pattern = "%.excalidraw$", name = "excalidraw", renderer = "renderer.mjs", dark_css = true },
-  { pattern = "%.vl%.json$", name = "vega", renderer = "renderer-vega.mjs", dark_css = false },
-  { pattern = "%.vg%.json$", name = "vega", renderer = "renderer-vega.mjs", dark_css = false },
+  { pattern = "%.excalidraw$", name = "excalidraw", renderer = "renderer.mjs",
+    dark_css = true, dark_ok = true, scene_ok = true },
+  { pattern = "%.vl%.json$", name = "vega", renderer = "renderer-vega.mjs", dark_ok = true, scene_ok = true },
+  { pattern = "%.vg%.json$", name = "vega", renderer = "renderer-vega.mjs", dark_ok = true, scene_ok = true },
+  { pattern = "%.noml$", name = "nomnoml", renderer = "renderer-text.mjs" },
+  { pattern = "%.nomnoml$", name = "nomnoml", renderer = "renderer-text.mjs" },
+  { pattern = "%.wavedrom$", name = "wavedrom", renderer = "renderer-text.mjs" },
+  { pattern = "%.wavedrom%.json$", name = "wavedrom", renderer = "renderer-text.mjs" },
+  { pattern = "%.bytefield$", name = "bytefield", renderer = "renderer-text.mjs" },
 }
 
 local function backend_for(src)
@@ -90,12 +99,18 @@ local function render(img, backend)
   if background ~= "transparent" and background ~= "scene" then
     fail('invalid background "' .. background .. '" on ' .. img.src .. ' (use transparent or scene)')
   end
+  if theme == "dark" and not backend.dark_ok then
+    fail('theme=dark is not supported for ' .. backend.name .. ' figures (' .. img.src .. ')')
+  end
+  if background == "scene" and not backend.scene_ok then
+    fail('background=scene is not supported for ' .. backend.name .. ' figures (' .. img.src .. ')')
+  end
   -- auto = render light once; dark pages restyle via CSS (ADR 0005),
   -- but only for backends where inverting colors is faithful (ADR 0010)
   local render_theme = theme == "dark" and "dark" or "light"
 
   local key = pandoc.utils.sha1(scene .. backend.name .. format .. render_theme .. background .. VERSION)
-  local stem = path.split_extension(path.filename(src)):gsub("%.v[lg]$", "")
+  local stem = path.split_extension(path.filename(src)):gsub("%.v[lg]$", ""):gsub("%.wavedrom$", "")
   local out = path.join({ cache_dir(), stem .. "-" .. key:sub(1, 8) .. "." .. format })
 
   if not read_file(out) then

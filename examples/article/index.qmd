@@ -16,3 +16,7 @@ Options go on the image attributes — @fig-flow keeps its scene background:
 Charts are live figures too — @fig-chart is a Vega-Lite spec:
 
 ![Category totals](figures/chart.vl.json){#fig-chart}
+
+Terse text sources work too — @fig-pipe is four lines of nomnoml:
+
+![The rendering pipeline](figures/pipeline.noml){#fig-pipe}
