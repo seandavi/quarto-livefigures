@@ -2,7 +2,8 @@ project:
   type: default
 
 filters:
-  - livefigures
+  - at: pre-ast
+    path: livefigures
 
 format:
   html:

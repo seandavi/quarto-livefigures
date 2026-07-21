@@ -17,3 +17,12 @@ handful of lines. Click to zoom.
 ![Filter/backend/cache structure](figures/classes.noml){#fig-classes}
 
 [view source: `classes.noml`](https://github.com/seandavi/quarto-livefigures/blob/main/examples/gallery/figures/classes.noml){.source-link}
+
+Diagrams can also live inline as fenced code blocks — @fig-inline is
+authored directly in this page's source:
+
+```{.nomnoml #fig-inline fig-cap="An inline diagram, no separate file"}
+#direction: right
+[inline source] -> [same cache]
+[same cache] -> [same figure semantics]
+```

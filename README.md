@@ -47,8 +47,13 @@ Enable the filter in `_quarto.yml` (or document front matter):
 
 ```yaml
 filters:
-  - livefigures
+  - at: pre-ast
+    path: livefigures
 ```
+
+(The `at: pre-ast` placement makes cross-references work on inline
+code-block figures; a plain `filters: [livefigures]` also works if you
+only use file-referenced figures.)
 
 ## Usage
 
@@ -61,6 +66,18 @@ build time into a content-addressed cache (`_livefigures/`, add it to
 
 See @fig-flow for details.
 ```
+
+Small diagrams can live **inline** as fenced code blocks instead of files —
+same pipeline, cache, and figure semantics:
+
+````markdown
+```{.nomnoml #fig-pipe fig-cap="The pipeline"}
+[Filter] -> [Cache] -> [SVG]
+```
+````
+
+Block classes: `.excalidraw`, `.vega-lite`, `.vega`, `.nomnoml`,
+`.wavedrom`, `.bytefield`, `.plantuml`.
 
 - **HTML formats** (articles, websites, books, dashboards, RevealJS): SVG
   with the hand-drawn fonts embedded — correct offline and in

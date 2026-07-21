@@ -2,4 +2,5 @@ project:
   type: default
 
 filters:
-  - ../../../_extensions/livefigures/livefigures.lua
+  - at: pre-ast
+    path: ../../../_extensions/livefigures/livefigures.lua

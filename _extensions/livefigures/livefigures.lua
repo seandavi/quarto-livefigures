@@ -1,37 +1,47 @@
 -- quarto-livefigures: render editable figure sources inside quarto render.
--- Detects Image elements targeting supported source formats, renders them via
--- a bundled Node renderer into a content-addressed cache, and rewrites the
--- image target so Quarto's native figure pipeline handles everything else.
+-- Two entry points share one pipeline: Image elements targeting supported
+-- source files, and fenced code blocks carrying a backend class
+-- (```{.nomnoml #fig-x fig-cap="..."}). Rendered assets land in a
+-- content-addressed cache and flow through Quarto's native figure pipeline.
 -- See docs/ARCHITECTURE.md and docs/adr/ for the decisions behind this.
 
-local VERSION = "0.4.0"
+local VERSION = "0.5.0"
 
 local path = pandoc.path
 local ext_dir = path.directory(PANDOC_SCRIPT_FILE)
 
--- Backend registry (ADR 0010, 0011). dark_css: theme=auto restyles via CSS
--- filter (right for hand-drawn content, wrong for data-encoded chart colors).
--- dark_ok/scene_ok: whether theme=dark / background=scene are supported;
--- unsupported values hard-fail rather than silently rendering wrong.
--- absent flags default to false
+-- Backend registry (ADR 0010, 0011, 0012, 0013). dark_css: theme=auto
+-- restyles via CSS filter (right for hand-drawn content, wrong for
+-- data-encoded chart colors). dark_ok/scene_ok: whether theme=dark /
+-- background=scene are supported; unsupported values hard-fail rather than
+-- silently rendering wrong. block/ext: code-block class and canonical file
+-- extension for inline sources. Absent flags default to false.
 local BACKENDS = {
   { pattern = "%.excalidraw$", name = "excalidraw", renderer = "renderer.mjs",
-    dark_css = true, dark_ok = true, scene_ok = true },
-  { pattern = "%.vl%.json$", name = "vega", renderer = "renderer-vega.mjs", dark_ok = true, scene_ok = true },
-  { pattern = "%.vg%.json$", name = "vega", renderer = "renderer-vega.mjs", dark_ok = true, scene_ok = true },
-  { pattern = "%.noml$", name = "nomnoml", renderer = "renderer-text.mjs" },
+    dark_css = true, dark_ok = true, scene_ok = true, block = "excalidraw", ext = "excalidraw" },
+  { pattern = "%.vl%.json$", name = "vega", renderer = "renderer-vega.mjs",
+    dark_ok = true, scene_ok = true, block = "vega-lite", ext = "vl.json" },
+  { pattern = "%.vg%.json$", name = "vega", renderer = "renderer-vega.mjs",
+    dark_ok = true, scene_ok = true, block = "vega", ext = "vg.json" },
+  { pattern = "%.noml$", name = "nomnoml", renderer = "renderer-text.mjs", block = "nomnoml", ext = "noml" },
   { pattern = "%.nomnoml$", name = "nomnoml", renderer = "renderer-text.mjs" },
-  { pattern = "%.wavedrom$", name = "wavedrom", renderer = "renderer-text.mjs" },
+  { pattern = "%.wavedrom$", name = "wavedrom", renderer = "renderer-text.mjs", block = "wavedrom", ext = "wavedrom" },
   { pattern = "%.wavedrom%.json$", name = "wavedrom", renderer = "renderer-text.mjs" },
-  { pattern = "%.bytefield$", name = "bytefield", renderer = "renderer-text.mjs" },
+  { pattern = "%.bytefield$", name = "bytefield", renderer = "renderer-text.mjs", block = "bytefield", ext = "bytefield" },
   -- kroki-backed formats (ADR 0012): network-rendered, endpoint configurable
-  { pattern = "%.puml$", name = "plantuml", renderer = "renderer-kroki.mjs", kroki = true },
+  { pattern = "%.puml$", name = "plantuml", renderer = "renderer-kroki.mjs", kroki = true, block = "plantuml", ext = "puml" },
   { pattern = "%.plantuml$", name = "plantuml", renderer = "renderer-kroki.mjs", kroki = true },
 }
 
 local function backend_for(src)
   for _, b in ipairs(BACKENDS) do
     if src:match(b.pattern) then return b end
+  end
+end
+
+local function backend_for_block(classes)
+  for _, b in ipairs(BACKENDS) do
+    if b.block and classes:includes(b.block) then return b end
   end
 end
 
@@ -80,7 +90,82 @@ local function read_file(p)
   return content
 end
 
-local function render(img, backend)
+local function write_file(p, content)
+  local f = io.open(p, "wb")
+  if not f then fail("cannot write " .. p) end
+  f:write(content)
+  f:close()
+end
+
+local function resolve_options(attributes, backend, label)
+  local format = quarto.doc.is_format("latex") and "png" or "svg"
+  local theme = attributes["theme"] or opts.theme
+    or (quarto.doc.is_format("html") and "auto" or "light")
+  local background = attributes["background"] or opts.background
+  if theme ~= "light" and theme ~= "dark" and theme ~= "auto" then
+    fail('invalid theme "' .. theme .. '" on ' .. label .. ' (use light, dark, or auto)')
+  end
+  if background ~= "transparent" and background ~= "scene" then
+    fail('invalid background "' .. background .. '" on ' .. label .. ' (use transparent or scene)')
+  end
+  if theme == "dark" and not backend.dark_ok then
+    fail('theme=dark is not supported for ' .. backend.name .. ' figures (' .. label .. ')')
+  end
+  if background == "scene" and not backend.scene_ok then
+    fail('background=scene is not supported for ' .. backend.name .. ' figures (' .. label .. ')')
+  end
+  return format, theme, background
+end
+
+-- Render `scene` (source text) through `backend` into the cache; returns the
+-- output path. `src_file` is the on-disk source when one exists (Image path);
+-- inline sources get written into the cache on a miss.
+local function ensure_rendered(scene, src_file, stem, backend, format, theme, background, label)
+  local render_theme = theme == "dark" and "dark" or "light"
+  local extra = ""
+  local key_extra = ""
+  if backend.kroki then
+    extra = string.format(' --type %s --endpoint "%s"', backend.name, opts.kroki_url)
+    key_extra = opts.kroki_url
+  end
+
+  local key = pandoc.utils.sha1(scene .. backend.name .. format .. render_theme .. background .. key_extra .. VERSION)
+  local out = path.join({ cache_dir(), stem .. "-" .. key:sub(1, 8) .. "." .. format })
+
+  if not read_file(out) then
+    check_node()
+    local input = src_file
+    if not input then
+      input = path.join({ cache_dir(), stem .. "-" .. key:sub(1, 8) .. ".in." .. backend.ext })
+      write_file(input, scene)
+    end
+    local cmd = string.format(
+      'node "%s" --input "%s" --output "%s" --format %s --theme %s --background %s%s',
+      path.join({ ext_dir, backend.renderer }), input, out, format, render_theme, background, extra)
+    if not os.execute(cmd) then
+      fail("rendering failed for " .. label .. " (see error above)")
+    end
+  end
+  return out
+end
+
+local function decorate(img, theme, backend)
+  img.classes:insert("livefigure")
+  if theme == "auto" and backend.dark_css then
+    img.classes:insert("livefigure-auto")
+  end
+  if quarto.doc.is_format("html") and not css_added then
+    quarto.doc.add_html_dependency({
+      name = "livefigures",
+      version = VERSION,
+      stylesheets = { "livefigures.css" },
+    })
+    css_added = true
+  end
+  return img
+end
+
+local function render_image(img, backend)
   local input_dir = path.directory(quarto.doc.input_file)
   local src = img.src
   if not path.is_absolute(src) then
@@ -92,64 +177,35 @@ local function render(img, backend)
     fail(img.src .. " does not exist (referenced from " .. quarto.doc.input_file .. ")")
   end
 
-  local format = quarto.doc.is_format("latex") and "png" or "svg"
-  local theme = img.attributes["theme"] or opts.theme
-    or (quarto.doc.is_format("html") and "auto" or "light")
-  local background = img.attributes["background"] or opts.background
-  if theme ~= "light" and theme ~= "dark" and theme ~= "auto" then
-    fail('invalid theme "' .. theme .. '" on ' .. img.src .. ' (use light, dark, or auto)')
-  end
-  if background ~= "transparent" and background ~= "scene" then
-    fail('invalid background "' .. background .. '" on ' .. img.src .. ' (use transparent or scene)')
-  end
-  if theme == "dark" and not backend.dark_ok then
-    fail('theme=dark is not supported for ' .. backend.name .. ' figures (' .. img.src .. ')')
-  end
-  if background == "scene" and not backend.scene_ok then
-    fail('background=scene is not supported for ' .. backend.name .. ' figures (' .. img.src .. ')')
-  end
-  -- auto = render light once; dark pages restyle via CSS (ADR 0005),
-  -- but only for backends where inverting colors is faithful (ADR 0010)
-  local render_theme = theme == "dark" and "dark" or "light"
-
-  local extra = ""
-  local key_extra = ""
-  if backend.kroki then
-    extra = string.format(' --type %s --endpoint "%s"', backend.name, opts.kroki_url)
-    key_extra = opts.kroki_url
-  end
-
-  local key = pandoc.utils.sha1(scene .. backend.name .. format .. render_theme .. background .. key_extra .. VERSION)
+  local format, theme, background = resolve_options(img.attributes, backend, img.src)
   local stem = path.split_extension(path.filename(src)):gsub("%.v[lg]$", ""):gsub("%.wavedrom$", "")
-  local out = path.join({ cache_dir(), stem .. "-" .. key:sub(1, 8) .. "." .. format })
-
-  if not read_file(out) then
-    check_node()
-    local cmd = string.format(
-      'node "%s" --input "%s" --output "%s" --format %s --theme %s --background %s%s',
-      path.join({ ext_dir, backend.renderer }), src, out, format, render_theme, background, extra)
-    if not os.execute(cmd) then
-      fail("rendering failed for " .. img.src .. " (see error above)")
-    end
-  end
+  local out = ensure_rendered(scene, src, stem, backend, format, theme, background, img.src)
 
   img.src = path.make_relative(out, input_dir)
   img.attributes["theme"] = nil
   img.attributes["background"] = nil
-  img.classes:insert("livefigure")
-  if theme == "auto" and backend.dark_css then
-    img.classes:insert("livefigure-auto")
-  end
+  return decorate(img, theme, backend)
+end
 
-  if quarto.doc.is_format("html") and not css_added then
-    quarto.doc.add_html_dependency({
-      name = "livefigures",
-      version = VERSION,
-      stylesheets = { "livefigures.css" },
-    })
-    css_added = true
+local function render_block(cb, backend)
+  local input_dir = path.directory(quarto.doc.input_file)
+  local label = "inline " .. backend.name .. " block"
+    .. (cb.identifier ~= "" and (" #" .. cb.identifier) or "")
+  local format, theme, background = resolve_options(cb.attributes, backend, label)
+  local stem = cb.identifier ~= "" and cb.identifier or ("inline-" .. backend.name)
+  local out = ensure_rendered(cb.text, nil, stem, backend, format, theme, background, label)
+
+  local img = decorate(pandoc.Image({}, path.make_relative(out, input_dir)), theme, backend)
+  local cap = cb.attributes["fig-cap"]
+  if cap or cb.identifier ~= "" then
+    local cap_inlines = cap
+      and pandoc.utils.blocks_to_inlines(pandoc.read(cap, "markdown").blocks)
+      or pandoc.Inlines({})
+    return pandoc.Figure(pandoc.Plain({ img }),
+      { long = { pandoc.Plain(cap_inlines) } },
+      pandoc.Attr(cb.identifier))
   end
-  return img
+  return pandoc.Para({ img })
 end
 
 return {
@@ -167,7 +223,13 @@ return {
     Image = function(img)
       local backend = backend_for(img.src)
       if backend then
-        return render(img, backend)
+        return render_image(img, backend)
+      end
+    end,
+    CodeBlock = function(cb)
+      local backend = backend_for_block(cb.classes)
+      if backend then
+        return render_block(cb, backend)
       end
     end,
   },
