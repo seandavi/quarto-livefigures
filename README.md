@@ -1,15 +1,25 @@
 # quarto-livefigures
 
 Editable, version-controlled figures as first-class Quarto citizens.
-Reference an [Excalidraw](https://excalidraw.com/) file with normal figure
-syntax and `quarto render` does the rest — no manual SVG/PNG exports, no
-generated files in version control.
+Reference the figure's *source file* with normal figure syntax and
+`quarto render` does the rest — no manual SVG/PNG exports, no generated
+files in version control.
 
 ```markdown
 ![Overall architecture](figures/architecture.excalidraw){#fig-arch width=80%}
+
+![Monthly totals](figures/totals.vl.json){#fig-totals}
 ```
 
-The `.excalidraw` file is the single source of truth. Captions, labels,
+Supported source formats:
+
+| Format | Extension | Best for |
+| ------ | --------- | -------- |
+| [Excalidraw](https://excalidraw.com/) | `.excalidraw` | hand-drawn diagrams and sketches |
+| [Vega-Lite](https://vega.github.io/vega-lite/) | `.vl.json` | data-driven charts (and LLM/agent-authored figures) |
+| [Vega](https://vega.github.io/vega/) | `.vg.json` | low-level chart specs |
+
+The source file is the single source of truth. Captions, labels,
 cross-references, sizing, layout, subfigures, and lightbox all work exactly
 as for any other Quarto figure.
 
@@ -32,8 +42,8 @@ filters:
 
 ## Usage
 
-Any Quarto image whose target ends in `.excalidraw` is rendered at build
-time into a content-addressed cache (`_livefigures/`, add it to
+Any Quarto image whose target is a supported source file is rendered at
+build time into a content-addressed cache (`_livefigures/`, add it to
 `.gitignore`) and flows through Quarto's native figure pipeline:
 
 ```markdown
@@ -71,9 +81,12 @@ livefigures:
   background: scene
 ```
 
-`theme: auto` renders once (light) and restyles on dark pages with the same
-CSS filter Excalidraw itself uses for dark mode. An explicit `theme=dark`
-performs a true dark export.
+`theme: auto` renders once (light); Excalidraw figures restyle on dark
+pages with the same CSS filter Excalidraw itself uses for dark mode.
+Charts (Vega/Vega-Lite) deliberately stay light under `auto` — inverting
+data-encoded colors would misrepresent them; use an explicit `theme=dark`
+for the vega dark theme. For Excalidraw, `theme=dark` performs a true dark
+export.
 
 ## Examples
 
@@ -89,8 +102,7 @@ See [`examples/`](examples/) for a minimal [article](examples/article),
 - **CJK text** (Excalidraw's Xiaolai font, 13 MB) is not bundled; scenes
   using it fail with a clear error. Open an issue if you need it.
 - Errors are deliberate and loud: a missing Node runtime or a corrupt
-  `.excalidraw` file aborts the render rather than publishing a broken
-  figure.
+  source file aborts the render rather than publishing a broken figure.
 
 ## How it works
 

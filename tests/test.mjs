@@ -71,6 +71,21 @@ test('options: theme=dark renders and hashes separately', () => {
   assert.ok(!html.includes('livefigure-auto'), 'explicit dark opts out of auto CSS');
 });
 
+test('vega backend: .vl.json renders as SVG figure without auto-dark CSS', () => {
+  writeFileSync(join(proj, 'chart.qmd'),
+    '---\ntitle: chart\n---\n\nSee @fig-chart.\n\n![A bar chart](figures/chart.vl.json){#fig-chart}\n');
+  render();
+  const html = readFileSync(join(proj, 'chart.html'), 'utf8');
+  const m = html.match(/<img src="(_livefigures\/chart-[0-9a-f]{8}\.svg)"[^>]*>/);
+  assert.ok(m, 'chart rewritten to content-addressed svg');
+  assert.match(m[0], /class="[^"]*livefigure[^"]*"/);
+  assert.ok(!m[0].includes('livefigure-auto'), 'charts do not get the CSS dark filter');
+  assert.match(html, /A bar chart/);
+  const svg = readFileSync(join(proj, m[1]), 'utf8');
+  assert.match(svg, /<svg/);
+  assert.match(svg, /alpha/, 'axis labels present');
+});
+
 test('errors: corrupt scene aborts the render', () => {
   writeFileSync(join(proj, 'figures', 'bad.excalidraw'), '{not json');
   writeFileSync(join(proj, 'bad.qmd'), '---\ntitle: bad\n---\n\n![](figures/bad.excalidraw)\n');
@@ -81,8 +96,9 @@ test('errors: corrupt scene aborts the render', () => {
 
 test('PDF: renders with PNG cache entries and caption text', { skip: !which('tlmgr') && !existsSync(join(process.env.HOME ?? '', '.TinyTeX')) }, () => {
   execFileSync('quarto', ['render', 'index.qmd', '--to', 'pdf'], { cwd: proj, encoding: 'utf8', stdio: 'pipe' });
+  execFileSync('quarto', ['render', 'chart.qmd', '--to', 'pdf'], { cwd: proj, encoding: 'utf8', stdio: 'pipe' });
   assert.ok(existsSync(join(proj, 'index.pdf')));
-  assert.ok(cacheFiles('.png').length >= 2, 'png cache entries for latex');
+  assert.ok(cacheFiles('.png').length >= 3, 'png cache entries for latex (both backends)');
   if (which('pdftotext')) {
     execFileSync('pdftotext', ['index.pdf', 'index.txt'], { cwd: proj });
     assert.match(readFileSync(join(proj, 'index.txt'), 'utf8'), /Figure 1: Overall architecture/);

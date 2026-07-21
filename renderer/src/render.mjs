@@ -117,23 +117,9 @@ if (format === 'svg') {
 // --- PNG via resvg-wasm with explicit TTF font buffers (ADR 0004) -----------
 // The napi binding's fontBuffers renders wrong glyphs (resvg-js 2.6.2); the
 // wasm build is correct — verified in the spike.
-const { initWasm, Resvg } = await import('@resvg/resvg-wasm');
-await initWasm(readFileSync(join(HERE, 'resvg.wasm')));
-
-const ttfDir = join(FONTS_DIR, 'ttf');
-const fontBuffers = readdirSync(ttfDir)
-  .filter((f) => f.endsWith('.ttf'))
-  .map((f) => new Uint8Array(readFileSync(join(ttfDir, f))));
-
-const scaled = svg.replace(
-  /<svg([^>]*)width="([\d.]+)"\s+height="([\d.]+)"/,
-  (_, pre, w, h) => `<svg${pre}width="${Number(w) * scale}" height="${Number(h) * scale}"`,
-);
 try {
-  const png = new Resvg(scaled, {
-    font: { fontBuffers, loadSystemFonts: false },
-  }).render().asPng();
-  writeFileSync(output, png);
+  const { rasterize } = await import('./rasterize.mjs');
+  writeFileSync(output, await rasterize(svg, { extDir: HERE, scale }));
 } catch (e) {
   fail(`PNG rasterization failed for ${input}: ${e.message}`);
 }

@@ -10,14 +10,13 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const EXT = join(HERE, '..', '_extensions', 'livefigures');
 const EXCALIDRAW_DIST = join(HERE, 'node_modules', '@excalidraw', 'excalidraw', 'dist', 'prod');
 
+const common = { bundle: true, platform: 'node', format: 'esm', minify: true, logLevel: 'error' };
+await build({ ...common, entryPoints: [join(HERE, 'src', 'render.mjs')], outfile: join(EXT, 'renderer.mjs') });
 await build({
-  entryPoints: [join(HERE, 'src', 'render.mjs')],
-  bundle: true,
-  platform: 'node',
-  format: 'esm',
-  minify: true,
-  outfile: join(EXT, 'renderer.mjs'),
-  logLevel: 'error',
+  ...common,
+  entryPoints: [join(HERE, 'src', 'render-vega.mjs')],
+  outfile: join(EXT, 'renderer-vega.mjs'),
+  external: ['canvas'], // vega's optional native dep; headless metrics suffice
 });
 
 cpSync(join(HERE, 'node_modules', '@resvg', 'resvg-wasm', 'index_bg.wasm'), join(EXT, 'resvg.wasm'));
