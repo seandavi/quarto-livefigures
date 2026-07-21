@@ -1,5 +1,17 @@
 # quarto-livefigures release notes
 
+## 0.7.0 (2026-07-20)
+
+- **Two new local (offline) backends** (ADR 0014):
+  - **Graphviz** (`.dot`, `.gv`; block `.dot`) — wasm-rendered, fully
+    self-contained. Complements Quarto's native code-cell dot support
+    with file-referenced figures and our caching/figure semantics.
+  - **DBML** (`.dbml`) — database schema diagrams from the popular DBML
+    DSL, rendered locally.
+- SMILES (chemistry) and ABC notation (music) are next in line as
+  easy-win local backends; railroad/pikchr/svgbob/Penrose deferred with
+  reasons in ADR 0014.
+
 ## 0.6.0 (2026-07-20)
 
 - **Eight more kroki-backed formats**, batch-enabled after an empirical

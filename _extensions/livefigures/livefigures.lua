@@ -5,7 +5,7 @@
 -- content-addressed cache and flow through Quarto's native figure pipeline.
 -- See docs/ARCHITECTURE.md and docs/adr/ for the decisions behind this.
 
-local VERSION = "0.6.0"
+local VERSION = "0.7.0"
 
 local path = pandoc.path
 local ext_dir = path.directory(PANDOC_SCRIPT_FILE)
@@ -28,6 +28,9 @@ local BACKENDS = {
   { pattern = "%.wavedrom$", name = "wavedrom", renderer = "renderer-text.mjs", block = "wavedrom", ext = "wavedrom" },
   { pattern = "%.wavedrom%.json$", name = "wavedrom", renderer = "renderer-text.mjs" },
   { pattern = "%.bytefield$", name = "bytefield", renderer = "renderer-text.mjs", block = "bytefield", ext = "bytefield" },
+  { pattern = "%.dot$", name = "graphviz", renderer = "renderer-graphviz.mjs", block = "dot", ext = "dot" },
+  { pattern = "%.gv$", name = "graphviz", renderer = "renderer-graphviz.mjs" },
+  { pattern = "%.dbml$", name = "dbml", renderer = "renderer-dbml.mjs", block = "dbml", ext = "dbml" },
   -- kroki-backed formats (ADR 0012): network-rendered, endpoint configurable.
   -- Batch enabled per the 2026-07-20 kroki survey; blockdiag family excluded
   -- (broken server-side), umlet/bpmn/symbolator/wireviz excluded (not

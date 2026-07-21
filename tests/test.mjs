@@ -109,6 +109,18 @@ test('text backends: theme=dark hard-fails with a clear message', () => {
   rmSync(join(proj, 'textdark.qmd')); // keep later whole-project renders green
 });
 
+test('local backends: graphviz (.dot) and dbml render as SVG figures', () => {
+  writeFileSync(join(proj, 'local.qmd'),
+    '---\ntitle: local\n---\n\n![Deps](figures/deps.dot){#fig-deps}\n\n![Schema](figures/schema.dbml){#fig-schema}\n');
+  render();
+  const html = readFileSync(join(proj, 'local.html'), 'utf8');
+  for (const stem of ['deps', 'schema']) {
+    const m = html.match(new RegExp(`<img src="(_livefigures/${stem}-[0-9a-f]{8}\\.svg)"`));
+    assert.ok(m, `${stem} rewritten to content-addressed svg`);
+    assert.match(readFileSync(join(proj, m[1]), 'utf8'), /<svg/);
+  }
+});
+
 test('kroki backend: .puml renders as SVG figure', async (t) => {
   // probe here, not at module load: sync execFileSync in earlier tests
   // starves the event loop and falsely times out a top-level fetch
