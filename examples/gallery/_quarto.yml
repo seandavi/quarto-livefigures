@@ -12,6 +12,7 @@ website:
       - wavedrom.qmd
       - bytefield.qmd
       - plantuml.qmd
+      - kroki.qmd
 
 format:
   html:

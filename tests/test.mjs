@@ -124,6 +124,42 @@ test('kroki backend: .puml renders as SVG figure', async (t) => {
   assert.match(readFileSync(join(proj, m[1]), 'utf8'), /<svg/);
 });
 
+test('kroki backend: .d2 renders as SVG figure', async (t) => {
+  const up = await fetch('https://kroki.io/health', { signal: AbortSignal.timeout(5000) })
+    .then((r) => r.ok).catch(() => false);
+  if (!up) return t.skip('kroki.io unreachable');
+  writeFileSync(join(proj, 'd2.qmd'),
+    '---\ntitle: d2\n---\n\n![Pipeline](figures/pipeline.d2){#fig-d2}\n');
+  render();
+  const html = readFileSync(join(proj, 'd2.html'), 'utf8');
+  const m = html.match(/<img src="(_livefigures\/pipeline-[0-9a-f]{8}\.svg)"/);
+  assert.ok(m, 'd2 rewritten to content-addressed svg');
+  assert.match(readFileSync(join(proj, m[1]), 'utf8'), /<svg/);
+});
+
+test('kroki backend: empty-200 response hard-fails (broken server renderer)', async () => {
+  // the mock server must live in its OWN process: spawnSync below blocks
+  // this process's event loop, and an in-process server would never respond
+  const { spawn } = await import('node:child_process');
+  const srv = spawn('node', ['-e',
+    `require('http').createServer((q,s)=>{s.writeHead(200);s.end('')})` +
+    `.listen(0,'127.0.0.1',function(){console.log(this.address().port)})`],
+  { stdio: ['ignore', 'pipe', 'ignore'] });
+  const port = await new Promise((resolve) => {
+    srv.stdout.once('data', (d) => resolve(String(d).trim()));
+  });
+  try {
+    writeFileSync(join(proj, 'empty.qmd'),
+      `---\ntitle: e\nlivefigures:\n  kroki-url: "http://127.0.0.1:${port}"\n---\n\n![](figures/sequence.puml)\n`);
+    const r = spawnSync('quarto', ['render', 'empty.qmd'], { cwd: proj, encoding: 'utf8' });
+    assert.notEqual(r.status, 0);
+    assert.match(r.stderr + r.stdout, /no usable SVG/);
+  } finally {
+    srv.kill();
+    rmSync(join(proj, 'empty.qmd'));
+  }
+});
+
 test('kroki backend: unreachable endpoint hard-fails with actionable message', () => {
   writeFileSync(join(proj, 'pumlbad.qmd'),
     '---\ntitle: pb\nlivefigures:\n  kroki-url: "http://127.0.0.1:9"\n---\n\n![](figures/sequence.puml)\n');

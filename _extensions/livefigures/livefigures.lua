@@ -5,7 +5,7 @@
 -- content-addressed cache and flow through Quarto's native figure pipeline.
 -- See docs/ARCHITECTURE.md and docs/adr/ for the decisions behind this.
 
-local VERSION = "0.5.0"
+local VERSION = "0.6.0"
 
 local path = pandoc.path
 local ext_dir = path.directory(PANDOC_SCRIPT_FILE)
@@ -28,9 +28,20 @@ local BACKENDS = {
   { pattern = "%.wavedrom$", name = "wavedrom", renderer = "renderer-text.mjs", block = "wavedrom", ext = "wavedrom" },
   { pattern = "%.wavedrom%.json$", name = "wavedrom", renderer = "renderer-text.mjs" },
   { pattern = "%.bytefield$", name = "bytefield", renderer = "renderer-text.mjs", block = "bytefield", ext = "bytefield" },
-  -- kroki-backed formats (ADR 0012): network-rendered, endpoint configurable
+  -- kroki-backed formats (ADR 0012): network-rendered, endpoint configurable.
+  -- Batch enabled per the 2026-07-20 kroki survey; blockdiag family excluded
+  -- (broken server-side), umlet/bpmn/symbolator/wireviz excluded (not
+  -- agent-authorable or deep-niche).
   { pattern = "%.puml$", name = "plantuml", renderer = "renderer-kroki.mjs", kroki = true, block = "plantuml", ext = "puml" },
   { pattern = "%.plantuml$", name = "plantuml", renderer = "renderer-kroki.mjs", kroki = true },
+  { pattern = "%.d2$", name = "d2", renderer = "renderer-kroki.mjs", kroki = true, block = "d2", ext = "d2" },
+  { pattern = "%.c4$", name = "c4plantuml", renderer = "renderer-kroki.mjs", kroki = true, block = "c4", ext = "c4" },
+  { pattern = "%.structurizr$", name = "structurizr", renderer = "renderer-kroki.mjs", kroki = true, block = "structurizr", ext = "structurizr" },
+  { pattern = "%.erd$", name = "erd", renderer = "renderer-kroki.mjs", kroki = true, block = "erd", ext = "erd" },
+  { pattern = "%.ditaa$", name = "ditaa", renderer = "renderer-kroki.mjs", kroki = true, block = "ditaa", ext = "ditaa" },
+  { pattern = "%.pikchr$", name = "pikchr", renderer = "renderer-kroki.mjs", kroki = true, block = "pikchr", ext = "pikchr" },
+  { pattern = "%.svgbob$", name = "svgbob", renderer = "renderer-kroki.mjs", kroki = true, block = "svgbob", ext = "svgbob" },
+  { pattern = "%.tikz$", name = "tikz", renderer = "renderer-kroki.mjs", kroki = true, block = "tikz", ext = "tikz" },
 }
 
 local function backend_for(src)

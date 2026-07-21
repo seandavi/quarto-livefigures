@@ -1,5 +1,21 @@
 # quarto-livefigures release notes
 
+## 0.6.0 (2026-07-20)
+
+- **Eight more kroki-backed formats**, batch-enabled after an empirical
+  survey of kroki.io: **D2** (`.d2`), **C4-PlantUML** (`.c4`),
+  **Structurizr** (`.structurizr`), **erd** (`.erd`), **ditaa**
+  (`.ditaa`), **pikchr** (`.pikchr`), **svgbob** (`.svgbob`), and
+  **TikZ** (`.tikz` — source must be a complete `standalone` document).
+  All have matching code-block classes.
+- Not enabled, with reasons recorded in ADR 0012: the blockdiag family is
+  broken server-side on kroki.io (silent empty responses); umlet and BPMN
+  require hand-placed coordinates (not agent-authorable); symbolator and
+  wireviz are deep-niche with weak LLM fluency.
+- **Robustness**: the kroki client now rejects empty/non-SVG HTTP 200
+  responses (a real kroki.io failure mode) and sends an explicit
+  User-Agent (some default client UAs are blocked by kroki.io's CDN).
+
 ## 0.5.0 (2026-07-20)
 
 - **Inline code-block figures** (ADR 0013): fence a diagram with a backend

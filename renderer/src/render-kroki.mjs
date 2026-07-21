@@ -30,7 +30,8 @@ let res;
 try {
   res = await fetch(endpoint + '/', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    // explicit UA: kroki.io's Cloudflare 403s some default client UAs
+    headers: { 'Content-Type': 'application/json', 'User-Agent': 'quarto-livefigures' },
     body: JSON.stringify({ diagram_source: source, diagram_type: type, output_format: 'svg' }),
   });
 } catch (e) {
@@ -41,6 +42,11 @@ try {
 const body = await res.text();
 if (!res.ok) {
   fail(`kroki (${endpoint}) rejected ${input}: HTTP ${res.status} — ${body.slice(0, 300)}`);
+}
+if (!body.includes('<svg')) {
+  // some broken kroki backends return HTTP 200 with an empty/non-SVG body
+  fail(`kroki (${endpoint}) returned no usable SVG for ${input} (HTTP 200, ` +
+    `${body.length} bytes). The '${type}' renderer may be broken on this server.`);
 }
 
 if (format === 'svg') {
