@@ -37,6 +37,23 @@ runtime npm installs. The choice of export library inside the bundle
 feasibility spike and recorded when settled; this ADR fixes only the runtime
 contract.
 
+## Future backend candidates (assessed 2026-07-20)
+
+- **tldraw** — ruled out on licensing: the SDK is source-available with
+  license-key enforcement; production use requires a commercial license and
+  standalone redistribution is prohibited. Not viable for an open-source
+  extension regardless of architecture. Do not re-litigate absent a license
+  change.
+- **draw.io** — viable second backend, likely highest demand. No pure-Node
+  renderer exists; the sanctioned path is the draw.io desktop CLI (Electron;
+  xvfb/Docker on headless CI). Acceptable: the renderer seam lets each
+  backend declare its own runtime dependency with the same hard-fail checks.
+- **Vega-Lite** — architecturally cheapest: vega renders headless in pure
+  Node and would join the existing bundle nearly for free. Lower demand as a
+  hand-drawn-figure format.
+
+Second-backend choice is deferred to user demand (tracked in a GitHub issue).
+
 ## Consequences
 
 - Node >= 18 becomes a documented user-facing dependency; a missing runtime
