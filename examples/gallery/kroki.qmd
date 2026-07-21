@@ -1,0 +1,19 @@
+---
+title: "More kroki formats"
+---
+
+Beyond [PlantUML](plantuml.qmd), a batch of formats renders through the
+same [kroki](https://kroki.io/) backend: D2, C4-PlantUML, Structurizr,
+erd, ditaa, pikchr, svgbob, and TikZ. @fig-d2 is a D2 diagram authored
+inline:
+
+```{.d2 #fig-d2 fig-cap="The render pipeline, in D2"}
+filter -> cache: lookup
+cache -> renderer: miss
+renderer -> svg: emit
+svg -> document: native figure
+```
+
+Every kroki format also works as a file reference
+(`![](figures/arch.d2)`) with the same captions, cross-references, and
+caching as local backends.

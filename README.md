@@ -21,7 +21,15 @@ Supported source formats:
 | [nomnoml](https://nomnoml.com/) | `.noml`, `.nomnoml` | node-edge/UML diagrams from terse text |
 | [WaveDrom](https://wavedrom.com/) | `.wavedrom`, `.wavedrom.json` | digital timing & register diagrams |
 | [bytefield](https://bytefield-svg.deepsymmetry.org/) | `.bytefield` | byte/packet layout diagrams |
-| [PlantUML](https://plantuml.com/) † | `.puml`, `.plantuml` | UML: sequence, class, activity, C4 … |
+| [PlantUML](https://plantuml.com/) † | `.puml`, `.plantuml` | UML: sequence, class, activity … |
+| [D2](https://d2lang.com/) † | `.d2` | modern declarative diagrams |
+| [C4-PlantUML](https://github.com/plantuml-stdlib/C4-PlantUML) † | `.c4` | C4 architecture diagrams |
+| [Structurizr](https://structurizr.com/) † | `.structurizr` | C4 via the Structurizr DSL |
+| [erd](https://github.com/BurntSushi/erd) † | `.erd` | entity-relationship diagrams |
+| [ditaa](https://ditaa.sourceforge.net/) † | `.ditaa` | ASCII art → polished diagrams |
+| [pikchr](https://pikchr.org/) † | `.pikchr` | PIC-style technical diagrams |
+| [svgbob](https://github.com/ivanceras/svgbob) † | `.svgbob` | ASCII art → SVG |
+| [TikZ](https://tikz.dev/) † | `.tikz` | LaTeX diagrams (complete `standalone` docs) |
 
 † Rendered via a [kroki](https://kroki.io/) endpoint — the one backend
 class that needs the network (on cache misses only). The diagram source is
@@ -77,7 +85,8 @@ same pipeline, cache, and figure semantics:
 ````
 
 Block classes: `.excalidraw`, `.vega-lite`, `.vega`, `.nomnoml`,
-`.wavedrom`, `.bytefield`, `.plantuml`.
+`.wavedrom`, `.bytefield`, `.plantuml`, `.d2`, `.c4`, `.structurizr`,
+`.erd`, `.ditaa`, `.pikchr`, `.svgbob`, `.tikz`.
 
 - **HTML formats** (articles, websites, books, dashboards, RevealJS): SVG
   with the hand-drawn fonts embedded — correct offline and in

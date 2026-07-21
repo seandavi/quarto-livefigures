@@ -44,3 +44,19 @@ used, keeping PDF font behavior identical to every other backend.
 - The kroki door is open: C4/Structurizr/ditaa/etc. are now one registry
   line each, gated only on demand.
 - Version 0.4.0.
+
+## Addendum (2026-07-20, v0.6.0): batch enable per empirical survey
+
+All 28 kroki.io diagram types were probed with minimal valid sources.
+Enabled: d2, c4plantuml, structurizr, erd, ditaa, pikchr, svgbob, tikz
+(tikz requires a complete `standalone` LaTeX document — kroki's own error
+message is actionable). Excluded: the blockdiag family (blockdiag,
+seqdiag, actdiag, nwdiag, packetdiag, rackdiag) is broken server-side —
+HTTP 200 with an empty body; umlet and bpmn require hand-placed x/y
+coordinates (not agent-authorable, against the project thesis); symbolator
+and wireviz are deep-niche with weak LLM fluency. dbml works on kroki but
+is reserved for a local renderer (survey found a self-contained JS one).
+
+Two client fixes from the survey: reject 200-with-no-SVG responses
+(otherwise a broken backend caches an empty figure), and send an explicit
+User-Agent (kroki.io's CDN blocks some default client UAs).
