@@ -10,3 +10,4 @@ tests/fixtures/**/*.pdf
 tests/fixtures/**/*.tex
 examples/**/*.html
 examples/**/*.pdf
+.env
