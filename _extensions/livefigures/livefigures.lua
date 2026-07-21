@@ -5,7 +5,7 @@
 -- content-addressed cache and flow through Quarto's native figure pipeline.
 -- See docs/ARCHITECTURE.md and docs/adr/ for the decisions behind this.
 
-local VERSION = "0.7.1"
+local VERSION = "0.8.0"
 
 local path = pandoc.path
 local ext_dir = path.directory(PANDOC_SCRIPT_FILE)

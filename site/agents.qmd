@@ -82,7 +82,7 @@ claude mcp add --transport http livefigures https://mcp.livefigures.seandavis.ne
 Or local and offline — the server ships inside the extension:
 
 ```bash
-claude mcp add livefigures -- node _extensions/livefigures/mcp.mjs
+claude mcp add livefigures -- node _extensions/seandavi/livefigures/mcp.mjs
 ```
 
 (Any MCP client works; the server also serves this site's skill as the
@@ -92,8 +92,8 @@ render via kroki; all other formats use the extension's own engines.)
 Prefer plain commands? The same tools ship as a CLI:
 
 ```bash
-node _extensions/livefigures/cli.mjs render figures/arch.excalidraw -o /tmp/arch.png
-node _extensions/livefigures/cli.mjs validate figures/*.dot
+node _extensions/seandavi/livefigures/cli.mjs render figures/arch.excalidraw -o /tmp/arch.png
+node _extensions/seandavi/livefigures/cli.mjs validate figures/*.dot
 ```
 
 ## Which formats work best for agents
