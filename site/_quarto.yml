@@ -13,16 +13,24 @@ website:
         href: install.qmd
       - text: "Formats"
         href: formats.qmd
-      - text: "Options"
-        href: options.qmd
       - text: "Gallery"
         href: gallery/index.qmd
-      - text: "Agents"
-        href: agents.qmd
-      - text: "Limitations"
-        href: limitations.qmd
-      - text: "References"
-        href: references.qmd
+      - text: "Agents & tools"
+        menu:
+          - text: "Agent skill"
+            href: agents.qmd
+          - text: "MCP server"
+            href: mcp.qmd
+          - text: "CLI"
+            href: cli.qmd
+      - text: "More"
+        menu:
+          - text: "Options"
+            href: options.qmd
+          - text: "Limitations"
+            href: limitations.qmd
+          - text: "References"
+            href: references.qmd
     right:
       - text: "Releases"
         href: "https://github.com/seandavi/quarto-livefigures/releases"

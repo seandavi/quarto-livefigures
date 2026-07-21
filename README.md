@@ -4,6 +4,8 @@
 [![Release](https://img.shields.io/github/v/release/seandavi/quarto-livefigures)](https://github.com/seandavi/quarto-livefigures/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Docs](https://img.shields.io/badge/docs-livefigures.seandavis.net-6965db)](https://livefigures.seandavis.net)
+[![Quarto extension](https://img.shields.io/badge/quarto-extension%20listing-39729E)](https://quarto.org/docs/extensions/)
+[![npm](https://img.shields.io/npm/v/livefigures)](https://www.npmjs.com/package/livefigures)
 
 Editable, version-controlled figures as first-class Quarto citizens.
 Reference the figure's *source file* with normal figure syntax and
@@ -55,6 +57,9 @@ as for any other Quarto figure.
 ```bash
 quarto add seandavi/quarto-livefigures
 ```
+
+livefigures is listed in the official [Quarto extension
+listing](https://quarto.org/docs/extensions/).
 
 Requires **Node.js >= 18** on your PATH (the only external dependency).
 Rendering is fully offline — fonts and the rasterizer ship with the
@@ -132,6 +137,37 @@ Charts (Vega/Vega-Lite) deliberately stay light under `auto` — inverting
 data-encoded colors would misrepresent them; use an explicit `theme=dark`
 for the vega dark theme. For Excalidraw, `theme=dark` performs a true dark
 export.
+
+## How is this different from mermaid cells / diagram / quarto-kroki?
+
+Quarto natively renders Mermaid and Graphviz in *executable code
+cells*, and three good community extensions overlap with livefigures:
+[pandoc-ext/diagram](https://github.com/pandoc-ext/diagram)
+(Graphviz/Mermaid/PlantUML/TikZ/Asymptote/D2 via locally *installed*
+tools) plus [resepemb/quarto-kroki](https://github.com/resepemb/quarto-kroki)
+and [fermarsan/quarto-kroki](https://github.com/fermarsan/quarto-kroki)
+(any kroki format via a kroki server). All of these are code-block-only.
+What livefigures adds:
+
+- **File-referenced figures** — `![](figures/arch.excalidraw)` with
+  native image syntax, so sources made in real editors (Excalidraw
+  today) are figures too, not just typed DSLs. Fenced blocks also work.
+- **Nothing to install, no network for local formats** — nine formats
+  render from renderers *bundled with the extension* (wasm/JS; Node ≥ 18
+  is the only requirement). `diagram` needs each tool on your PATH; the
+  kroki filters need a server round-trip for every diagram.
+- **Deterministic PDF** — bundled rasterizer with bundled fonts, same
+  output on every machine.
+- **Content-addressed caching** — warm rebuilds re-render nothing (and
+  re-contact no server).
+- **Agent tooling** — the [skill](skills/livefigures/SKILL.md),
+  [MCP server](https://livefigures.seandavis.net/mcp.html), and
+  [CLI](https://livefigures.seandavis.net/cli.html) are part of the
+  project, not an afterthought.
+
+If a Mermaid code cell or a kroki filter covers your needs, use them —
+livefigures uses kroki itself for the formats that need it, adding the
+caching, file-referenced sources, and PDF pipeline on top.
 
 ## For AI agents
 

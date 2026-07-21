@@ -3,52 +3,110 @@ title: ""
 toc: false
 ---
 
+::: {.hero-band}
+::: {.hero-eyebrow}
+18 formats · one pipeline · MIT open source
+:::
+
 ::: {.hero-wordmark}
 livefigures
 :::
 
-::: {.hero-tagline}
-Editable, version-controlled figures as first-class Quarto citizens — in
-18 plain-text formats that **you and your AI agents** can read, write,
-and diff. Reference the *source file* — or write the diagram inline —
-and `quarto render` does the rest.
+::: {.hero-thesis}
+The source is the figure.
 :::
 
-```bash
-quarto add seandavi/quarto-livefigures
-```
+::: {.hero-sub}
+Reference an `.excalidraw`, `.vl.json`, or `.dot` file — or write four
+lines of diagram inline — and `quarto render` draws it. Version-controlled,
+never stale, and editable by **you and your AI agents** alike.
+:::
 
-No exported SVGs to maintain. No generated files in version control. The
-source is the figure — and because every source is plain text or JSON,
-**AI agents read, write, and diff your figures as easily as your code.**
+::: {.hero-ctas}
+[Get started →](install.qmd){.cta-primary}
+[See the gallery](gallery/index.qmd){.cta-ink}
+:::
 
-## See it
+::: {.hero-install}
+`quarto add seandavi/quarto-livefigures`
+:::
+:::
 
-This diagram is authored *inline in this page's source*, four lines of
-nomnoml (@fig-hero):
-
-```{.nomnoml #fig-hero fig-cap="A figure whose source you just read" width=90%}
+::: {.grid .hero-demo}
+::: {.g-col-12 .g-col-md-5}
+::: {.demo-source}
+::: {.demo-filename}
+figures/flow.noml
+:::
+```default
 #direction: right
 [edit source] -> [quarto render]
-[quarto render] -> [cached figure]
-[cached figure] -> [HTML / PDF / slides]
+[quarto render] -> [figure]
 ```
+:::
+:::
+::: {.g-col-12 .g-col-md-2 .demo-arrow}
+renders to ⟶
+:::
+::: {.g-col-12 .g-col-md-5}
+```{.nomnoml #fig-hero fig-cap="A figure whose source you just read — authored inline in this page." width=100%}
+#direction: right
+[edit source] -> [quarto render]
+[quarto render] -> [figure]
+```
+:::
+:::
 
-And this one renders from
-[`arch.excalidraw`](https://github.com/seandavi/quarto-livefigures/blob/main/site/gallery/figures/arch.excalidraw)
-— a hand-drawn scene you can open and edit at
-[excalidraw.com](https://excalidraw.com/) (@fig-hero2):
+No exported SVGs to maintain. No generated files in version control.
+Captions, cross-references (like @fig-hero), sizing, subfigures, and
+lightbox all behave exactly like native Quarto figures — because they
+*are* native Quarto figures by the time Quarto sees them.
 
-![The file is the figure](gallery/figures/arch.excalidraw){#fig-hero2 width=55%}
+## One idea, four tools
 
-Captions, cross-references (like @fig-hero above), sizing, subfigures,
-lightbox — click any figure — all behave exactly like native Quarto
-figures, because they *are* native Quarto figures by the time Quarto sees
-them.
+::: {.grid}
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-3 .deliverable-card}
+### Extension
+Figures from source files or fenced blocks, rendered inside
+`quarto render`. HTML, PDF, slides.
 
-And this is the whole edit loop — change the source, render, done:
+[Get started →](install.qmd){.card-go}
+:::
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-3 .deliverable-card}
+### MCP server
+Your agent writes a figure, calls `render`, and **sees the image** —
+before it lands in your document.
+
+[Set up MCP →](mcp.qmd){.card-go}
+:::
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-3 .deliverable-card}
+### CLI
+`npx livefigures` — render and validate any figure source from the
+shell or CI.
+
+[CLI commands →](cli.qmd){.card-go}
+:::
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-3 .deliverable-card}
+### Agent skill
+One Markdown briefing that makes any coding agent fluent in all
+18 formats.
+
+[Brief your agent →](agents.qmd){.card-go}
+:::
+:::
+
+## The loop
+
+Change the source, render, done — the figure can never go stale, because
+there is nothing to forget to regenerate:
 
 ![](demo.gif){fig-alt="Editing a nomnoml source file and re-rendering: the figure updates to match" .demo-gif}
+
+And hand-drawn sources are real, editable scenes — this one is
+[`arch.excalidraw`](https://github.com/seandavi/quarto-livefigures/blob/main/site/gallery/figures/arch.excalidraw),
+which you can open at [excalidraw.com](https://excalidraw.com/) (@fig-hero2):
+
+![The file is the figure](gallery/figures/arch.excalidraw){#fig-hero2 width=55%}
 
 ## 18 formats, one pipeline {.format-badges}
 
@@ -60,7 +118,7 @@ And this is the whole edit loop — change the source, render, done:
 
 Every format was chosen for **agent fluency** — text and JSON sources
 LLMs author reliably. See the [gallery](gallery/index.qmd) for all of
-them, live.
+them, live, or [Formats](formats.qmd) for choosing one.
 
 ## Doesn't Quarto already do this?
 
@@ -79,20 +137,31 @@ kind:
 If Mermaid in a code cell covers your needs, use it! livefigures is for
 everything it doesn't cover.
 
+The same goes for the community extensions —
+[pandoc-ext/diagram](https://github.com/pandoc-ext/diagram) (code cells
+via locally installed tools) and the
+[two](https://github.com/resepemb/quarto-kroki)
+[quarto-kroki](https://github.com/fermarsan/quarto-kroki) filters (code
+cells via a kroki server). livefigures differs in kind:
+**file-referenced sources** with native image syntax, **bundled
+renderers** (nothing to install, no network for local formats),
+deterministic PDF, content-addressed caching, and the agent tooling
+([skill](agents.qmd), [MCP](mcp.qmd), [CLI](cli.qmd)).
+
 ## Why
 
 Diagrams-as-code tools occupy an awkward middle ground: editable
 sources, static outputs, manual exports that go stale, and both checked
-into git. livefigures removes the export step: rendering happens inside
-`quarto render`, deterministic and content-addressed, so figures can
-never be stale — there is nothing to forget to regenerate. It's the
+into git. livefigures removes the export step — it's the
 literate-programming idea [@knuth1984literate] applied to the one part
-of a document that still lives outside it; and now that AI agents write
+of a document that still lives outside it. And now that AI agents write
 and revise documents alongside us, a figure that exists as fifteen lines
 of reviewable text is a figure [an agent can maintain](agents.qmd).
 
-See [Formats](formats.qmd) for what each format covers,
-[Agents](agents.qmd) for the agentic workflows, and
-[References](references.qmd) for the research lineage.
-
-[Get started →](install.qmd)
+::: {.route-line}
+Whatever brings you here, there's a short path: **writing a paper or
+site** → [Get started](install.qmd) · **browsing what it can draw** →
+[Gallery](gallery/index.qmd) · **setting up your agent** →
+[Agent skill](agents.qmd), [MCP server](mcp.qmd), or the
+[CLI](cli.qmd).
+:::
