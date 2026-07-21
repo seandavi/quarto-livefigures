@@ -36,15 +36,26 @@ Quarto, (2) working with figures inside a Quarto document.
   The `assets` parameter abstracts fonts/wasm so the same lib runs on
   Node (fs) and Workers (static assets). No published shared package —
   two consumers, one repo, zero version skew.
-- **Transports: stdio first, then public streamable HTTP.**
-  `mcp/stdio.mjs` (`@modelcontextprotocol/sdk`) imports the lib directly
-  — zero infra, offline for local backends, parity by construction. The
-  public server is a Cloudflare Worker (streamable HTTP, stateless JSON
-  responses — no sessions, no SSE), gated on a spike proving the
-  Excalidraw path (happy-dom global shims) runs under workerd and the
-  bundles fit script-size limits (9.6 MB minified Excalidraw bundle vs
-  3 MB gzip free / 10 MB paid). Spike failure pauses the public build;
-  it does not affect stdio.
+- **Transports: stdio first, then public streamable HTTP.** The stdio
+  server ships *inside the extension* (`mcp.mjs`, bundled with a
+  hand-rolled zero-dep protocol core instead of the MCP SDK) and renders
+  by shelling to the sibling renderer bundles — anyone who ran
+  `quarto add` already has it; parity is byte-for-byte. The public
+  server is a Cloudflare Worker (streamable HTTP, stateless JSON
+  responses — no sessions, no SSE) at `mcp.livefigures.seandavis.net`,
+  rendering in-isolate from the lib.
+- **Spike outcomes (what workerd required).** (1) happy-dom's window
+  contextification hits `node:vm`; a stub suffices because its only vm
+  use on our path is `createContext` plus a static
+  `this.X = globalThis.X` script — emulated with a regex, no codegen
+  (`mcp/vm-stub.mjs`). (2) vega's compiled expressions trip the dynamic
+  codegen ban; the lib gained a `csp` option using `vega-interpreter`
+  (vega's own CSP-safe evaluator). (3) graphviz and dbml embed wasm
+  bytes and instantiate at runtime — banned on workerd with no
+  precompiled-module hook, so the public server renders both via kroki
+  (version-skew caveat vs. our bundled wasm; local/stdio unaffected).
+  (4) resvg works via a CompiledWasm module import. (5) Deployed size is
+  ~4.2 MB gzipped — needs the paid Workers tier, which this account has.
 
 ## Consequences
 
@@ -55,3 +66,6 @@ Quarto, (2) working with figures inside a Quarto document.
   and committed-bundle CI check (ADR 0009) are unchanged.
 - kroki-backed formats still need network; on the public server they
   work by definition, on stdio they keep the extension's failure mode.
+- The excalidraw lib now sets `EXCALIDRAW_ASSET_PATH` on the happy-dom
+  window (excalidraw reads it there); before, font embedding held only
+  because the fetch shim happened to intercept the CDN-fallback URL.

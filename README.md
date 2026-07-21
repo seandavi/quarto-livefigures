@@ -143,6 +143,31 @@ paste it into any system prompt. See
 [livefigures.seandavis.net/agents](https://livefigures.seandavis.net/agents)
 for the workflows it enables.
 
+### MCP server — agents can *see* their figures
+
+An MCP server exposes the same renderers as tools (`render`, `validate`,
+`list_formats`): an agent writes figure source, calls `render`, and gets
+the figure back as an image — so it can visually check and fix its own
+work before the figure lands in a document. Rendering matches
+`quarto render` (same engines, fonts, options).
+
+Public server (nothing to install):
+
+```bash
+claude mcp add --transport http livefigures https://mcp.livefigures.seandavis.net/mcp
+```
+
+Local (ships with the extension, offline for local formats):
+
+```bash
+claude mcp add livefigures -- node _extensions/livefigures/mcp.mjs
+```
+
+Any MCP client works; the server also serves the skill as the
+`livefigures://skill` resource. On the public server, graphviz and dbml
+render via kroki (Workers can't run their wasm); everything else renders
+with the extension's own bundled engines. See ADR 0015.
+
 ## Examples
 
 See [`examples/`](examples/) for a minimal [article](examples/article),

@@ -1,0 +1,39 @@
+{
+  "name": "livefigures",
+  "version": "0.7.1",
+  "description": "Editable, version-controlled figures: render/validate Excalidraw, Vega-Lite, Graphviz, PlantUML and 13 more formats — CLI and MCP server for the quarto-livefigures extension",
+  "type": "module",
+  "bin": {
+    "livefigures": "cli/livefigures.mjs"
+  },
+  "files": [
+    "cli/",
+    "mcp/core.mjs",
+    "mcp/formats.mjs",
+    "mcp/tools.mjs",
+    "mcp/local-render.mjs",
+    "mcp/stdio.mjs",
+    "_extensions/livefigures/"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT",
+  "author": "Sean Davis <seandavi@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seandavi/quarto-livefigures.git"
+  },
+  "homepage": "https://livefigures.seandavis.net",
+  "keywords": [
+    "quarto",
+    "figures",
+    "diagrams",
+    "excalidraw",
+    "vega-lite",
+    "graphviz",
+    "plantuml",
+    "mcp",
+    "mcp-server"
+  ]
+}
