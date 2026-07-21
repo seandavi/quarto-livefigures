@@ -1,7 +1,17 @@
 project:
-  type: default
-  render:
-    - "*.qmd"
+  type: website
+
+website:
+  title: "livefigures gallery"
+  sidebar:
+    contents:
+      - index.qmd
+      - excalidraw.qmd
+      - vega.qmd
+      - nomnoml.qmd
+      - wavedrom.qmd
+      - bytefield.qmd
+      - plantuml.qmd
 
 filters:
   - livefigures
