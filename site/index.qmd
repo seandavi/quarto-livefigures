@@ -46,6 +46,10 @@ lightbox — click any figure — all behave exactly like native Quarto
 figures, because they *are* native Quarto figures by the time Quarto sees
 them.
 
+And this is the whole edit loop — change the source, render, done:
+
+![](demo.gif){fig-alt="Editing a nomnoml source file and re-rendering: the figure updates to match" .demo-gif}
+
 ## 18 formats, one pipeline {.format-badges}
 
 **Local & offline:** `.excalidraw` `.vl.json` `.vg.json` `.dot` `.gv`

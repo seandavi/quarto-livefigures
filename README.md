@@ -39,6 +39,8 @@ sent to the endpoint; for private diagrams, self-host kroki and set
 `livefigures: kroki-url: <url>` in your metadata. All other formats render
 fully offline.
 
+![Edit the source, render, done — the figure can never go stale](assets/demo.gif)
+
 The source file is the single source of truth. Captions, labels,
 cross-references, sizing, layout, subfigures, and lightbox all work exactly
 as for any other Quarto figure.
