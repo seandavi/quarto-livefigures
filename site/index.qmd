@@ -1,0 +1,69 @@
+---
+title: ""
+toc: false
+---
+
+::: {.hero-wordmark}
+livefigures
+:::
+
+::: {.hero-tagline}
+Editable, version-controlled figures as first-class Quarto citizens.
+Reference the *source file* — or write the diagram inline — and
+`quarto render` does the rest.
+:::
+
+```bash
+quarto add seandavi/quarto-livefigures
+```
+
+No exported SVGs to maintain. No generated files in version control. The
+source is the figure — and because every source is plain text or JSON,
+**AI agents read, write, and diff your figures as easily as your code.**
+
+## See it
+
+This diagram is authored *inline in this page's source*, four lines of
+nomnoml (@fig-hero):
+
+```{.nomnoml #fig-hero fig-cap="A figure whose source you just read"}
+#direction: right
+[edit source] -> [quarto render]
+[quarto render] -> [cached figure]
+[cached figure] -> [HTML / PDF / slides]
+```
+
+And this one renders from
+[`arch.excalidraw`](https://github.com/seandavi/quarto-livefigures/blob/main/site/gallery/figures/arch.excalidraw)
+— a hand-drawn scene you can open and edit at
+[excalidraw.com](https://excalidraw.com/) (@fig-hero2):
+
+![The file is the figure](gallery/figures/arch.excalidraw){#fig-hero2 width=55%}
+
+Captions, cross-references (like @fig-hero above), sizing, subfigures,
+lightbox — click any figure — all behave exactly like native Quarto
+figures, because they *are* native Quarto figures by the time Quarto sees
+them.
+
+## 18 formats, one pipeline {.format-badges}
+
+**Local & offline:** `.excalidraw` `.vl.json` `.vg.json` `.dot` `.gv`
+`.dbml` `.noml` `.wavedrom` `.bytefield`
+
+**Via kroki:** `.puml` `.d2` `.c4` `.structurizr` `.erd` `.ditaa`
+`.pikchr` `.svgbob` `.tikz`
+
+Every format was chosen for **agent fluency** — text and JSON sources
+LLMs author reliably. See the [gallery](gallery/index.qmd) for all of
+them, live.
+
+## Why
+
+Diagrams-as-code tools occupy an awkward middle ground: editable sources,
+static outputs, manual exports that go stale, and both checked into git.
+livefigures removes the export step. Rendering happens inside
+`quarto render`, deterministic and content-addressed — rebuilds are
+instant when nothing changed, and figures can never be stale because
+there is nothing to forget to regenerate.
+
+[Get started →](install.qmd)

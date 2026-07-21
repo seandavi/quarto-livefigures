@@ -1,0 +1,25 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Scatter with color encoding",
+  "width": 400,
+  "height": 240,
+  "data": {
+    "values": [
+      { "size": 12, "time": 0.8, "backend": "excalidraw" },
+      { "size": 45, "time": 1.9, "backend": "excalidraw" },
+      { "size": 90, "time": 3.1, "backend": "excalidraw" },
+      { "size": 8, "time": 0.4, "backend": "vega" },
+      { "size": 30, "time": 0.9, "backend": "vega" },
+      { "size": 70, "time": 1.6, "backend": "vega" },
+      { "size": 5, "time": 0.3, "backend": "nomnoml" },
+      { "size": 25, "time": 0.6, "backend": "nomnoml" },
+      { "size": 60, "time": 1.1, "backend": "nomnoml" }
+    ]
+  },
+  "mark": { "type": "point", "filled": true, "size": 90 },
+  "encoding": {
+    "x": { "field": "size", "type": "quantitative", "title": "scene elements" },
+    "y": { "field": "time", "type": "quantitative", "title": "render time (s)" },
+    "color": { "field": "backend", "type": "nominal" }
+  }
+}

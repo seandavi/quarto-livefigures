@@ -26,6 +26,7 @@ jobs:
           quarto render examples/book
           quarto render examples/revealjs/slides.qmd
           quarto render examples/gallery
+          quarto render site
 
   bundle-check:
     # The committed renderer bundle must match a fresh build (ADR 0009).

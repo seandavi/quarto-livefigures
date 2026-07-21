@@ -5,7 +5,7 @@
 -- content-addressed cache and flow through Quarto's native figure pipeline.
 -- See docs/ARCHITECTURE.md and docs/adr/ for the decisions behind this.
 
-local VERSION = "0.7.0"
+local VERSION = "0.7.1"
 
 local path = pandoc.path
 local ext_dir = path.directory(PANDOC_SCRIPT_FILE)
@@ -179,8 +179,34 @@ local function decorate(img, theme, backend)
   return img
 end
 
+local function input_directory()
+  local dir = path.directory(quarto.doc.input_file)
+  if not path.is_absolute(dir) then
+    -- project renders can hand us a relative input path; make_relative
+    -- against a relative root mangles subdirectory documents
+    dir = path.join({ pandoc.system.get_working_directory(), dir })
+  end
+  return dir
+end
+
+-- pandoc.path.make_relative never synthesizes ".." segments, so cache
+-- paths above the document's directory (project subdir docs) come out
+-- wrong. Compute the relative path ourselves. POSIX separators only —
+-- Windows support is a documented fast-follow.
+local function relative_to(target, from)
+  local t, f = {}, {}
+  for seg in target:gmatch("[^/]+") do t[#t + 1] = seg end
+  for seg in from:gmatch("[^/]+") do f[#f + 1] = seg end
+  local i = 1
+  while t[i] and f[i] and t[i] == f[i] do i = i + 1 end
+  local parts = {}
+  for _ = i, #f do parts[#parts + 1] = ".." end
+  for j = i, #t do parts[#parts + 1] = t[j] end
+  return table.concat(parts, "/")
+end
+
 local function render_image(img, backend)
-  local input_dir = path.directory(quarto.doc.input_file)
+  local input_dir = input_directory()
   local src = img.src
   if not path.is_absolute(src) then
     src = path.join({ input_dir, src })
@@ -195,21 +221,21 @@ local function render_image(img, backend)
   local stem = path.split_extension(path.filename(src)):gsub("%.v[lg]$", ""):gsub("%.wavedrom$", "")
   local out = ensure_rendered(scene, src, stem, backend, format, theme, background, img.src)
 
-  img.src = path.make_relative(out, input_dir)
+  img.src = relative_to(out, input_dir)
   img.attributes["theme"] = nil
   img.attributes["background"] = nil
   return decorate(img, theme, backend)
 end
 
 local function render_block(cb, backend)
-  local input_dir = path.directory(quarto.doc.input_file)
+  local input_dir = input_directory()
   local label = "inline " .. backend.name .. " block"
     .. (cb.identifier ~= "" and (" #" .. cb.identifier) or "")
   local format, theme, background = resolve_options(cb.attributes, backend, label)
   local stem = cb.identifier ~= "" and cb.identifier or ("inline-" .. backend.name)
   local out = ensure_rendered(cb.text, nil, stem, backend, format, theme, background, label)
 
-  local img = decorate(pandoc.Image({}, path.make_relative(out, input_dir)), theme, backend)
+  local img = decorate(pandoc.Image({}, relative_to(out, input_dir)), theme, backend)
   local cap = cb.attributes["fig-cap"]
   if cap or cb.identifier ~= "" then
     local cap_inlines = cap

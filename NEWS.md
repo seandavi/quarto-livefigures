@@ -1,5 +1,12 @@
 # quarto-livefigures release notes
 
+## 0.7.1 (2026-07-20)
+
+- **Fix**: figures referenced from documents in project subdirectories
+  rendered with mangled image paths (`pandoc.path.make_relative` never
+  synthesizes `..` segments). Found while building the docs site; the
+  extension now computes relative paths itself.
+
 ## 0.7.0 (2026-07-20)
 
 - **Two new local (offline) backends** (ADR 0014):

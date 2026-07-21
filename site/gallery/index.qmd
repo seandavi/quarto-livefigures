@@ -1,0 +1,21 @@
+---
+title: "Gallery"
+---
+
+Every figure in this gallery renders at build time from an editable,
+version-controlled source — no exported images anywhere in the repo.
+Each page shows one format family, with a **view source** link under
+every figure and click-to-zoom throughout.
+
+- [Excalidraw](excalidraw.qmd) — hand-drawn diagrams
+- [Vega-Lite & Vega](vega.qmd) — charts and force-directed graphs
+- [Graphviz & DBML](graphviz.qmd) — graph layouts and database schemas
+- [nomnoml](nomnoml.qmd) — node-edge and UML diagrams from terse text
+- [WaveDrom](wavedrom.qmd) — timing and register diagrams
+- [bytefield](bytefield.qmd) — byte and packet layouts
+- [PlantUML](plantuml.qmd) — UML via a kroki endpoint
+- [More kroki formats](kroki.qmd) — D2, C4, ditaa, TikZ …
+
+All formats were chosen for **agent fluency**: plain text or JSON that AI
+coding agents author and edit reliably. Every figure here was written by
+an agent.

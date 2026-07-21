@@ -1,0 +1,49 @@
+project:
+  type: website
+
+website:
+  title: "livefigures"
+  description: "Editable, version-controlled figures as first-class Quarto citizens"
+  site-url: "https://livefigures.seandavis.net"
+  repo-url: "https://github.com/seandavi/quarto-livefigures"
+  navbar:
+    left:
+      - text: "Get started"
+        href: install.qmd
+      - text: "Options"
+        href: options.qmd
+      - text: "Gallery"
+        href: gallery/index.qmd
+      - text: "Limitations"
+        href: limitations.qmd
+    right:
+      - icon: github
+        href: "https://github.com/seandavi/quarto-livefigures"
+        aria-label: GitHub
+  sidebar:
+    - id: gallery
+      title: "Gallery"
+      style: floating
+      contents:
+        - gallery/index.qmd
+        - gallery/excalidraw.qmd
+        - gallery/vega.qmd
+        - gallery/graphviz.qmd
+        - gallery/nomnoml.qmd
+        - gallery/wavedrom.qmd
+        - gallery/bytefield.qmd
+        - gallery/plantuml.qmd
+        - gallery/kroki.qmd
+  page-footer:
+    center: "livefigures — every figure on this site renders from an editable source in [the repo](https://github.com/seandavi/quarto-livefigures)."
+
+format:
+  html:
+    theme: [cosmo, custom.scss]
+    toc: true
+    lightbox: true
+    code-copy: true
+
+filters:
+  - at: pre-ast
+    path: livefigures

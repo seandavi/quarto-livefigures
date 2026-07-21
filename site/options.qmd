@@ -1,0 +1,58 @@
+---
+title: "Options"
+---
+
+Options go on the figure (image attributes or code-block attributes) or
+project-wide under the `livefigures` metadata key.
+
+| Option | Values | Default |
+| ------ | ------ | ------- |
+| `theme` | `light`, `dark`, `auto` | `auto` (HTML), else `light` |
+| `background` | `transparent`, `scene` | `transparent` |
+
+```markdown
+![Dark sketch](figures/arch.excalidraw){theme=dark background=scene}
+```
+
+```yaml
+livefigures:
+  theme: light
+  background: scene
+```
+
+## Dark mode
+
+`theme: auto` renders once (light). Excalidraw figures restyle on dark
+pages with the same CSS filter Excalidraw itself uses. Charts and
+diagrams with meaningful colors (Vega, Graphviz, …) deliberately stay
+light under `auto` — inverting data-encoded colors would misrepresent
+them; use an explicit `theme=dark` where the backend supports a true dark
+render (Excalidraw, Vega).
+
+Backends without a dark or scene-background variant **fail loudly** if
+you ask for one — livefigures never silently renders something other
+than what you asked for.
+
+## Kroki endpoint
+
+Kroki-backed formats (PlantUML, D2, …) render through
+[kroki](https://kroki.io/). The endpoint is configurable — self-host for
+private diagrams:
+
+```yaml
+livefigures:
+  kroki-url: "https://kroki.internal.example.org"
+```
+
+Network is needed only on cache misses; warm-cache rebuilds work
+offline. The endpoint participates in the cache key.
+
+## Captions and labels on inline blocks
+
+````markdown
+```{.plantuml #fig-seq fig-cap="Login flow (markdown *works* here)"}
+@startuml
+Alice -> Bob: hello
+@enduml
+```
+````

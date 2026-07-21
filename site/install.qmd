@@ -1,0 +1,64 @@
+---
+title: "Get started"
+---
+
+## Install
+
+```bash
+quarto add seandavi/quarto-livefigures
+```
+
+Pin a release for reproducible builds:
+
+```bash
+quarto add seandavi/quarto-livefigures@v0.7.0
+```
+
+The only external requirement is **Node.js ≥ 18** on your PATH.
+Everything else — renderers, fonts, the rasterizer — ships inside the
+extension, and all local formats render fully offline.
+
+## Enable
+
+In `_quarto.yml` (or a document's front matter):
+
+```yaml
+filters:
+  - at: pre-ast
+    path: livefigures
+```
+
+::: {.callout-note}
+The `at: pre-ast` placement makes cross-references work on inline
+code-block figures. If you only use file-referenced figures, a plain
+`filters: [livefigures]` also works.
+:::
+
+## Use
+
+Reference a source file with ordinary figure syntax:
+
+```markdown
+![Overall architecture](figures/architecture.excalidraw){#fig-arch width=80%}
+
+As @fig-arch shows …
+```
+
+Or write small diagrams inline:
+
+````markdown
+```{.dot #fig-deps fig-cap="Build dependencies"}
+digraph { quarto -> livefigures -> figures }
+```
+````
+
+Rendered assets land in a content-addressed `_livefigures/` cache —
+add it to `.gitignore`; it is a build artifact. Re-renders happen only
+when the source, options, or extension version change.
+
+## Output formats
+
+- **HTML family** (articles, websites, books, dashboards, RevealJS):
+  embedded-font SVG — correct offline and with `embed-resources: true`.
+- **PDF/LaTeX**: high-resolution PNG from the bundled rasterizer, so
+  fonts are always right without any LaTeX-side SVG tooling.

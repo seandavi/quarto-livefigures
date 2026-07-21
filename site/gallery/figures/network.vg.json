@@ -1,0 +1,100 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "description": "Force-directed graph of the livefigures pipeline",
+  "width": 420,
+  "height": 300,
+  "padding": 20,
+  "signals": [],
+  "data": [
+    {
+      "name": "node-data",
+      "values": [
+        { "name": "qmd", "group": 1 },
+        { "name": "filter", "group": 1 },
+        { "name": "cache", "group": 2 },
+        { "name": "excalidraw", "group": 3 },
+        { "name": "vega", "group": 3 },
+        { "name": "nomnoml", "group": 3 },
+        { "name": "svg", "group": 2 },
+        { "name": "html", "group": 1 },
+        { "name": "pdf", "group": 1 }
+      ]
+    },
+    {
+      "name": "link-data",
+      "values": [
+        { "source": 0, "target": 1 },
+        { "source": 1, "target": 2 },
+        { "source": 1, "target": 3 },
+        { "source": 1, "target": 4 },
+        { "source": 1, "target": 5 },
+        { "source": 3, "target": 6 },
+        { "source": 4, "target": 6 },
+        { "source": 5, "target": 6 },
+        { "source": 6, "target": 7 },
+        { "source": 6, "target": 8 }
+      ]
+    }
+  ],
+  "scales": [
+    { "name": "color", "type": "ordinal", "domain": { "data": "node-data", "field": "group" }, "range": { "scheme": "tableau10" } }
+  ],
+  "marks": [
+    {
+      "name": "nodes",
+      "type": "symbol",
+      "zindex": 1,
+      "from": { "data": "node-data" },
+      "encode": {
+        "enter": { "fill": { "scale": "color", "field": "group" }, "size": { "value": 400 } }
+      },
+      "transform": [
+        {
+          "type": "force",
+          "iterations": 300,
+          "static": true,
+          "signal": "force",
+          "forces": [
+            { "force": "center", "x": { "signal": "width / 2" }, "y": { "signal": "height / 2" } },
+            { "force": "collide", "radius": 22 },
+            { "force": "nbody", "strength": -80 },
+            { "force": "link", "links": "link-data", "distance": 65 }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "path",
+      "from": { "data": "link-data" },
+      "interactive": false,
+      "encode": { "update": { "stroke": { "value": "#999" }, "strokeWidth": { "value": 1.5 } } },
+      "transform": [
+        {
+          "type": "linkpath",
+          "require": { "signal": "force" },
+          "shape": "line",
+          "sourceX": "datum.source.x",
+          "sourceY": "datum.source.y",
+          "targetX": "datum.target.x",
+          "targetY": "datum.target.y"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "from": { "data": "nodes" },
+      "zindex": 2,
+      "interactive": false,
+      "encode": {
+        "update": {
+          "x": { "field": "x" },
+          "y": { "field": "y", "offset": -14 },
+          "text": { "field": "datum.name" },
+          "align": { "value": "center" },
+          "fontSize": { "value": 11 },
+          "fill": { "value": "#333" }
+        }
+      }
+    }
+  ]
+}
