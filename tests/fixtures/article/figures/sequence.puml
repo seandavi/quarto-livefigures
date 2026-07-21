@@ -1,0 +1,9 @@
+@startuml
+actor Author
+participant Quarto
+participant "livefigures" as LF
+Author -> Quarto: quarto render
+Quarto -> LF: Image(.puml)
+LF -> LF: cache lookup
+LF --> Quarto: SVG
+@enduml

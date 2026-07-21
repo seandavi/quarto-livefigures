@@ -12,6 +12,7 @@ Each page shows one source format; the source files live in
 - [nomnoml](nomnoml.qmd) — node-edge and UML diagrams from terse text
 - [WaveDrom](wavedrom.qmd) — timing and register diagrams
 - [bytefield](bytefield.qmd) — byte and packet layouts
+- [PlantUML](plantuml.qmd) — UML via a kroki endpoint
 
 All of these formats were chosen for **agent fluency**: they're plain text
 or JSON that AI coding agents author and edit reliably. Every figure here

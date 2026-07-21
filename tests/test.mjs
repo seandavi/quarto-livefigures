@@ -2,7 +2,7 @@
 // Run: node --test tests/
 import { test, before } from 'node:test';
 import assert from 'node:assert/strict';
-import { cpSync, readFileSync, writeFileSync, readdirSync, statSync, mkdtempSync, existsSync } from 'node:fs';
+import { cpSync, readFileSync, writeFileSync, readdirSync, statSync, mkdtempSync, existsSync, rmSync } from 'node:fs';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -106,6 +106,31 @@ test('text backends: theme=dark hard-fails with a clear message', () => {
   const r = spawnSync('quarto', ['render', 'textdark.qmd'], { cwd: proj, encoding: 'utf8' });
   assert.notEqual(r.status, 0);
   assert.match(r.stderr + r.stdout, /theme=dark is not supported for nomnoml/);
+  rmSync(join(proj, 'textdark.qmd')); // keep later whole-project renders green
+});
+
+test('kroki backend: .puml renders as SVG figure', async (t) => {
+  // probe here, not at module load: sync execFileSync in earlier tests
+  // starves the event loop and falsely times out a top-level fetch
+  const up = await fetch('https://kroki.io/health', { signal: AbortSignal.timeout(5000) })
+    .then((r) => r.ok).catch(() => false);
+  if (!up) return t.skip('kroki.io unreachable');
+  writeFileSync(join(proj, 'puml.qmd'),
+    '---\ntitle: puml\n---\n\n![Sequence](figures/sequence.puml){#fig-seq}\n');
+  render();
+  const html = readFileSync(join(proj, 'puml.html'), 'utf8');
+  const m = html.match(/<img src="(_livefigures\/sequence-[0-9a-f]{8}\.svg)"/);
+  assert.ok(m, 'puml rewritten to content-addressed svg');
+  assert.match(readFileSync(join(proj, m[1]), 'utf8'), /<svg/);
+});
+
+test('kroki backend: unreachable endpoint hard-fails with actionable message', () => {
+  writeFileSync(join(proj, 'pumlbad.qmd'),
+    '---\ntitle: pb\nlivefigures:\n  kroki-url: "http://127.0.0.1:9"\n---\n\n![](figures/sequence.puml)\n');
+  const r = spawnSync('quarto', ['render', 'pumlbad.qmd'], { cwd: proj, encoding: 'utf8' });
+  assert.notEqual(r.status, 0);
+  assert.match(r.stderr + r.stdout, /could not reach kroki endpoint/);
+  rmSync(join(proj, 'pumlbad.qmd'));
 });
 
 test('errors: corrupt scene aborts the render', () => {
@@ -114,6 +139,8 @@ test('errors: corrupt scene aborts the render', () => {
   const r = spawnSync('quarto', ['render', 'bad.qmd'], { cwd: proj, encoding: 'utf8' });
   assert.notEqual(r.status, 0, 'render fails');
   assert.match(r.stderr + r.stdout, /livefigures/);
+  rmSync(join(proj, 'bad.qmd'));
+  rmSync(join(proj, 'figures', 'bad.excalidraw'));
 });
 
 test('PDF: renders with PNG cache entries and caption text', { skip: !which('tlmgr') && !existsSync(join(process.env.HOME ?? '', '.TinyTeX')) }, () => {
