@@ -126,6 +126,16 @@ data-encoded colors would misrepresent them; use an explicit `theme=dark`
 for the vega dark theme. For Excalidraw, `theme=dark` performs a true dark
 export.
 
+## For AI agents
+
+`skills/livefigures/SKILL.md` is a single-file briefing that teaches a
+coding agent this extension: syntax (file vs fenced block), a
+format-selection table with per-format doc links, options, and failure
+modes. Drop it into your project (e.g. `.claude/skills/livefigures/`) or
+paste it into any system prompt. See
+[livefigures.seandavis.net/agents](https://livefigures.seandavis.net/agents)
+for the workflows it enables.
+
 ## Examples
 
 See [`examples/`](examples/) for a minimal [article](examples/article),

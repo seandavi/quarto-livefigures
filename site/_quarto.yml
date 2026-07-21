@@ -16,11 +16,15 @@ website:
         href: options.qmd
       - text: "Gallery"
         href: gallery/index.qmd
+      - text: "Agents"
+        href: agents.qmd
       - text: "Limitations"
         href: limitations.qmd
       - text: "References"
         href: references.qmd
     right:
+      - text: "Releases"
+        href: "https://github.com/seandavi/quarto-livefigures/releases"
       - icon: github
         href: "https://github.com/seandavi/quarto-livefigures"
         aria-label: GitHub

@@ -8,9 +8,10 @@ livefigures
 :::
 
 ::: {.hero-tagline}
-Editable, version-controlled figures as first-class Quarto citizens.
-Reference the *source file* — or write the diagram inline — and
-`quarto render` does the rest.
+Editable, version-controlled figures as first-class Quarto citizens — in
+18 plain-text formats that **you and your AI agents** can read, write,
+and diff. Reference the *source file* — or write the diagram inline —
+and `quarto render` does the rest.
 :::
 
 ```bash
@@ -26,7 +27,7 @@ source is the figure — and because every source is plain text or JSON,
 This diagram is authored *inline in this page's source*, four lines of
 nomnoml (@fig-hero):
 
-```{.nomnoml #fig-hero fig-cap="A figure whose source you just read"}
+```{.nomnoml #fig-hero fig-cap="A figure whose source you just read" width=90%}
 #direction: right
 [edit source] -> [quarto render]
 [quarto render] -> [cached figure]
@@ -57,29 +58,37 @@ Every format was chosen for **agent fluency** — text and JSON sources
 LLMs author reliably. See the [gallery](gallery/index.qmd) for all of
 them, live.
 
+## Doesn't Quarto already do this?
+
+Quarto ships excellent built-in support for Mermaid and Graphviz — as
+*executable code cells*. livefigures is complementary, and different in
+kind:
+
+| | Native ` ```{mermaid} ` / ` ```{dot} ` | livefigures |
+| --- | --- | --- |
+| Formats | 2 | 18 — incl. Excalidraw, Vega-Lite, PlantUML, WaveDrom … |
+| Source | code cells only | **files** (`![](arch.excalidraw)`) or fenced blocks |
+| Editable-tool formats | — | Excalidraw scenes edited in a real editor |
+| PDF output | browser-dependent | bundled deterministic rasterizer, correct fonts |
+| Caching | per-render | content-addressed, instant warm rebuilds |
+
+If Mermaid in a code cell covers your needs, use it! livefigures is for
+everything it doesn't cover.
+
 ## Why
 
-Diagrams-as-code tools occupy an awkward middle ground: editable sources,
-static outputs, manual exports that go stale, and both checked into git.
-livefigures removes the export step. Rendering happens inside
-`quarto render`, deterministic and content-addressed — rebuilds are
-instant when nothing changed, and figures can never be stale because
-there is nothing to forget to regenerate.
+Diagrams-as-code tools occupy an awkward middle ground: editable
+sources, static outputs, manual exports that go stale, and both checked
+into git. livefigures removes the export step: rendering happens inside
+`quarto render`, deterministic and content-addressed, so figures can
+never be stale — there is nothing to forget to regenerate. It's the
+literate-programming idea [@knuth1984literate] applied to the one part
+of a document that still lives outside it; and now that AI agents write
+and revise documents alongside us, a figure that exists as fifteen lines
+of reviewable text is a figure [an agent can maintain](agents.qmd).
 
-The idea is older than it looks. Literate programming
-[@knuth1984literate] argued that source and rendered artifact should be
-one document; the reproducible-research movement [@peng2011reproducible]
-extended that from prose and code to entire analyses. Quarto carries
-that lineage for text, code, and computation — livefigures extends it to
-the figures that have so far stood outside it, the ones drawn in
-external tools and pasted in as static images. And the timing matters:
-now that AI agents write and revise documents alongside us, a figure
-that exists as fifteen lines of reviewable text is a figure an agent can
-maintain. One that exists as a PNG is a dead end.
-
-Every format was picked with that test in mind — see
-[Formats](formats.qmd) for what each covers, and
-[References](references.qmd) for the research lineage this project
-builds on.
+See [Formats](formats.qmd) for what each format covers,
+[Agents](agents.qmd) for the agentic workflows, and
+[References](references.qmd) for the research lineage.
 
 [Get started →](install.qmd)

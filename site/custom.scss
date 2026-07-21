@@ -63,3 +63,12 @@ $code-block-bg: #f5f3ee;
 div.callout {
   border-radius: 8px;
 }
+
+// gallery grid: uniform card thumbnails
+.grid img.livefigure {
+  max-height: 230px;
+  width: auto;
+  max-width: 100%;
+  display: block;
+  margin: 0 auto 0.5rem;
+}
