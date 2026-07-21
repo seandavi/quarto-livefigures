@@ -1,5 +1,28 @@
 # quarto-livefigures release notes
 
+## Unreleased
+
+- **MCP server** (ADR 0015) — agents can now *see* the figures they
+  write. Tools: `render` (source → PNG image block or SVG text),
+  `validate`, `list_formats`; the agent skill is served as the
+  `livefigures://skill` resource. Two transports, identical behavior:
+  - **Public**: `https://mcp.livefigures.seandavis.net/mcp` (streamable
+    HTTP, stateless, nothing to install). graphviz/dbml render via kroki
+    there (Cloudflare Workers bans runtime wasm compilation); all other
+    formats run the extension's own engines in-worker.
+  - **Local**: `_extensions/livefigures/mcp.mjs` ships in the extension
+    (stdio, zero deps, offline for local formats) — `claude mcp add
+    livefigures -- node _extensions/livefigures/mcp.mjs`.
+- **CLI** — the same tools as commands, also shipped in the extension
+  (`_extensions/livefigures/cli.mjs`) and as an npm bin (`livefigures`):
+  `render`, `validate` (exit 1 on bad sources — CI-friendly), `formats`,
+  `mcp`.
+- **Internal**: renderer split into pure lib functions + thin CLI
+  wrappers (the shell-out contract is unchanged); vega gained a
+  CSP-safe interpreter mode; Excalidraw's asset path is now set where
+  excalidraw actually reads it. Release version sync now includes
+  `package.json` (4 files, CI-enforced).
+
 ## 0.7.1 (2026-07-20)
 
 - **Fix**: figures referenced from documents in project subdirectories

@@ -19,7 +19,7 @@ jobs:
       - name: Install poppler (pdftotext for PDF assertions)
         run: sudo apt-get update && sudo apt-get install -y poppler-utils
       - name: End-to-end tests
-        run: node --test tests/
+        run: node --test tests/test.mjs tests/mcp-cli.test.mjs
       - name: Render examples
         run: |
           quarto render examples/article

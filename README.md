@@ -168,6 +168,19 @@ Any MCP client works; the server also serves the skill as the
 render via kroki (Workers can't run their wasm); everything else renders
 with the extension's own bundled engines. See ADR 0015.
 
+### CLI
+
+The same tools as commands — the CLI ships inside the extension
+(`_extensions/livefigures/cli.mjs`, no install beyond `quarto add`):
+
+```bash
+node _extensions/livefigures/cli.mjs render figures/arch.excalidraw -o arch.png
+node _extensions/livefigures/cli.mjs validate figures/*.dot     # exit 1 on errors
+node _extensions/livefigures/cli.mjs formats                    # what can I write?
+node _extensions/livefigures/cli.mjs mcp                        # = mcp.mjs
+echo 'digraph { a -> b }' | node _extensions/livefigures/cli.mjs render - --format graphviz
+```
+
 ## Examples
 
 See [`examples/`](examples/) for a minimal [article](examples/article),
