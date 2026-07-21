@@ -94,5 +94,22 @@ Per figure (attributes) or project-wide (`livefigures:` metadata):
   renders offline.
 - Excalidraw scenes with CJK text are unsupported (font not bundled).
 
+## Verify what you wrote (don't render blind)
+
+The extension ships a CLI mirroring these checks:
+
+```bash
+node _extensions/livefigures/cli.mjs validate figures/arch.dot   # exit 1 + error on bad source
+node _extensions/livefigures/cli.mjs render figures/arch.dot -o /tmp/arch.png  # then LOOK at it
+```
+
+Better: connect the livefigures MCP server and its `render` tool returns
+the figure as an image in-context (plus `validate`, `list_formats`):
+
+```bash
+claude mcp add --transport http livefigures https://mcp.livefigures.seandavis.net/mcp  # public
+claude mcp add livefigures -- node _extensions/livefigures/mcp.mjs                     # local/offline
+```
+
 Full docs: <https://livefigures.seandavis.net> · repo:
 <https://github.com/seandavi/quarto-livefigures>

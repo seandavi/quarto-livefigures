@@ -63,6 +63,39 @@ correct `.wavedrom` block instead of an ASCII-art guess. The skill is
 [plain Markdown](https://github.com/seandavi/quarto-livefigures/blob/main/skills/livefigures/SKILL.md)
 — read it, trim it, or paste its contents into any system prompt.
 
+## Let the agent *see* its figures: the MCP server
+
+Writing a figure is half the loop; the other half is looking at it. The
+livefigures MCP server exposes three tools — `render`, `validate`,
+`list_formats` — and `render` returns the drawn figure as an **image**,
+so a vision-capable agent checks and fixes its own work before the
+figure ever lands in your document. Rendering uses the same engines,
+fonts, and options as `quarto render`: what the agent previews is what
+you publish.
+
+Public server, nothing to install:
+
+```bash
+claude mcp add --transport http livefigures https://mcp.livefigures.seandavis.net/mcp
+```
+
+Or local and offline — the server ships inside the extension:
+
+```bash
+claude mcp add livefigures -- node _extensions/livefigures/mcp.mjs
+```
+
+(Any MCP client works; the server also serves this site's skill as the
+`livefigures://skill` resource. On the public server graphviz and dbml
+render via kroki; all other formats use the extension's own engines.)
+
+Prefer plain commands? The same tools ship as a CLI:
+
+```bash
+node _extensions/livefigures/cli.mjs render figures/arch.excalidraw -o /tmp/arch.png
+node _extensions/livefigures/cli.mjs validate figures/*.dot
+```
+
 ## Which formats work best for agents
 
 - **JSON grammars** (Vega-Lite, WaveDrom, Excalidraw scenes) — highest
