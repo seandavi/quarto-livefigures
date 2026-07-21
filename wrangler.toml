@@ -1,0 +1,16 @@
+# Cloudflare Worker (static assets) for the docs site — issue #13.
+# Assets-only worker: no script, just the rendered Quarto site.
+# Deploy: quarto render site && npx wrangler deploy
+# PR preview: quarto render site && npx wrangler versions upload
+name = "livefigures-docs"
+compatibility_date = "2026-07-20"
+
+[assets]
+# `site/` is the Quarto website project (to be built); _site is its output
+directory = "./site/_site"
+html_handling = "auto-trailing-slash"
+not_found_handling = "404-page"  # quarto websites emit 404.html
+
+routes = [
+  { pattern = "livefigures.seandavis.net", custom_domain = true }
+]
