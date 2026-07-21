@@ -3,6 +3,7 @@ project:
 
 website:
   title: "livefigures"
+  google-analytics: "G-Z3PTEF6890"
   description: "Editable, version-controlled figures as first-class Quarto citizens"
   site-url: "https://livefigures.seandavis.net"
   repo-url: "https://github.com/seandavi/quarto-livefigures"
