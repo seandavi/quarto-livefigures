@@ -1,0 +1,11 @@
+project:
+  type: book
+
+book:
+  title: "Book with live figures"
+  chapters:
+    - index.qmd
+    - design.qmd
+
+filters:
+  - livefigures

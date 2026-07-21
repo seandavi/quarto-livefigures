@@ -1,0 +1,9 @@
+---
+title: Livefigures fixture article
+---
+
+The architecture is shown in @fig-arch, and the flow in @fig-flow.
+
+![Overall architecture](figures/arch.excalidraw){#fig-arch width=60%}
+
+![The flow, with scene background](figures/flow.excalidraw){#fig-flow background=scene}

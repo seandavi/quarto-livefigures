@@ -1,0 +1,14 @@
+---
+title: "Article with live figures"
+---
+
+Reference `.excalidraw` files like any other figure. The source stays under
+version control; rendering happens during `quarto render`.
+
+As @fig-arch shows, no exported SVG or PNG files are maintained by hand.
+
+![Overall architecture](figures/arch.excalidraw){#fig-arch width=70%}
+
+Options go on the image attributes — @fig-flow keeps its scene background:
+
+![The flow](figures/flow.excalidraw){#fig-flow background=scene}
