@@ -1,0 +1,29 @@
+---
+title: "Graphviz & DBML"
+---
+
+Classic graph layouts from `.dot`/`.gv` files (@fig-deps) and database
+schemas from `.dbml` (@fig-schema) — both rendered locally, no network.
+Click to zoom.
+
+```{.dot #fig-deps fig-cap="A dependency graph, inline dot"}
+digraph pipeline {
+  rankdir=LR;
+  node [shape=box, style=rounded];
+  filter -> cache -> renderer -> svg;
+  filter -> backends;
+}
+```
+
+```{.dbml #fig-schema fig-cap="A schema, inline DBML"}
+Table authors {
+  id int [pk]
+  name varchar
+}
+
+Table figures {
+  id int [pk]
+  author_id int [ref: > authors.id]
+  format varchar
+}
+```

@@ -1,0 +1,23 @@
+---
+title: "Vega-Lite & Vega"
+---
+
+Charts from `.vl.json` specs: a bar chart (@fig-bar), a multi-series
+trend (@fig-trend), and a scatter (@fig-scatter). Raw Vega (`.vg.json`)
+handles force-directed node-edge graphs (@fig-net). Click to zoom.
+
+![Category totals](figures/chart.vl.json){#fig-bar}
+
+[view source: `chart.vl.json`](https://github.com/seandavi/quarto-livefigures/blob/main/site/gallery/figures/chart.vl.json){.source-link}
+
+![Renders vs cache hits](figures/trend.vl.json){#fig-trend}
+
+[view source: `trend.vl.json`](https://github.com/seandavi/quarto-livefigures/blob/main/site/gallery/figures/trend.vl.json){.source-link}
+
+![Render time by scene size](figures/scatter.vl.json){#fig-scatter}
+
+[view source: `scatter.vl.json`](https://github.com/seandavi/quarto-livefigures/blob/main/site/gallery/figures/scatter.vl.json){.source-link}
+
+![The pipeline as a force-directed graph](figures/network.vg.json){#fig-net}
+
+[view source: `network.vg.json`](https://github.com/seandavi/quarto-livefigures/blob/main/site/gallery/figures/network.vg.json){.source-link}

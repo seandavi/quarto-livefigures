@@ -1,0 +1,7 @@
+#direction: right
+#fill: #fdf6e3
+[<start> start] -> [rendering]
+[rendering] -> [cached]
+[rendering] -> [<state> failed]
+[failed] -> [rendering]
+[cached] -> [<end> done]

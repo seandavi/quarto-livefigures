@@ -1,0 +1,12 @@
+@startuml
+actor Author
+participant Quarto
+participant "livefigures" as LF
+database Cache
+Author -> Quarto: quarto render
+Quarto -> LF: Image(.puml)
+LF -> Cache: sha1(source + opts)
+Cache --> LF: miss
+LF -> LF: render via kroki
+LF --> Quarto: cached SVG
+@enduml

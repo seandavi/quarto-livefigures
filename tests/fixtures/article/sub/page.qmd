@@ -1,0 +1,5 @@
+---
+title: subdir
+---
+
+![Sub](../figures/arch.excalidraw){#fig-sub}

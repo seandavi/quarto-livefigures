@@ -1,0 +1,11 @@
+---
+title: "PlantUML"
+---
+
+UML diagrams from `.puml` sources, rendered via a
+[kroki](https://kroki.io/) endpoint (self-hostable) — @fig-seq shows this
+extension's own render flow. Click to zoom.
+
+![Render flow as a sequence diagram](figures/sequence.puml){#fig-seq}
+
+[view source: `sequence.puml`](https://github.com/seandavi/quarto-livefigures/blob/main/site/gallery/figures/sequence.puml){.source-link}

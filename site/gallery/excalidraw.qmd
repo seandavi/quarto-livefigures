@@ -1,0 +1,15 @@
+---
+title: "Excalidraw"
+---
+
+Hand-drawn diagrams from `.excalidraw` scene files (@fig-arch,
+@fig-flow). Edit them at [excalidraw.com](https://excalidraw.com/) or in
+VS Code; the file is the figure. Click any figure to zoom.
+
+![Architecture sketch](figures/arch.excalidraw){#fig-arch width=60%}
+
+[view source: `arch.excalidraw`](https://github.com/seandavi/quarto-livefigures/blob/main/site/gallery/figures/arch.excalidraw){.source-link}
+
+![Flow with its scene background](figures/flow.excalidraw){#fig-flow background=scene}
+
+[view source: `flow.excalidraw`](https://github.com/seandavi/quarto-livefigures/blob/main/site/gallery/figures/flow.excalidraw){.source-link}

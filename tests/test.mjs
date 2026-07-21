@@ -109,6 +109,14 @@ test('text backends: theme=dark hard-fails with a clear message', () => {
   rmSync(join(proj, 'textdark.qmd')); // keep later whole-project renders green
 });
 
+test('subdirectory documents get correct ../ cache paths', () => {
+  execFileSync('quarto', ['render', 'sub/page.qmd'], { cwd: proj, encoding: 'utf8', stdio: 'pipe' });
+  const html = readFileSync(join(proj, 'sub', 'page.html'), 'utf8');
+  const m = html.match(/<img src="([^"]*arch-[0-9a-f]{8}\.svg)"/);
+  assert.ok(m, 'figure rendered');
+  assert.match(m[1], /^\.\.\/_livefigures\//, 'path climbs out of the subdirectory');
+});
+
 test('local backends: graphviz (.dot) and dbml render as SVG figures', () => {
   writeFileSync(join(proj, 'local.qmd'),
     '---\ntitle: local\n---\n\n![Deps](figures/deps.dot){#fig-deps}\n\n![Schema](figures/schema.dbml){#fig-schema}\n');

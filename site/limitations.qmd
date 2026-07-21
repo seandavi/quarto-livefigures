@@ -1,0 +1,33 @@
+---
+title: "Limitations & roadmap"
+---
+
+## Current limitations
+
+- **Windows is untested.** macOS and Linux are exercised in CI; Windows
+  support is a planned fast-follow.
+- **DOCX and EPUB are unverified** ("may work"). Verified outputs are the
+  HTML family and PDF.
+- **CJK text in Excalidraw scenes** is not supported yet (the Xiaolai
+  font is 13 MB and not bundled); such scenes fail with a clear error.
+- **Kroki formats need the network on cache misses**, and the diagram
+  source is sent to the endpoint — self-host kroki for private diagrams.
+- Errors are deliberately loud: a missing Node runtime, a corrupt source,
+  or an unsupported option aborts the render rather than publishing a
+  wrong or empty figure.
+
+## Roadmap
+
+- SMILES (chemistry) and ABC notation (music) as local backends
+- DOCX verification, then Windows CI
+- Excalidraw CJK support on demand
+
+## Design record
+
+Every architectural decision — including formats we evaluated and
+rejected, and why — is recorded as an ADR in
+[`docs/adr/`](https://github.com/seandavi/quarto-livefigures/tree/main/docs/adr)
+with an overview in
+[`docs/ARCHITECTURE.md`](https://github.com/seandavi/quarto-livefigures/blob/main/docs/ARCHITECTURE.md).
+Release notes live in
+[`NEWS.md`](https://github.com/seandavi/quarto-livefigures/blob/main/NEWS.md).
