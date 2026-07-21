@@ -4,7 +4,7 @@
 -- image target so Quarto's native figure pipeline handles everything else.
 -- See docs/ARCHITECTURE.md and docs/adr/ for the decisions behind this.
 
-local VERSION = "0.3.0"
+local VERSION = "0.4.0"
 
 local path = pandoc.path
 local ext_dir = path.directory(PANDOC_SCRIPT_FILE)
@@ -24,6 +24,9 @@ local BACKENDS = {
   { pattern = "%.wavedrom$", name = "wavedrom", renderer = "renderer-text.mjs" },
   { pattern = "%.wavedrom%.json$", name = "wavedrom", renderer = "renderer-text.mjs" },
   { pattern = "%.bytefield$", name = "bytefield", renderer = "renderer-text.mjs" },
+  -- kroki-backed formats (ADR 0012): network-rendered, endpoint configurable
+  { pattern = "%.puml$", name = "plantuml", renderer = "renderer-kroki.mjs", kroki = true },
+  { pattern = "%.plantuml$", name = "plantuml", renderer = "renderer-kroki.mjs", kroki = true },
 }
 
 local function backend_for(src)
@@ -32,7 +35,7 @@ local function backend_for(src)
   end
 end
 
-local opts = { theme = nil, background = "transparent" }
+local opts = { theme = nil, background = "transparent", kroki_url = "https://kroki.io" }
 local node_checked = false
 local css_added = false
 
@@ -109,15 +112,22 @@ local function render(img, backend)
   -- but only for backends where inverting colors is faithful (ADR 0010)
   local render_theme = theme == "dark" and "dark" or "light"
 
-  local key = pandoc.utils.sha1(scene .. backend.name .. format .. render_theme .. background .. VERSION)
+  local extra = ""
+  local key_extra = ""
+  if backend.kroki then
+    extra = string.format(' --type %s --endpoint "%s"', backend.name, opts.kroki_url)
+    key_extra = opts.kroki_url
+  end
+
+  local key = pandoc.utils.sha1(scene .. backend.name .. format .. render_theme .. background .. key_extra .. VERSION)
   local stem = path.split_extension(path.filename(src)):gsub("%.v[lg]$", ""):gsub("%.wavedrom$", "")
   local out = path.join({ cache_dir(), stem .. "-" .. key:sub(1, 8) .. "." .. format })
 
   if not read_file(out) then
     check_node()
     local cmd = string.format(
-      'node "%s" --input "%s" --output "%s" --format %s --theme %s --background %s',
-      path.join({ ext_dir, backend.renderer }), src, out, format, render_theme, background)
+      'node "%s" --input "%s" --output "%s" --format %s --theme %s --background %s%s',
+      path.join({ ext_dir, backend.renderer }), src, out, format, render_theme, background, extra)
     if not os.execute(cmd) then
       fail("rendering failed for " .. img.src .. " (see error above)")
     end
@@ -149,6 +159,7 @@ return {
       if lf then
         if lf.theme then opts.theme = pandoc.utils.stringify(lf.theme) end
         if lf.background then opts.background = pandoc.utils.stringify(lf.background) end
+        if lf["kroki-url"] then opts.kroki_url = pandoc.utils.stringify(lf["kroki-url"]):gsub("/$", "") end
       end
     end,
   },

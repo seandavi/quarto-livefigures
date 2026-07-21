@@ -24,6 +24,11 @@ await build({
   outfile: join(EXT, 'renderer-text.mjs'),
   external: ['canvas'],
 });
+await build({
+  ...common,
+  entryPoints: [join(HERE, 'src', 'render-kroki.mjs')],
+  outfile: join(EXT, 'renderer-kroki.mjs'),
+});
 
 cpSync(join(HERE, 'node_modules', '@resvg', 'resvg-wasm', 'index_bg.wasm'), join(EXT, 'resvg.wasm'));
 

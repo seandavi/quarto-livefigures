@@ -1,5 +1,20 @@
 # quarto-livefigures release notes
 
+## 0.4.0 (2026-07-20)
+
+- **New backend class: kroki-rendered formats**, starting with **PlantUML**
+  (`.puml`, `.plantuml`) — ADR 0012. Sources render via a kroki HTTP
+  endpoint (default `https://kroki.io`, self-host via
+  `livefigures: kroki-url:` metadata).
+- PDF output stays deterministic: livefigures fetches SVG and rasterizes
+  locally with its bundled fonts; kroki's PNG output is not used.
+- Know the tradeoffs (documented in README + ADR 0012): network needed on
+  cache misses, diagram source is sent to the endpoint (self-host for
+  private diagrams), and kroki server upgrades can change output.
+- Unreachable endpoint fails loudly with the self-hosting escape hatch in
+  the message; warm-cache rebuilds work offline.
+- Gallery gains a PlantUML page.
+
 ## 0.3.0 (2026-07-20)
 
 - **Three new backends** (ADR 0011), selected for agent fluency — formats

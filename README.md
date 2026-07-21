@@ -21,6 +21,13 @@ Supported source formats:
 | [nomnoml](https://nomnoml.com/) | `.noml`, `.nomnoml` | node-edge/UML diagrams from terse text |
 | [WaveDrom](https://wavedrom.com/) | `.wavedrom`, `.wavedrom.json` | digital timing & register diagrams |
 | [bytefield](https://bytefield-svg.deepsymmetry.org/) | `.bytefield` | byte/packet layout diagrams |
+| [PlantUML](https://plantuml.com/) † | `.puml`, `.plantuml` | UML: sequence, class, activity, C4 … |
+
+† Rendered via a [kroki](https://kroki.io/) endpoint — the one backend
+class that needs the network (on cache misses only). The diagram source is
+sent to the endpoint; for private diagrams, self-host kroki and set
+`livefigures: kroki-url: <url>` in your metadata. All other formats render
+fully offline.
 
 The source file is the single source of truth. Captions, labels,
 cross-references, sizing, layout, subfigures, and lightbox all work exactly
