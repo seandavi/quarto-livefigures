@@ -1,5 +1,10 @@
 # quarto-livefigures
 
+[![CI](https://github.com/seandavi/quarto-livefigures/actions/workflows/ci.yml/badge.svg)](https://github.com/seandavi/quarto-livefigures/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/seandavi/quarto-livefigures)](https://github.com/seandavi/quarto-livefigures/releases)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Docs](https://img.shields.io/badge/docs-livefigures.seandavis.net-6965db)](https://livefigures.seandavis.net)
+
 Editable, version-controlled figures as first-class Quarto citizens.
 Reference the figure's *source file* with normal figure syntax and
 `quarto render` does the rest — no manual SVG/PNG exports, no generated
