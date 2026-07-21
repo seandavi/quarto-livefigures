@@ -26,9 +26,16 @@ Option B: for LaTeX-based formats the renderer emits a high-resolution PNG
 (2–3x scale) rasterized in-bundle via resvg with the Excalidraw fonts
 registered. `rsvg-convert` is not a dependency of the extension.
 
-The spike should still test whether current librsvg honors embedded
-`@font-face` fonts and record the result here; if it does, vector PDF via
-SVG can become an opt-in later.
+**Spike results (2026-07-20):** librsvg 2.x confirmed ignoring embedded
+`@font-face` data-URL fonts (renders fallback sans), validating this
+decision; it does render the font correctly when installed via fontconfig,
+so a vector opt-in remains possible later. Two implementation findings:
+the napi binding (`@resvg/resvg-js` 2.6.2) `fontBuffers` option loads the
+font but renders wrong glyphs — `fontFiles` and the wasm build's
+`fontBuffers` are correct; and the wasm build is required anyway because
+napi `.node` binaries cannot be bundled into the single-file renderer.
+Production uses `@resvg/resvg-wasm` with TTFs converted from Excalidraw's
+woff2 assets at build time.
 
 ## Consequences
 

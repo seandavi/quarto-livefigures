@@ -20,6 +20,12 @@ silently reaches a published site or submitted PDF, the exact failure this
 project exists to prevent. Hard failure also matches Quarto convention
 (renders abort on bad code cells) and is less code.
 
+**Implementation note (2026-07-20):** quarto's filter machinery catches Lua
+`error()` and continues the render (output still produced, exit 0). The
+only reliable hard failure is printing the message to stderr and calling
+`os.exit(1)`, terminating pandoc itself. Verified by the corrupt-scene
+end-to-end test.
+
 ## Consequences
 
 - No placeholder-image machinery.
