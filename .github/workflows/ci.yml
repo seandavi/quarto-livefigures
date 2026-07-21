@@ -19,7 +19,7 @@ jobs:
       - name: Install poppler (pdftotext for PDF assertions)
         run: sudo apt-get update && sudo apt-get install -y poppler-utils
       - name: End-to-end tests
-        run: node --test tests/test.mjs
+        run: node --test tests/
       - name: Render examples
         run: |
           quarto render examples/article
@@ -42,8 +42,9 @@ jobs:
         working-directory: renderer
       - name: Committed bundle is current
         run: git diff --exit-code --stat -- _extensions
-      - name: Version consistency (extension.yml == lua == CITATION.cff)
+      - name: Version consistency (extension.yml == lua == CITATION.cff == package.json)
         run: |
           v=$(sed -n 's/^version: //p' _extensions/livefigures/_extension.yml)
           grep -q "VERSION = \"$v\"" _extensions/livefigures/livefigures.lua
           grep -q "^version: $v" CITATION.cff
+          grep -q "\"version\": \"$v\"" package.json

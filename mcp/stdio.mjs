@@ -7,52 +7,22 @@
 // Register with Claude Code from a project root:
 //   claude mcp add livefigures -- node _extensions/livefigures/mcp.mjs
 import { createInterface } from 'node:readline';
-import { spawn } from 'node:child_process';
-import { mkdtemp, rm, readFile, writeFile } from 'node:fs/promises';
 import { readFileSync, existsSync } from 'node:fs';
-import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createMcp } from './core.mjs';
 import { makeTools, INSTRUCTIONS } from './tools.mjs';
+import { findExtDir, renderWithBundles } from './local-render.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
-// bundled-in-extension layout vs. repo layout
-const EXT_DIR = existsSync(join(HERE, 'renderer.mjs')) ? HERE : join(HERE, '..', '_extensions', 'livefigures');
+const EXT_DIR = findExtDir(import.meta.url);
 
 const VERSION = (/version:\s*"?([\d.]+)/.exec(readFileSync(join(EXT_DIR, '_extension.yml'), 'utf8')) ?? [])[1] ?? '0.0.0';
 const SKILL_PATH = [join(EXT_DIR, 'SKILL.md'), join(HERE, '..', 'skills', 'livefigures', 'SKILL.md')].find(existsSync);
 
-function exec(cmd, args) {
-  return new Promise((resolve) => {
-    const p = spawn(cmd, args, { stdio: ['ignore', 'ignore', 'pipe'] });
-    let stderr = '';
-    p.stderr.on('data', (d) => { stderr += d; });
-    p.on('close', (code) => resolve({ code, stderr }));
-    p.on('error', (e) => resolve({ code: -1, stderr: String(e.message) }));
-  });
-}
-
-async function render(f, source, { output, theme, background, scale }) {
-  const dir = await mkdtemp(join(tmpdir(), 'livefigures-mcp-'));
-  try {
-    const src = join(dir, `source.${f.exts[0]}`);
-    const out = join(dir, `out.${output}`);
-    await writeFile(src, source);
-    const args = [join(EXT_DIR, f.renderer), '--input', src, '--output', out,
-      '--format', output, '--theme', theme, '--background', background, '--scale', String(scale ?? 2)];
-    if (f.krokiType) args.push('--type', f.krokiType);
-    const { code, stderr } = await exec(process.execPath, args);
-    if (code !== 0) {
-      // strip temp paths and the CLI prefix so errors read like tool output
-      throw new Error(stderr.replaceAll(dir + '/', '').replace(/^livefigures: /gm, '').trim() || `renderer exited with code ${code}`);
-    }
-    return output === 'svg'
-      ? { text: await readFile(out, 'utf8') }
-      : { base64: (await readFile(out)).toString('base64') };
-  } finally {
-    await rm(dir, { recursive: true, force: true });
-  }
+async function render(f, source, opts) {
+  const r = await renderWithBundles(EXT_DIR, f, source, opts);
+  return r.text !== undefined ? { text: r.text } : { base64: r.bytes.toString('base64') };
 }
 
 const handle = createMcp({

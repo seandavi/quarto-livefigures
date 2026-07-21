@@ -43,6 +43,11 @@ paper.qmd: ![Caption](figures/arch.excalidraw){#fig-arch width=80%}
   tldraw) implement the same contract. [ADR 0001, 0009]
 - **`_livefigures/` cache** — content-addressed build artifacts, gitignored;
   no manifest, no GC (delete the directory to reclaim space). [ADR 0003]
+- **MCP server** — same renderers exposed to AI agents as MCP tools
+  (`render`/`validate`/`list_formats`): `mcp.mjs` ships in the extension
+  (stdio, shells to the sibling bundles) and a public Worker runs at
+  `mcp.livefigures.seandavis.net` (streamable HTTP, renders in-isolate
+  from `renderer/src/lib`). [ADR 0015]
 
 ## Options
 
@@ -69,3 +74,9 @@ renderer. Windows is a documented limitation pending fast-follow. [ADR 0008]
 | 0007 | MVP scope: HTML family + PDF; DOCX/EPUB deferred |
 | 0008 | Tests: node:test + real renders; ubuntu CI |
 | 0009 | Repo layout, committed bundle, tag releases |
+| 0010 | Vega-Lite second backend |
+| 0011 | Text-diagram trio: nomnoml, WaveDrom, bytefield |
+| 0012 | Kroki backend for formats with no JS renderer |
+| 0013 | Inline code-block figures |
+| 0014 | Local renderer expansion: Graphviz, DBML |
+| 0015 | MCP server: agent render/validate tools, stdio + public Worker |

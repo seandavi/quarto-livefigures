@@ -49,6 +49,7 @@ await build({
 // MCP stdio server (ADR 0015): ships in the extension dir, shells to the
 // sibling renderer bundles. Zero deps, so this is just concatenation.
 await build({ ...common, entryPoints: [join(HERE, '..', 'mcp', 'stdio.mjs')], outfile: join(EXT, 'mcp.mjs') });
+await build({ ...common, entryPoints: [join(HERE, '..', 'cli', 'livefigures.mjs')], outfile: join(EXT, 'cli.mjs') });
 cpSync(join(HERE, '..', 'skills', 'livefigures', 'SKILL.md'), join(EXT, 'SKILL.md'));
 
 cpSync(join(HERE, 'node_modules', '@resvg', 'resvg-wasm', 'index_bg.wasm'), join(EXT, 'resvg.wasm'));
