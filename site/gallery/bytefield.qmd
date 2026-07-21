@@ -2,8 +2,11 @@
 title: "bytefield"
 ---
 
-Byte and packet layout diagrams from a compact DSL — @fig-tcp is the
-classic TCP header. Click to zoom.
+Anyone who has read an RFC knows the byte-layout figure: rows of
+fields, bit offsets across the top. bytefield generates exactly those
+diagrams from a compact DSL, replacing the fragile ASCII art of protocol
+documentation with a maintained source — @fig-tcp reproduces the classic
+TCP header in eleven lines. Click to zoom.
 
 ![TCP header layout](figures/tcp-header.bytefield){#fig-tcp}
 

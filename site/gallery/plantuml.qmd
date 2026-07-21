@@ -2,9 +2,13 @@
 title: "PlantUML"
 ---
 
-UML diagrams from `.puml` sources, rendered via a
-[kroki](https://kroki.io/) endpoint (self-hostable) — @fig-seq shows this
-extension's own render flow. Click to zoom.
+PlantUML is the workhorse of software UML — sequence, class, activity,
+state, and component diagrams from a text language that has accumulated
+two decades of examples, which is precisely why LLMs are so fluent in
+it. It has no JavaScript renderer, so livefigures renders it through a
+[kroki](https://kroki.io/) endpoint (self-hostable for private diagrams;
+network is needed only on cache misses). @fig-seq shows this extension's
+own render flow as a sequence diagram. Click to zoom.
 
 ![Render flow as a sequence diagram](figures/sequence.puml){#fig-seq}
 

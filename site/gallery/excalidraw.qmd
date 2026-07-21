@@ -3,8 +3,14 @@ title: "Excalidraw"
 ---
 
 Hand-drawn diagrams from `.excalidraw` scene files (@fig-arch,
-@fig-flow). Edit them at [excalidraw.com](https://excalidraw.com/) or in
-VS Code; the file is the figure. Click any figure to zoom.
+@fig-flow). The scene is a JSON document describing every stroke, shape,
+and label — which is exactly what makes it work here: it diffs cleanly
+in pull requests, merges like any other source file, and can be edited
+by anyone at [excalidraw.com](https://excalidraw.com/) or in the VS Code
+extension without any export step afterward. The hand-drawn Virgil
+lettering and rough strokes are reproduced faithfully because rendering
+uses Excalidraw's own export code, with fonts embedded in the output.
+Click any figure to zoom.
 
 ![Architecture sketch](figures/arch.excalidraw){#fig-arch width=60%}
 

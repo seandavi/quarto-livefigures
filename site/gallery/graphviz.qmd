@@ -2,9 +2,16 @@
 title: "Graphviz & DBML"
 ---
 
-Classic graph layouts from `.dot`/`.gv` files (@fig-deps) and database
-schemas from `.dbml` (@fig-schema) — both rendered locally, no network.
-Click to zoom.
+Graphviz [@gansner2000graphviz] has been the reference system for
+automatic graph layout for over two decades, and its `dot` language is
+correspondingly the best-known graph notation in existence — which makes
+it a natural fit for agent-authored figures. Quarto supports dot in
+executable code cells; livefigures adds what that leaves out:
+file-referenced `.dot`/`.gv` figures with caching and full figure
+semantics (@fig-deps). DBML (@fig-schema) brings the same treatment to
+database schemas: tables, types, and relationships in a compact DSL that
+renders to an entity-relationship diagram. Both render locally — no
+network involved. Click to zoom.
 
 ```{.dot #fig-deps fig-cap="A dependency graph, inline dot"}
 digraph pipeline {

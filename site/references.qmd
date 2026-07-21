@@ -1,0 +1,27 @@
+---
+title: "References"
+nocite: |
+  @*
+---
+
+livefigures stands on several decades of work in graph drawing,
+declarative visualization, and reproducible publishing. The design owes
+its central conviction — that figures should be *programs or notations
+under version control*, not opaque binary artifacts — to the literate
+programming tradition [@knuth1984literate] and its modern reproducible
+research descendants [@peng2011reproducible], of which Quarto itself is a
+direct heir.
+
+The rendering stack draws on the systems below: Graphviz's layout
+algorithms [@gansner2000graphviz] and the hierarchical drawing methods
+they build on [@sugiyama1981methods]; the Vega and Vega-Lite grammars
+[@satyanarayan2016reactive; @satyanarayan2017vegalite] descended from
+Wilkinson's *Grammar of Graphics* [@wilkinson2005grammar];
+force-directed placement [@fruchterman1991graph] for network layouts;
+and the PIC lineage of embedded diagram languages [@kernighan1984pic]
+that pikchr continues today.
+
+## Bibliography
+
+::: {#refs}
+:::

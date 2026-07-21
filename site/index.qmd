@@ -66,4 +66,20 @@ livefigures removes the export step. Rendering happens inside
 instant when nothing changed, and figures can never be stale because
 there is nothing to forget to regenerate.
 
+The idea is older than it looks. Literate programming
+[@knuth1984literate] argued that source and rendered artifact should be
+one document; the reproducible-research movement [@peng2011reproducible]
+extended that from prose and code to entire analyses. Quarto carries
+that lineage for text, code, and computation — livefigures extends it to
+the figures that have so far stood outside it, the ones drawn in
+external tools and pasted in as static images. And the timing matters:
+now that AI agents write and revise documents alongside us, a figure
+that exists as fifteen lines of reviewable text is a figure an agent can
+maintain. One that exists as a PNG is a dead end.
+
+Every format was picked with that test in mind — see
+[Formats](formats.qmd) for what each covers, and
+[References](references.qmd) for the research lineage this project
+builds on.
+
 [Get started →](install.qmd)

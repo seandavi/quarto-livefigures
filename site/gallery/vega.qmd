@@ -2,9 +2,17 @@
 title: "Vega-Lite & Vega"
 ---
 
-Charts from `.vl.json` specs: a bar chart (@fig-bar), a multi-series
-trend (@fig-trend), and a scatter (@fig-scatter). Raw Vega (`.vg.json`)
-handles force-directed node-edge graphs (@fig-net). Click to zoom.
+Vega-Lite [@satyanarayan2017vegalite] is a grammar of graphics
+[@wilkinson2005grammar] in JSON: you declare *what* maps to *what* —
+fields to positions, colors, shapes — and layout, scales, axes, and
+legends follow. That declarative economy is why it is arguably the most
+agent-fluent chart format in existence. Below: a bar chart (@fig-bar), a
+multi-series trend (@fig-trend), and a scatter (@fig-scatter).
+
+Raw Vega [@satyanarayan2016reactive] sits one level down and reaches
+things Vega-Lite cannot — @fig-net uses its force
+transform [@fruchterman1991graph] to lay out a node-edge network with no
+coordinates in the source at all. Click to zoom.
 
 ![Category totals](figures/chart.vl.json){#fig-bar}
 
