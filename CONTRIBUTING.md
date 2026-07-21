@@ -48,9 +48,11 @@ new ADR in your PR if you're making one. Two norms worth knowing:
 
 - CI must be green: tests, example renders, bundle-integrity check, and a
   site preview deploy.
-- Version bumps (`_extension.yml` + `VERSION` in the Lua filter) happen
-  when extension behavior changes — cache keys include the version, so
-  bumps intentionally invalidate caches.
+- Version bumps happen when extension behavior changes and touch three
+  files kept in sync (CI enforces it): `_extension.yml`, `VERSION` in the
+  Lua filter, and `version:` in `CITATION.cff` (update `date-released:`
+  too). Cache keys include the version, so bumps intentionally
+  invalidate caches.
 - Site-only and docs-only changes don't need a version bump.
 
 ## Conduct
