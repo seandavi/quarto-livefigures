@@ -10,6 +10,9 @@
     "@resvg/resvg-wasm": "2.6.2",
     "esbuild": "0.25.5",
     "happy-dom": "18.0.1",
+    "vega": "6.2.0",
+    "vega-lite": "6.4.0",
+    "vega-themes": "3.0.0",
     "wawoff2": "2.0.1"
   }
 }

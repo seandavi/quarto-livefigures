@@ -1,14 +1,27 @@
--- quarto-livefigures: render .excalidraw figure sources inside quarto render.
--- Detects Image elements targeting .excalidraw files, renders them via the
--- bundled Node renderer into a content-addressed cache, and rewrites the
+-- quarto-livefigures: render editable figure sources inside quarto render.
+-- Detects Image elements targeting supported source formats, renders them via
+-- a bundled Node renderer into a content-addressed cache, and rewrites the
 -- image target so Quarto's native figure pipeline handles everything else.
 -- See docs/ARCHITECTURE.md and docs/adr/ for the decisions behind this.
 
-local VERSION = "0.1.0"
+local VERSION = "0.2.0"
 
 local path = pandoc.path
 local ext_dir = path.directory(PANDOC_SCRIPT_FILE)
-local renderer = path.join({ ext_dir, "renderer.mjs" })
+
+-- Backend registry (ADR 0010). dark_css: theme=auto restyles via CSS filter
+-- (right for hand-drawn content, wrong for data-encoded chart colors).
+local BACKENDS = {
+  { pattern = "%.excalidraw$", name = "excalidraw", renderer = "renderer.mjs", dark_css = true },
+  { pattern = "%.vl%.json$", name = "vega", renderer = "renderer-vega.mjs", dark_css = false },
+  { pattern = "%.vg%.json$", name = "vega", renderer = "renderer-vega.mjs", dark_css = false },
+}
+
+local function backend_for(src)
+  for _, b in ipairs(BACKENDS) do
+    if src:match(b.pattern) then return b end
+  end
+end
 
 local opts = { theme = nil, background = "transparent" }
 local node_checked = false
@@ -29,7 +42,7 @@ local function check_node()
   local major = tonumber(out:match("^v(%d+)"))
   if not ok or not major then
     fail("Node.js was not found on PATH. quarto-livefigures requires Node >= 18 " ..
-      "to render .excalidraw figures. Install it from https://nodejs.org/")
+      "to render live figures. Install it from https://nodejs.org/")
   end
   if major < 18 then
     fail("Node " .. out:gsub("%s+$", "") .. " is too old; quarto-livefigures requires Node >= 18.")
@@ -55,7 +68,7 @@ local function read_file(p)
   return content
 end
 
-local function render(img)
+local function render(img, backend)
   local input_dir = path.directory(quarto.doc.input_file)
   local src = img.src
   if not path.is_absolute(src) then
@@ -77,18 +90,19 @@ local function render(img)
   if background ~= "transparent" and background ~= "scene" then
     fail('invalid background "' .. background .. '" on ' .. img.src .. ' (use transparent or scene)')
   end
-  -- auto = render light once; dark pages restyle via CSS (ADR 0005)
+  -- auto = render light once; dark pages restyle via CSS (ADR 0005),
+  -- but only for backends where inverting colors is faithful (ADR 0010)
   local render_theme = theme == "dark" and "dark" or "light"
 
-  local key = pandoc.utils.sha1(scene .. format .. render_theme .. background .. VERSION)
-  local stem = path.split_extension(path.filename(src))
+  local key = pandoc.utils.sha1(scene .. backend.name .. format .. render_theme .. background .. VERSION)
+  local stem = path.split_extension(path.filename(src)):gsub("%.v[lg]$", "")
   local out = path.join({ cache_dir(), stem .. "-" .. key:sub(1, 8) .. "." .. format })
 
   if not read_file(out) then
     check_node()
     local cmd = string.format(
       'node "%s" --input "%s" --output "%s" --format %s --theme %s --background %s',
-      renderer, src, out, format, render_theme, background)
+      path.join({ ext_dir, backend.renderer }), src, out, format, render_theme, background)
     if not os.execute(cmd) then
       fail("rendering failed for " .. img.src .. " (see error above)")
     end
@@ -98,7 +112,7 @@ local function render(img)
   img.attributes["theme"] = nil
   img.attributes["background"] = nil
   img.classes:insert("livefigure")
-  if theme == "auto" then
+  if theme == "auto" and backend.dark_css then
     img.classes:insert("livefigure-auto")
   end
 
@@ -125,8 +139,9 @@ return {
   },
   {
     Image = function(img)
-      if img.src:match("%.excalidraw$") then
-        return render(img)
+      local backend = backend_for(img.src)
+      if backend then
+        return render(img, backend)
       end
     end,
   },
