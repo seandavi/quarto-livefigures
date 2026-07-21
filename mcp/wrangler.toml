@@ -1,0 +1,25 @@
+# livefigures public MCP server (ADR 0015).
+# Deploy: (cd renderer && npm run build) && npx wrangler deploy -c mcp/wrangler.toml
+name = "livefigures-mcp"
+main = "worker.mjs"
+compatibility_date = "2026-07-20"
+compatibility_flags = ["nodejs_compat"]
+minify = true
+
+routes = [
+  { pattern = "mcp.livefigures.seandavis.net", custom_domain = true }
+]
+
+# fonts + resvg.wasm + ttf manifest live in the extension dir
+[assets]
+directory = "../_extensions/livefigures"
+binding = "ASSETS"
+
+[alias]
+"canvas" = "./canvas-stub.mjs"       # vega optional native dep, unused headless
+"vm" = "./vm-stub.mjs"               # happy-dom contextification, no codegen
+"node:vm" = "./vm-stub.mjs"
+
+[[rules]]
+type = "Text"
+globs = ["**/*.md", "**/*.yml"]
