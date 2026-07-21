@@ -1,0 +1,79 @@
+---
+title: "Agents & figures"
+---
+
+We say every livefigures format is "agent-authorable." This page explains
+concretely what that means and how to set it up.
+
+## The core idea
+
+An AI coding agent operates on text: it reads files, writes diffs, opens
+pull requests. A figure that exists as a PNG is invisible to that loop —
+the agent can neither create nor revise it, and a reviewer can't see
+what changed. A figure that exists as fifteen lines of nomnoml or a
+Vega-Lite JSON spec is just another source file: the agent writes it,
+`quarto render` draws it, and the pull-request diff shows exactly what
+changed about the *meaning* of the figure, not its pixels.
+
+Every format here was selected for **LLM fluency** — notations with deep
+representation in training data (dot, PlantUML, SMILES-style DSLs, JSON
+grammars) that agents produce correctly on the first try far more often
+than they produce, say, hand-placed coordinates.
+
+## What the workflows look like
+
+**Creation** — ask your agent for a figure the way you'd ask for a
+function:
+
+> "Add a sequence diagram of the auth flow to `architecture.qmd`."
+
+The agent writes a fenced `{.plantuml}` block or a `figures/auth.puml`
+file. Nothing else to do; the next render draws it.
+
+**Revision** — "rotate the x-axis labels" or "add the retry path to the
+flow" become one-line source edits instead of re-exporting from a GUI
+tool.
+
+**Review** — the diff *is* the review. A changed `.vl.json` encoding or
+a new edge in a `.dot` file reads like any code change. This is the
+quiet superpower: figures enter the same review discipline as
+everything else in the repo.
+
+**Maintenance** — because sources are plain text, an agent can keep
+figures consistent with the code they describe: rename a service in the
+codebase, and the same refactoring pass can rename it in
+`architecture.d2`.
+
+## Set your agent up: the livefigures skill
+
+The repo ships an agent skill — a single Markdown briefing that teaches
+a coding agent the extension's syntax, when to choose which format, the
+options, the failure modes, and where each format's own documentation
+lives:
+
+```bash
+# from your project root (Claude Code shown; any skill-aware agent works)
+mkdir -p .claude/skills/livefigures
+curl -o .claude/skills/livefigures/SKILL.md \
+  https://raw.githubusercontent.com/seandavi/quarto-livefigures/main/skills/livefigures/SKILL.md
+```
+
+With the skill installed, "add a timing diagram" reliably produces a
+correct `.wavedrom` block instead of an ASCII-art guess. The skill is
+[plain Markdown](https://github.com/seandavi/quarto-livefigures/blob/main/skills/livefigures/SKILL.md)
+— read it, trim it, or paste its contents into any system prompt.
+
+## Which formats work best for agents
+
+- **JSON grammars** (Vega-Lite, WaveDrom, Excalidraw scenes) — highest
+  reliability; structure is checkable and diffs are precise.
+- **Mature text DSLs** (dot, PlantUML, D2, DBML) — decades of examples
+  in training data; agents are genuinely fluent.
+- **Terse DSLs** (nomnoml, bytefield, pikchr) — fine for agents, and so
+  short that verification-by-reading is trivial.
+- Formats requiring hand-placed coordinates were excluded from
+  livefigures entirely for exactly this reason (see
+  [Formats](formats.qmd)).
+
+Every figure on this site — and in the
+[gallery](gallery/index.qmd) — was authored by an agent.

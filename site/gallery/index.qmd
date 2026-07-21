@@ -1,21 +1,73 @@
 ---
 title: "Gallery"
+toc: false
 ---
 
-Every figure in this gallery renders at build time from an editable,
+Every figure below renders at build time from an editable,
 version-controlled source — no exported images anywhere in the repo.
-Each page shows one format family, with a **view source** link under
-every figure and click-to-zoom throughout.
+Click a card for the full page, with view-source links under every
+figure and click-to-zoom throughout.
 
-- [Excalidraw](excalidraw.qmd) — hand-drawn diagrams
-- [Vega-Lite & Vega](vega.qmd) — charts and force-directed graphs
-- [Graphviz & DBML](graphviz.qmd) — graph layouts and database schemas
-- [nomnoml](nomnoml.qmd) — node-edge and UML diagrams from terse text
-- [WaveDrom](wavedrom.qmd) — timing and register diagrams
-- [bytefield](bytefield.qmd) — byte and packet layouts
-- [PlantUML](plantuml.qmd) — UML via a kroki endpoint
-- [More kroki formats](kroki.qmd) — D2, C4, ditaa, TikZ …
+::: {.grid}
 
-All formats were chosen for **agent fluency**: plain text or JSON that AI
-coding agents author and edit reliably. Every figure here was written by
-an agent.
+::: {.g-col-12 .g-col-md-6}
+### [Excalidraw](excalidraw.qmd)
+[![](figures/arch.excalidraw)](excalidraw.qmd)
+
+Hand-drawn sketches from scene files
+:::
+
+::: {.g-col-12 .g-col-md-6}
+### [Vega-Lite & Vega](vega.qmd)
+[![](figures/trend.vl.json)](vega.qmd)
+
+Charts and force-directed graphs from JSON grammars
+:::
+
+::: {.g-col-12 .g-col-md-6}
+### [Graphviz & DBML](graphviz.qmd)
+[![](figures/deps.dot)](graphviz.qmd)
+
+Graph layouts and database schemas
+:::
+
+::: {.g-col-12 .g-col-md-6}
+### [nomnoml](nomnoml.qmd)
+[![](figures/states.noml)](nomnoml.qmd)
+
+Node-edge and UML diagrams from terse text
+:::
+
+::: {.g-col-12 .g-col-md-6}
+### [WaveDrom](wavedrom.qmd)
+[![](figures/handshake.wavedrom.json)](wavedrom.qmd)
+
+Timing and register diagrams
+:::
+
+::: {.g-col-12 .g-col-md-6}
+### [bytefield](bytefield.qmd)
+[![](figures/tcp-header.bytefield)](bytefield.qmd)
+
+Byte and packet layouts
+:::
+
+::: {.g-col-12 .g-col-md-6}
+### [PlantUML](plantuml.qmd)
+[![](figures/sequence.puml)](plantuml.qmd)
+
+UML via a kroki endpoint
+:::
+
+::: {.g-col-12 .g-col-md-6}
+### [More kroki formats](kroki.qmd)
+[![](figures/arch.d2)](kroki.qmd)
+
+D2, C4, Structurizr, ditaa, TikZ …
+:::
+
+:::
+
+All formats were chosen for **agent fluency** — see
+[Agents & figures](../agents.qmd). Every figure here was written by an
+agent.
