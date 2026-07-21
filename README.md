@@ -160,7 +160,7 @@ claude mcp add --transport http livefigures https://mcp.livefigures.seandavis.ne
 Local (ships with the extension, offline for local formats):
 
 ```bash
-claude mcp add livefigures -- node _extensions/livefigures/mcp.mjs
+claude mcp add livefigures -- node _extensions/seandavi/livefigures/mcp.mjs
 ```
 
 Any MCP client works; the server also serves the skill as the
@@ -171,14 +171,14 @@ with the extension's own bundled engines. See ADR 0015.
 ### CLI
 
 The same tools as commands — the CLI ships inside the extension
-(`_extensions/livefigures/cli.mjs`, no install beyond `quarto add`):
+(`_extensions/seandavi/livefigures/cli.mjs`, no install beyond `quarto add`):
 
 ```bash
-node _extensions/livefigures/cli.mjs render figures/arch.excalidraw -o arch.png
-node _extensions/livefigures/cli.mjs validate figures/*.dot     # exit 1 on errors
-node _extensions/livefigures/cli.mjs formats                    # what can I write?
-node _extensions/livefigures/cli.mjs mcp                        # = mcp.mjs
-echo 'digraph { a -> b }' | node _extensions/livefigures/cli.mjs render - --format graphviz
+node _extensions/seandavi/livefigures/cli.mjs render figures/arch.excalidraw -o arch.png
+node _extensions/seandavi/livefigures/cli.mjs validate figures/*.dot     # exit 1 on errors
+node _extensions/seandavi/livefigures/cli.mjs formats                    # what can I write?
+node _extensions/seandavi/livefigures/cli.mjs mcp                        # = mcp.mjs
+echo 'digraph { a -> b }' | node _extensions/seandavi/livefigures/cli.mjs render - --format graphviz
 ```
 
 ## Examples

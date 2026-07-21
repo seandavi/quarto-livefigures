@@ -1,6 +1,6 @@
 {
   "name": "livefigures",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "description": "Editable, version-controlled figures: render/validate Excalidraw, Vega-Lite, Graphviz, PlantUML and 13 more formats — CLI and MCP server for the quarto-livefigures extension",
   "type": "module",
   "bin": {
