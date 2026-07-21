@@ -165,6 +165,13 @@ rasterizer). Design decisions are recorded in
 The name is deliberate: Excalidraw is the first backend, not the last —
 the roadmap includes other editable-figure formats (see issue #7).
 
+## Contributing, license, citation
+
+Contributions welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) and the
+[Contributor Covenant](CODE_OF_CONDUCT.md). MIT [licensed](LICENSE). If
+you use livefigures in academic work, [CITATION.cff](CITATION.cff) has a
+citable reference (GitHub's "Cite this repository" button uses it).
+
 ## Development
 
 ```bash

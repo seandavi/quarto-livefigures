@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+message: "If you use quarto-livefigures in your work, please cite it as below."
+type: software
+title: "quarto-livefigures: editable, version-controlled figures for Quarto"
+authors:
+  - family-names: Davis
+    given-names: Sean
+    orcid: "https://orcid.org/0000-0002-8991-6458"
+    email: seandavi@gmail.com
+repository-code: "https://github.com/seandavi/quarto-livefigures"
+url: "https://livefigures.seandavis.net"
+license: MIT
+version: 0.7.1
+date-released: 2026-07-20
+keywords:
+  - quarto
+  - figures
+  - diagrams
+  - reproducible-research
+  - excalidraw
+  - vega-lite
+  - graphviz
+  - ai-agents
+abstract: >-
+  A Quarto extension that renders editable, version-controlled figure
+  sources (Excalidraw, Vega-Lite, Graphviz, PlantUML, and fourteen other
+  plain-text formats) at build time, with content-addressed caching and
+  native Quarto figure semantics. Formats are selected for LLM fluency so
+  that AI agents can create, revise, and review figures as ordinary
+  source-code changes.
