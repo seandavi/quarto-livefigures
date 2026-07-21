@@ -8,7 +8,8 @@ book:
     - design.qmd
 
 filters:
-  - livefigures
+  - at: pre-ast
+    path: livefigures
 
 format:
   html:

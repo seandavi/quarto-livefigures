@@ -2,7 +2,8 @@
 title: "Slides with live figures"
 format: revealjs
 filters:
-  - livefigures
+  - at: pre-ast
+    path: livefigures
 ---
 
 ## Architecture

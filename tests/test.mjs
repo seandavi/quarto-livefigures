@@ -17,7 +17,7 @@ before(() => {
   cpSync(join(ROOT, 'tests', 'fixtures', 'article'), proj, { recursive: true });
   // point the copied project at the real extension
   writeFileSync(join(proj, '_quarto.yml'),
-    `project:\n  type: default\n\nfilters:\n  - ${join(ROOT, '_extensions', 'livefigures', 'livefigures.lua')}\n`);
+    `project:\n  type: default\n\nfilters:\n  - at: pre-ast\n    path: ${join(ROOT, '_extensions', 'livefigures', 'livefigures.lua')}\n`);
 });
 
 const render = (args = ['--to', 'html']) =>
@@ -131,6 +131,31 @@ test('kroki backend: unreachable endpoint hard-fails with actionable message', (
   assert.notEqual(r.status, 0);
   assert.match(r.stderr + r.stdout, /could not reach kroki endpoint/);
   rmSync(join(proj, 'pumlbad.qmd'));
+});
+
+test('inline code blocks: render, caption, crossref, cache', () => {
+  writeFileSync(join(proj, 'inline.qmd'),
+    '---\ntitle: inline\n---\n\nSee @fig-ip.\n\n' +
+    '```{.nomnoml #fig-ip fig-cap="An *inline* pipeline"}\n[a] -> [b]\n```\n\n' +
+    '```{.wavedrom}\n{ "signal": [ { "name": "clk", "wave": "p.." } ] }\n```\n');
+  render();
+  const html = readFileSync(join(proj, 'inline.html'), 'utf8');
+  const m = html.match(/<img src="(_livefigures\/fig-ip-[0-9a-f]{8}\.svg)"/);
+  assert.ok(m, 'labeled block rewritten to content-addressed svg');
+  assert.match(html, /quarto-xref">Figure&nbsp;\d/, 'crossref resolves to a number');
+  assert.match(html, /An <em>inline<\/em> pipeline/, 'markdown caption rendered');
+  assert.match(html, /_livefigures\/inline-wavedrom-[0-9a-f]{8}\.svg/, 'bare block rendered');
+  assert.match(readFileSync(join(proj, m[1]), 'utf8'), /<svg/);
+});
+
+test('inline code blocks: identical source shares the cache entry', () => {
+  const files = readdirSync(join(proj, '_livefigures'));
+  writeFileSync(join(proj, 'inline2.qmd'),
+    '---\ntitle: inline2\n---\n\n```{.nomnoml #fig-ip fig-cap="x"}\n[a] -> [b]\n```\n');
+  execFileSync('quarto', ['render', 'inline2.qmd'], { cwd: proj, encoding: 'utf8', stdio: 'pipe' });
+  const after = readdirSync(join(proj, '_livefigures'));
+  const fresh = after.filter((f) => !files.includes(f) && f.endsWith('.svg'));
+  assert.equal(fresh.length, 0, 'same source + options reuses the cached svg');
 });
 
 test('errors: corrupt scene aborts the render', () => {

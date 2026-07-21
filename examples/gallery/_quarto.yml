@@ -18,4 +18,5 @@ format:
     lightbox: true
 
 filters:
-  - livefigures
+  - at: pre-ast
+    path: livefigures

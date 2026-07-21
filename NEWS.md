@@ -1,5 +1,28 @@
 # quarto-livefigures release notes
 
+## 0.5.0 (2026-07-20)
+
+- **Inline code-block figures** (ADR 0013): fence a diagram with a backend
+  class and it becomes a first-class figure — captions, labels, and
+  cross-references included:
+
+      ```{.nomnoml #fig-pipe fig-cap="The pipeline"}
+      [Filter] -> [Cache]
+      ```
+
+  Classes: `.excalidraw`, `.vega-lite`, `.vega`, `.nomnoml`, `.wavedrom`,
+  `.bytefield`, `.plantuml`. Same cache, options, and hard-fail behavior
+  as file-referenced figures; identical inline sources share cache entries.
+- **Recommended install form changed** — cross-references on inline blocks
+  require the filter to run in the pre-ast phase:
+
+      filters:
+        - at: pre-ast
+          path: livefigures
+
+  The plain `filters: [livefigures]` form still works for file-referenced
+  figures.
+
 ## 0.4.0 (2026-07-20)
 
 - **New backend class: kroki-rendered formats**, starting with **PlantUML**
