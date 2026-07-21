@@ -1,0 +1,33 @@
+name: Deploy site
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    # forks don't get the token; skip rather than fail
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: quarto-dev/quarto-actions/setup@v2
+      - name: Render site
+        run: quarto render site
+      - name: Deploy (production)
+        if: github.event_name == 'push'
+        run: npx wrangler deploy
+      - name: Upload preview version (PR)
+        if: github.event_name == 'pull_request'
+        run: |
+          npx wrangler versions upload | tee /tmp/wrangler-preview.txt
+          {
+            echo "## Site preview"
+            grep -Eo 'https://[a-zA-Z0-9.-]*workers\.dev[^ ]*' /tmp/wrangler-preview.txt | head -1
+          } >> "$GITHUB_STEP_SUMMARY"
