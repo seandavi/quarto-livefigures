@@ -27,6 +27,11 @@ never stale, and editable by **you and your AI agents** alike.
 [See the gallery](gallery/index.qmd){.cta-ink}
 :::
 
+::: {.hero-star}
+<a class="github-button" href="https://github.com/seandavi/quarto-livefigures" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star seandavi/quarto-livefigures on GitHub">Star</a>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+:::
+
 ::: {.hero-install}
 `quarto add seandavi/quarto-livefigures`
 :::
