@@ -10,7 +10,7 @@ authors:
 repository-code: "https://github.com/seandavi/quarto-livefigures"
 url: "https://livefigures.seandavis.net"
 license: MIT
-version: 0.8.0
+version: 0.8.1
 date-released: 2026-07-21
 keywords:
   - quarto

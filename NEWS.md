@@ -1,5 +1,12 @@
 # quarto-livefigures release notes
 
+## 0.8.1 (2026-08-14)
+
+- **DOCX support** — all backends now render in `.docx` output via the
+  same high-resolution PNG rasterization path used for PDF/LaTeX.
+  Sizing and caption behaviour are correct in Word and LibreOffice
+  (closes #15).
+
 ## 0.8.0 (2026-07-21)
 
 - **MCP server** (ADR 0015) — agents can now *see* the figures they

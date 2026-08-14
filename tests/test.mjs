@@ -234,3 +234,12 @@ test('PDF: renders with PNG cache entries and caption text', { skip: !which('tlm
     assert.match(readFileSync(join(proj, 'index.txt'), 'utf8'), /Figure 1: Overall architecture/);
   }
 });
+
+test('DOCX: renders with cached PNGs', () => {
+  const cacheDir = join(proj, '_livefigures');
+  const pngsBefore = existsSync(cacheDir) ? cacheFiles('.png').length : 0;
+  execFileSync('quarto', ['render', 'index.qmd', '--to', 'docx'], { cwd: proj, encoding: 'utf8', stdio: 'pipe' });
+  assert.ok(existsSync(join(proj, 'index.docx')), 'docx output produced');
+  assert.ok(existsSync(cacheDir), 'cache directory created');
+  assert.ok(cacheFiles('.png').length > pngsBefore, 'png cache entries created for docx');
+});
