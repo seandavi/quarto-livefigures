@@ -191,9 +191,14 @@ end
 
 -- pandoc.path.make_relative never synthesizes ".." segments, so cache
 -- paths above the document's directory (project subdir docs) come out
--- wrong. Compute the relative path ourselves. POSIX separators only —
--- Windows support is a documented fast-follow.
+-- wrong. Compute the relative path ourselves using normalized (forward-
+-- slash) separators so the result is valid on all platforms including
+-- Windows (HTML hrefs always use forward slashes; pandoc.path may return
+-- backslashes on Windows).
 local function relative_to(target, from)
+  -- Normalize backslashes to forward slashes (Windows pandoc.path compat).
+  target = target:gsub("\\", "/")
+  from = from:gsub("\\", "/")
   local t, f = {}, {}
   for seg in target:gmatch("[^/]+") do t[#t + 1] = seg end
   for seg in from:gmatch("[^/]+") do f[#f + 1] = seg end
