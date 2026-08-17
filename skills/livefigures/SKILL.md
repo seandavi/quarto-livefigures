@@ -89,9 +89,14 @@ is computed for you.
 
 Per figure (attributes) or project-wide (`livefigures:` metadata):
 
-- `theme=light|dark|auto` — default auto (HTML). Only Excalidraw and
-  Vega support true `dark`; other backends hard-fail on it.
-- `background=transparent|scene` — Excalidraw/Vega only.
+- `theme=light|dark|auto` — default auto (HTML). Only Excalidraw,
+  Vega-Lite and Vega support true `dark`; other backends hard-fail on it.
+- `background=transparent|scene` — Excalidraw, Vega-Lite and Vega only;
+  other backends hard-fail on `scene`.
+- Never set `theme: dark` project-wide unless every figure in the
+  project is Excalidraw/Vega-Lite/Vega — it applies to all figures and
+  aborts the render of any document containing another backend. Put
+  `theme=dark` on the individual figure instead.
 - `livefigures: kroki-url: <url>` — self-hosted kroki endpoint for the
   kroki-backed formats (PlantUML, D2, C4, Structurizr, erd, ditaa,
   pikchr, svgbob, TikZ). These need network on cache misses; all other

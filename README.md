@@ -127,10 +127,10 @@ change; otherwise the cache is reused.
 
 Per figure (attributes) or project-wide (metadata):
 
-| Option       | Values                              | Default                     |
-| ------------ | ----------------------------------- | --------------------------- |
-| `theme`      | `light`, `dark`, `auto`             | `auto` (HTML), else `light` |
-| `background` | `transparent`, `scene`              | `transparent`               |
+| Option | Values | Supported by | Default |
+| ------ | ------ | ------------ | ------- |
+| `theme` | `light`, `dark`, `auto` | `light`/`auto`: all backends. **`dark`: Excalidraw, Vega-Lite and Vega only** — every other backend errors | `auto` (HTML), else `light` |
+| `background` | `transparent`, `scene` | **`scene`: Excalidraw, Vega-Lite and Vega only** — every other backend errors | `transparent` |
 
 ```markdown
 ![Dark diagram](figures/arch.excalidraw){theme=dark background=scene}
@@ -140,6 +140,16 @@ Per figure (attributes) or project-wide (metadata):
 livefigures:
   theme: light
   background: scene
+```
+
+⚠️ **A project-wide `theme: dark` aborts the render of any document
+containing a Graphviz, nomnoml, PlantUML, D2 (etc.) figure** — the
+unsupported-option error is deliberate, so it fails the build rather
+than publishing an unreadable figure. For a dark deck or site, leave the
+project default alone and opt in per figure:
+
+```markdown
+![Dark diagram](figures/arch.excalidraw){theme=dark}
 ```
 
 `theme: auto` renders once (light); Excalidraw figures restyle on dark
