@@ -47,23 +47,31 @@ Install if missing: `quarto add seandavi/quarto-livefigures`
 
 ## Choosing a format
 
-| You need | Use | Extension / block class | Syntax docs |
-| --- | --- | --- | --- |
-| Hand-drawn sketch, annotated mockup | Excalidraw | `.excalidraw` / `{.excalidraw}` | <https://docs.excalidraw.com/> (scene JSON) |
-| Statistical chart (bar/line/scatter/…) | Vega-Lite | `.vl.json` / `{.vega-lite}` | <https://vega.github.io/vega-lite/docs/> |
-| Force-directed network, custom viz | Vega | `.vg.json` / `{.vega}` | <https://vega.github.io/vega/docs/> |
-| Dependency graph, state machine, tree | Graphviz | `.dot`, `.gv` / `{.dot}` | <https://graphviz.org/documentation/> |
-| Quick boxes-and-arrows, UML-ish | nomnoml | `.noml` / `{.nomnoml}` | <https://nomnoml.com/> |
-| Database schema / ER diagram | DBML | `.dbml` / `{.dbml}` | <https://dbml.dbdiagram.io/docs/> |
-| Digital timing / register bit-fields | WaveDrom | `.wavedrom.json` / `{.wavedrom}` | <https://wavedrom.com/tutorial.html> |
-| Byte/packet layout (RFC-style) | bytefield | `.bytefield` / `{.bytefield}` | <https://bytefield-svg.deepsymmetry.org/> |
-| UML sequence/class/activity/state | PlantUML | `.puml` / `{.plantuml}` | <https://plantuml.com/> |
-| Modern declarative diagram | D2 | `.d2` / `{.d2}` | <https://d2lang.com/tour/intro> |
-| C4 architecture | C4-PlantUML / Structurizr | `.c4` / `{.c4}`, `.structurizr` | <https://github.com/plantuml-stdlib/C4-PlantUML> |
-| ER (terse) | erd | `.erd` / `{.erd}` | <https://github.com/BurntSushi/erd> |
-| ASCII art → diagram | ditaa / svgbob | `.ditaa`, `.svgbob` | <https://ditaa.sourceforge.net/> |
-| PIC-style technical drawing | pikchr | `.pikchr` / `{.pikchr}` | <https://pikchr.org/home/doc/trunk/doc/userman.md> |
-| LaTeX/TikZ graphics | TikZ | `.tikz` / `{.tikz}` | <https://tikz.dev/> |
+| You need | Use | Extension / block class | Renders | Syntax docs |
+| --- | --- | --- | --- | --- |
+| Hand-drawn sketch, annotated mockup | Excalidraw | `.excalidraw` / `{.excalidraw}` | offline | <https://docs.excalidraw.com/> (scene JSON) |
+| Statistical chart (bar/line/scatter/…) | Vega-Lite | `.vl.json` / `{.vega-lite}` | offline | <https://vega.github.io/vega-lite/docs/> |
+| Force-directed network, custom viz | Vega | `.vg.json` / `{.vega}` | offline | <https://vega.github.io/vega/docs/> |
+| Dependency graph, state machine, tree | Graphviz | `.dot`, `.gv` / `{.dot}` | offline | <https://graphviz.org/documentation/> |
+| Quick boxes-and-arrows, UML-ish | nomnoml | `.noml` / `{.nomnoml}` | offline | <https://nomnoml.com/> |
+| Database schema / ER diagram | DBML | `.dbml` / `{.dbml}` | offline | <https://dbml.dbdiagram.io/docs/> |
+| Digital timing / register bit-fields | WaveDrom | `.wavedrom.json` / `{.wavedrom}` | offline | <https://wavedrom.com/tutorial.html> |
+| Byte/packet layout (RFC-style) | bytefield | `.bytefield` / `{.bytefield}` | offline | <https://bytefield-svg.deepsymmetry.org/> |
+| UML sequence/class/activity/state | PlantUML | `.puml` / `{.plantuml}` | kroki | <https://plantuml.com/> |
+| Modern declarative diagram | D2 | `.d2` / `{.d2}` | kroki | <https://d2lang.com/tour/intro> |
+| C4 architecture | C4-PlantUML / Structurizr | `.c4` / `{.c4}`, `.structurizr` | kroki | <https://github.com/plantuml-stdlib/C4-PlantUML> |
+| ER (terse) | erd | `.erd` / `{.erd}` | kroki | <https://github.com/BurntSushi/erd> |
+| ASCII art → diagram | ditaa / svgbob | `.ditaa`, `.svgbob` | kroki | <https://ditaa.sourceforge.net/> |
+| PIC-style technical drawing | pikchr | `.pikchr` / `{.pikchr}` | kroki | <https://pikchr.org/home/doc/trunk/doc/userman.md> |
+| LaTeX/TikZ graphics | TikZ | `.tikz` / `{.tikz}` | kroki | <https://tikz.dev/> |
+
+**Renders**: *offline* formats use renderers bundled with the extension.
+*kroki* formats POST the diagram source to a [kroki](https://kroki.io/)
+endpoint on cache misses — they need the network, and the source leaves
+the machine. When the choice is otherwise a toss-up (e.g. Graphviz vs.
+D2), prefer an offline format: it keeps CI builds reproducible without
+network and keeps private diagrams private. `cli.mjs formats` prints the
+same distinction, as `local` / `kroki`.
 
 Prefer, in order: (1) a JSON grammar when the figure is data-driven,
 (2) Graphviz/D2/PlantUML for structure the reader must trust,
