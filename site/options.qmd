@@ -5,10 +5,10 @@ title: "Options"
 Options go on the figure (image attributes or code-block attributes) or
 project-wide under the `livefigures` metadata key.
 
-| Option | Values | Default |
-| ------ | ------ | ------- |
-| `theme` | `light`, `dark`, `auto` | `auto` (HTML), else `light` |
-| `background` | `transparent`, `scene` | `transparent` |
+| Option | Values | Supported by | Default |
+| ------ | ------ | ------------ | ------- |
+| `theme` | `light`, `dark`, `auto` | `light`/`auto`: all backends. **`dark`: Excalidraw, Vega-Lite and Vega only** — every other backend errors | `auto` (HTML), else `light` |
+| `background` | `transparent`, `scene` | **`scene`: Excalidraw, Vega-Lite and Vega only** — every other backend errors | `transparent` |
 
 ```markdown
 ![Dark sketch](figures/arch.excalidraw){theme=dark background=scene}
@@ -32,6 +32,21 @@ render (Excalidraw, Vega).
 Backends without a dark or scene-background variant **fail loudly** if
 you ask for one — livefigures never silently renders something other
 than what you asked for.
+
+::: {.callout-warning}
+## A project-wide `theme: dark` is a build-breaker
+
+Setting `theme: dark` under the `livefigures` metadata key applies it to
+*every* figure, so any document containing a Graphviz, nomnoml, PlantUML
+or D2 figure aborts its render. Building a dark deck or site is exactly
+when this is tempting, and exactly when it bites.
+
+Leave the project default alone and opt in per figure instead:
+
+```markdown
+![Dark sketch](figures/arch.excalidraw){theme=dark}
+```
+:::
 
 ## Kroki endpoint
 
