@@ -18,7 +18,9 @@ files in version control.
 ![Monthly totals](figures/totals.vl.json){#fig-totals}
 ```
 
-Supported source formats:
+Supported source formats. **Excalidraw sources come from the Excalidraw
+editor** — draw it, save it, commit it. The text and JSON grammars below
+it are the ones to hand-write or generate:
 
 | Format | Extension | Renders | Best for |
 | ------ | --------- | ------- | -------- |
@@ -179,6 +181,13 @@ livefigures uses kroki itself for the formats that need it, adding the
 caching, file-referenced sources, and PDF pipeline on top.
 
 ## For AI agents
+
+> **Who writes what.** Humans draw in Excalidraw and commit the scene —
+> its JSON is hand-placed coordinates, which is exactly what an editor is
+> for and exactly what a generator should not produce. Agents and scripts
+> write the text and JSON grammars: Graphviz, D2, nomnoml, Vega-Lite,
+> PlantUML, DBML, and the rest. Both flow through the same pipeline,
+> cache, and figure semantics.
 
 `skills/livefigures/SKILL.md` is a single-file briefing that teaches a
 coding agent this extension: syntax (file vs fenced block), a

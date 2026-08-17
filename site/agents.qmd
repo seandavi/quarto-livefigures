@@ -79,15 +79,20 @@ Prefer plain commands (or need a CI check)? The same tools ship as a
 
 ## Which formats work best for agents
 
-- **JSON grammars** (Vega-Lite, WaveDrom, Excalidraw scenes) — highest
-  reliability; structure is checkable and diffs are precise.
+- **JSON grammars** (Vega-Lite, WaveDrom) — highest reliability;
+  structure is checkable and diffs are precise.
 - **Mature text DSLs** (dot, PlantUML, D2, DBML) — decades of examples
   in training data; agents are genuinely fluent.
 - **Terse DSLs** (nomnoml, bytefield, pikchr) — fine for agents, and so
   short that verification-by-reading is trivial.
-- Formats requiring hand-placed coordinates were excluded from
-  livefigures entirely for exactly this reason (see
-  [Formats](formats.qmd)).
+- **Excalidraw is the exception, and deliberately so.** A scene file is
+  hand-placed coordinates, which is the one thing a generator should not
+  be writing — so it belongs to a human with the editor open, not to an
+  agent. Everything else on this page is agent territory. Formats that
+  offer *only* hand-placed coordinates were excluded from livefigures
+  entirely (see [Formats](formats.qmd)); Excalidraw earns its place
+  because a person drawing in a real editor is a genuinely good way to
+  make a figure.
 
 Every figure on this site — and in the
 [gallery](gallery/index.qmd) — was authored by an agent.
