@@ -20,31 +20,35 @@ files in version control.
 
 Supported source formats:
 
-| Format | Extension | Best for |
-| ------ | --------- | -------- |
-| [Excalidraw](https://excalidraw.com/) | `.excalidraw` | hand-drawn diagrams and sketches |
-| [Vega-Lite](https://vega.github.io/vega-lite/) | `.vl.json` | data-driven charts (and LLM/agent-authored figures) |
-| [Vega](https://vega.github.io/vega/) | `.vg.json` | low-level chart specs, force-directed graphs |
-| [nomnoml](https://nomnoml.com/) | `.noml`, `.nomnoml` | node-edge/UML diagrams from terse text |
-| [WaveDrom](https://wavedrom.com/) | `.wavedrom`, `.wavedrom.json` | digital timing & register diagrams |
-| [bytefield](https://bytefield-svg.deepsymmetry.org/) | `.bytefield` | byte/packet layout diagrams |
-| [Graphviz](https://graphviz.org/) | `.dot`, `.gv` | classic graph layouts (file-referenced; complements Quarto's code-cell dot) |
-| [DBML](https://dbml.dbdiagram.io/) | `.dbml` | database schema diagrams |
-| [PlantUML](https://plantuml.com/) † | `.puml`, `.plantuml` | UML: sequence, class, activity … |
-| [D2](https://d2lang.com/) † | `.d2` | modern declarative diagrams |
-| [C4-PlantUML](https://github.com/plantuml-stdlib/C4-PlantUML) † | `.c4` | C4 architecture diagrams |
-| [Structurizr](https://structurizr.com/) † | `.structurizr` | C4 via the Structurizr DSL |
-| [erd](https://github.com/BurntSushi/erd) † | `.erd` | entity-relationship diagrams |
-| [ditaa](https://ditaa.sourceforge.net/) † | `.ditaa` | ASCII art → polished diagrams |
-| [pikchr](https://pikchr.org/) † | `.pikchr` | PIC-style technical diagrams |
-| [svgbob](https://github.com/ivanceras/svgbob) † | `.svgbob` | ASCII art → SVG |
-| [TikZ](https://tikz.dev/) † | `.tikz` | LaTeX diagrams (complete `standalone` docs) |
+| Format | Extension | Renders | Best for |
+| ------ | --------- | ------- | -------- |
+| [Excalidraw](https://excalidraw.com/) | `.excalidraw` | **offline** | hand-drawn diagrams and sketches |
+| [Vega-Lite](https://vega.github.io/vega-lite/) | `.vl.json` | **offline** | data-driven charts (and LLM/agent-authored figures) |
+| [Vega](https://vega.github.io/vega/) | `.vg.json` | **offline** | low-level chart specs, force-directed graphs |
+| [nomnoml](https://nomnoml.com/) | `.noml`, `.nomnoml` | **offline** | node-edge/UML diagrams from terse text |
+| [WaveDrom](https://wavedrom.com/) | `.wavedrom`, `.wavedrom.json` | **offline** | digital timing & register diagrams |
+| [bytefield](https://bytefield-svg.deepsymmetry.org/) | `.bytefield` | **offline** | byte/packet layout diagrams |
+| [Graphviz](https://graphviz.org/) | `.dot`, `.gv` | **offline** | classic graph layouts (file-referenced; complements Quarto's code-cell dot) |
+| [DBML](https://dbml.dbdiagram.io/) | `.dbml` | **offline** | database schema diagrams |
+| [PlantUML](https://plantuml.com/) | `.puml`, `.plantuml` | kroki † | UML: sequence, class, activity … |
+| [D2](https://d2lang.com/) | `.d2` | kroki † | modern declarative diagrams |
+| [C4-PlantUML](https://github.com/plantuml-stdlib/C4-PlantUML) | `.c4` | kroki † | C4 architecture diagrams |
+| [Structurizr](https://structurizr.com/) | `.structurizr` | kroki † | C4 via the Structurizr DSL |
+| [erd](https://github.com/BurntSushi/erd) | `.erd` | kroki † | entity-relationship diagrams |
+| [ditaa](https://ditaa.sourceforge.net/) | `.ditaa` | kroki † | ASCII art → polished diagrams |
+| [pikchr](https://pikchr.org/) | `.pikchr` | kroki † | PIC-style technical diagrams |
+| [svgbob](https://github.com/ivanceras/svgbob) | `.svgbob` | kroki † | ASCII art → SVG |
+| [TikZ](https://tikz.dev/) | `.tikz` | kroki † | LaTeX diagrams (complete `standalone` docs) |
 
-† Rendered via a [kroki](https://kroki.io/) endpoint — the one backend
-class that needs the network (on cache misses only). The diagram source is
-sent to the endpoint; for private diagrams, self-host kroki and set
-`livefigures: kroki-url: <url>` in your metadata. All other formats render
-fully offline.
+† *kroki* formats render via a [kroki](https://kroki.io/) endpoint — the
+one backend class that needs the network (on cache misses only). The
+diagram source is sent to the endpoint; for private diagrams, self-host
+kroki and set `livefigures: kroki-url: <url>` in your metadata. Everything
+marked **offline** renders from renderers bundled with the extension, so a
+cache miss with no network still succeeds.
+
+`cli.mjs formats` prints the same distinction (as `local` / `kroki`) if
+you'd rather check from the terminal than from the docs.
 
 ![Edit the source, render, done — the figure can never go stale](assets/demo.gif)
 
