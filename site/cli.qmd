@@ -47,8 +47,32 @@ livefigures mcp
 ```
 
 Render options mirror the extension: `--theme light|dark`,
-`--background transparent|scene` (Excalidraw/Vega only), `--scale <n>`
-for PNG.
+`--background transparent|scene` (Excalidraw, Vega-Lite and Vega only),
+`--scale <n>` for PNG.
+
+## Look at the figure, not just the exit code
+
+`validate` catches broken sources. It cannot catch the more common
+problem: a figure that renders perfectly and is still wrong. Those never
+raise an error, so the only thing that catches them is rendering the
+figure and looking at it — which is what `render -o` is for.
+
+What to look for, and the usual repair:
+
+| What you see | Fix |
+| --- | --- |
+| Text too small on a slide — the figure is tall and height-bound | Check the output aspect ratio against the target medium; restructure the figure |
+| A row laid out as a diagonal staircase (Graphviz) | `{rank=same; a; b; c; }` |
+| Two opposing edges overlapping, labels colliding | One `dir=both` edge with a single label |
+| An edge label sitting on the arrow | Shorten it, or lengthen the edge (`nodesep` / `ranksep`) |
+| Clusters reordered after a `rankdir` change (Graphviz) | Disconnected-cluster order is not `rankdir`-stable — re-check visually after any such edit |
+| A literal `{...}` appearing as text (nomnoml) | Inline directives don't work everywhere; define `#.name: fill=…` and use `[ Label]` |
+| Legend or axis labels truncated (Vega-Lite) | Raise `labelLimit`, e.g. `legend: {labelLimit: 300}` |
+| A cluster label clipped at the figure edge (Graphviz) | Reduce the figure width in the document, or add graph margin |
+
+Agents get the same checklist from the [skill](agents.qmd), and the [MCP
+server](mcp.qmd) returns the rendered image in-context so an agent can
+do this pass itself.
 
 ## Validate figures in CI
 
