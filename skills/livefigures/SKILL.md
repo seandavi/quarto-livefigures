@@ -49,7 +49,7 @@ Install if missing: `quarto add seandavi/quarto-livefigures`
 
 | You need | Use | Extension / block class | Renders | Syntax docs |
 | --- | --- | --- | --- | --- |
-| Hand-drawn sketch, annotated mockup | Excalidraw | `.excalidraw` / `{.excalidraw}` | offline | <https://docs.excalidraw.com/> (scene JSON) |
+| Hand-drawn sketch, annotated mockup *(editor-authored — see below)* | Excalidraw | `.excalidraw` / `{.excalidraw}` | offline | <https://docs.excalidraw.com/> (scene JSON) |
 | Statistical chart (bar/line/scatter/…) | Vega-Lite | `.vl.json` / `{.vega-lite}` | offline | <https://vega.github.io/vega-lite/docs/> |
 | Force-directed network, custom viz | Vega | `.vg.json` / `{.vega}` | offline | <https://vega.github.io/vega/docs/> |
 | Dependency graph, state machine, tree | Graphviz | `.dot`, `.gv` / `{.dot}` | offline | <https://graphviz.org/documentation/> |
@@ -76,6 +76,14 @@ same distinction, as `local` / `kroki`.
 Prefer, in order: (1) a JSON grammar when the figure is data-driven,
 (2) Graphviz/D2/PlantUML for structure the reader must trust,
 (3) nomnoml for quick sketches. Never hand-place coordinates.
+
+**Do not author Excalidraw scenes yourself.** Excalidraw scene JSON *is*
+hand-placed coordinates — element x/y positions, ids, and bindings — so
+writing one directly violates the rule above. Excalidraw is for humans
+drawing in the editor and committing the result; you edit those files
+only when a human asks for a specific, surgical change. When you need a
+figure, pick a text or JSON grammar from the rows below it, where layout
+is computed for you.
 
 ## Options
 
