@@ -52,6 +52,25 @@ cache miss with no network still succeeds.
 `cli.mjs formats` prints the same distinction (as `local` / `kroki`) if
 you'd rather check from the terminal than from the docs.
 
+### Do you need livefigures?
+
+Use a **mermaid or Graphviz code cell** — built into Quarto, nothing to
+install — if you need a flowchart, sequence diagram, or simple graph and
+you're happy with the source living inline in the document.
+
+Reach for **livefigures** when you need:
+
+- a format Quarto has no cell for — Vega-Lite charts, WaveDrom timing
+  diagrams, bytefield layouts, Excalidraw sketches
+- **layout control** code cells can't express — Graphviz clusters,
+  `rank`, edge routing
+- the figure source in **its own file**, editable and diffable on its own
+- **deterministic PDF** output with bundled fonts
+- **warm-cache rebuilds** that re-render nothing
+
+A longer comparison with `pandoc-ext/diagram` and the kroki filters is
+[below](#how-is-this-different-from-mermaid-cells--diagram--quarto-kroki).
+
 ![Edit the source, render, done — the figure can never go stale](assets/demo.gif)
 
 The source file is the single source of truth. Captions, labels,
@@ -160,6 +179,9 @@ for the vega dark theme. For Excalidraw, `theme=dark` performs a true dark
 export.
 
 ## How is this different from mermaid cells / diagram / quarto-kroki?
+
+(The short version is the [decision rule](#do-you-need-livefigures)
+above; this is the detail behind it.)
 
 Quarto natively renders Mermaid and Graphviz in *executable code
 cells*, and three good community extensions overlap with livefigures:
