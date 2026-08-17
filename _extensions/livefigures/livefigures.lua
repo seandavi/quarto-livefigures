@@ -5,7 +5,7 @@
 -- content-addressed cache and flow through Quarto's native figure pipeline.
 -- See docs/ARCHITECTURE.md and docs/adr/ for the decisions behind this.
 
-local VERSION = "0.8.0"
+local VERSION = "0.9.0"
 
 local path = pandoc.path
 local ext_dir = path.directory(PANDOC_SCRIPT_FILE)
@@ -112,7 +112,7 @@ local function write_file(p, content)
 end
 
 local function resolve_options(attributes, backend, label)
-  local format = quarto.doc.is_format("latex") and "png" or "svg"
+  local format = (quarto.doc.is_format("latex") or quarto.doc.is_format("docx")) and "png" or "svg"
   local theme = attributes["theme"] or opts.theme
     or (quarto.doc.is_format("html") and "auto" or "light")
   local background = attributes["background"] or opts.background

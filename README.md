@@ -163,6 +163,7 @@ Block classes: `.excalidraw`, `.vega-lite`, `.vega`, `.nomnoml`,
 - **PDF/LaTeX**: high-resolution PNG rasterized by the bundled renderer,
   so fonts are always correct (LaTeX's SVG conversion is not required or
   used).
+- **DOCX**: high-resolution PNG (same rasterization path as PDF/LaTeX).
 
 Re-renders happen only when the scene, options, or extension version
 change; otherwise the cache is reused.
@@ -301,8 +302,8 @@ See [`examples/`](examples/) for a minimal [article](examples/article),
 
 - **Windows** is exercised in CI (HTML output). PDF on Windows requires
   TinyTeX and is not part of the automated test suite.
-- **DOCX and EPUB** are untested ("may work"); verified formats are the
-  HTML family and PDF.
+- **EPUB** is untested ("may work"); verified formats are the HTML
+  family, PDF, and DOCX.
 - **CJK text** (Excalidraw's Xiaolai font, 13 MB) is not bundled; scenes
   using it fail with a clear error. Open an issue if you need it.
 - Errors are deliberate and loud: a missing Node runtime or a corrupt
