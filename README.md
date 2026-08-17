@@ -18,6 +18,33 @@ files in version control.
 ![Monthly totals](figures/totals.vl.json){#fig-totals}
 ```
 
+![Edit the source, render, done — the figure can never go stale](assets/demo.gif)
+
+## The loop: edit → render → **look at it** → fix
+
+That middle step is the point. Diagram bugs are usually *layout* bugs,
+and layout bugs render successfully, exit 0, and produce a perfectly
+valid figure that is wrong — a chain laid out as a diagonal staircase, a
+legend label silently truncated, a directive showing up as literal text.
+Nothing downstream catches those. Looking does.
+
+So the extension ships the tools to look, and they run without a full
+`quarto render`:
+
+```bash
+node _extensions/seandavi/livefigures/cli.mjs validate figures/arch.dot
+node _extensions/seandavi/livefigures/cli.mjs render   figures/arch.dot -o /tmp/arch.png
+```
+
+`validate` catches broken sources; `render -o` gets you the figure to
+actually look at. Agents get the same loop through the [MCP
+server](#mcp-server--agents-can-see-their-figures), which returns the
+rendered image in-context. The [CLI
+docs](https://livefigures.seandavis.net/cli.html) list the specific
+layout failures worth checking for and how to fix each.
+
+## What you can write
+
 Supported source formats. **Excalidraw sources come from the Excalidraw
 editor** — draw it, save it, commit it. The text and JSON grammars below
 it are the ones to hand-write or generate:
@@ -70,8 +97,6 @@ Reach for **livefigures** when you need:
 
 A longer comparison with `pandoc-ext/diagram` and the kroki filters is
 [below](#how-is-this-different-from-mermaid-cells--diagram--quarto-kroki).
-
-![Edit the source, render, done — the figure can never go stale](assets/demo.gif)
 
 The source file is the single source of truth. Captions, labels,
 cross-references, sizing, layout, subfigures, and lightbox all work exactly
