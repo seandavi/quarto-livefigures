@@ -235,11 +235,16 @@ test('PDF: renders with PNG cache entries and caption text', { skip: !which('tlm
   }
 });
 
-test('DOCX: renders with cached PNGs', () => {
-  const cacheDir = join(proj, '_livefigures');
-  const pngsBefore = existsSync(cacheDir) ? cacheFiles('.png').length : 0;
+test('DOCX: figures embed as PNG, not SVG', () => {
   execFileSync('quarto', ['render', 'index.qmd', '--to', 'docx'], { cwd: proj, encoding: 'utf8', stdio: 'pipe' });
   assert.ok(existsSync(join(proj, 'index.docx')), 'docx output produced');
-  assert.ok(existsSync(cacheDir), 'cache directory created');
-  assert.ok(cacheFiles('.png').length > pngsBefore, 'png cache entries created for docx');
+  assert.ok(cacheFiles('.png').length > 0, 'png cache entries exist');
+  // Don't assert the PNG count *grew*: docx and latex share cache entries
+  // (same backend, same options), so a preceding PDF render leaves this a
+  // pure cache hit. What matters is the media actually embedded in the
+  // document. A .docx is a zip and entry names are stored as plain bytes,
+  // so scanning the raw file is enough — no unzip dependency.
+  const zip = readFileSync(join(proj, 'index.docx'), 'latin1');
+  assert.match(zip, /media\/[^\s"]*\.png/, 'figure embedded as PNG');
+  assert.doesNotMatch(zip, /media\/[^\s"]*\.svg/, 'no SVG media (docx must not get the HTML path)');
 });

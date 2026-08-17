@@ -302,7 +302,8 @@ See [`examples/`](examples/) for a minimal [article](examples/article),
 
 - **Windows** is exercised in CI (HTML output). PDF on Windows requires
   TinyTeX and is not part of the automated test suite.
-- **EPUB** is untested ("may work").
+- **EPUB** is untested ("may work"); verified formats are the HTML
+  family, PDF, and DOCX.
 - **CJK text** (Excalidraw's Xiaolai font, 13 MB) is not bundled; scenes
   using it fail with a clear error. Open an issue if you need it.
 - Errors are deliberate and loud: a missing Node runtime or a corrupt
