@@ -1,11 +1,17 @@
 # quarto-livefigures release notes
 
-## 0.8.1 (2026-08-14)
+## 0.9.0 (2026-08-17)
 
 - **DOCX support** — all backends now render in `.docx` output via the
   same high-resolution PNG rasterization path used for PDF/LaTeX.
   Sizing and caption behaviour are correct in Word and LibreOffice
   (closes #15).
+- **Windows is now exercised in CI** (HTML output), and a real
+  cross-platform bug it surfaced is fixed: source files with CRLF line
+  endings failed to parse for nomnoml. Git checks out with native line
+  endings on Windows, so this hit any Windows user whose editor saves
+  CRLF, not just CI. The renderer now normalizes line endings for every
+  backend (closes #16).
 
 ## 0.8.0 (2026-07-21)
 
