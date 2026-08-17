@@ -7,6 +7,8 @@ import { promisify } from 'node:util';
 import { createInterface } from 'node:readline';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { mkdtempSync, writeFileSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const CLI = join(HERE, '..', 'cli', 'livefigures.mjs');
@@ -31,6 +33,22 @@ test('CLI: render from stdin with --format', async () => {
   let out = '';
   for await (const c of p.stdout) out += c;
   assert.match(out, /<svg/);
+});
+
+test('CRLF sources parse the same as LF (Windows checkout, ADR 0008)', async () => {
+  // git checks out with native line endings on Windows; nomnoml treats a
+  // stray CR as part of the line and fails ("expected label but got [").
+  const dir = mkdtempSync(join(tmpdir(), 'livefigures-crlf-'));
+  const body = '[Filter] -> [Cache]\n[Cache] -> [SVG]\n';
+  writeFileSync(join(dir, 'lf.noml'), body);
+  writeFileSync(join(dir, 'crlf.noml'), body.replace(/\n/g, '\r\n'));
+  try {
+    const { stdout } = await run(process.execPath, [CLI, 'validate', join(dir, 'lf.noml'), join(dir, 'crlf.noml')]);
+    assert.match(stdout, /ok      .*lf\.noml/);
+    assert.match(stdout, /ok      .*crlf\.noml/);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
 });
 
 test('CLI: validate mixes ok and invalid, exits 1', async () => {

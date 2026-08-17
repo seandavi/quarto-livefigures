@@ -27,7 +27,10 @@ export async function runCli(entryUrl, render) {
   const assets = nodeAssets(dirname(fileURLToPath(entryUrl)));
   let source;
   try {
-    source = readFileSync(input, 'utf8');
+    // Normalize CRLF -> LF: git checks out with native line endings on
+    // Windows, and some grammars (nomnoml) treat a stray CR as part of the
+    // line and fail to parse. None of our source formats give CR meaning.
+    source = readFileSync(input, 'utf8').replace(/\r\n?/g, '\n');
   } catch (e) {
     fail(`cannot read ${input} (${e.message})`);
   }

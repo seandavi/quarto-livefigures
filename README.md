@@ -299,8 +299,8 @@ See [`examples/`](examples/) for a minimal [article](examples/article),
 
 ## Limitations
 
-- **Windows is untested** (macOS and Linux are exercised; Windows CI is a
-  planned fast-follow).
+- **Windows** is exercised in CI (HTML output). PDF on Windows requires
+  TinyTeX and is not part of the automated test suite.
 - **DOCX and EPUB** are untested ("may work"); verified formats are the
   HTML family and PDF.
 - **CJK text** (Excalidraw's Xiaolai font, 13 MB) is not bundled; scenes
