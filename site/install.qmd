@@ -14,6 +14,13 @@ Pin a release for reproducible builds:
 quarto add seandavi/quarto-livefigures@v0.7.0
 ```
 
+::: {.callout-note}
+The repo is `quarto-livefigures`; the extension installs as
+**`livefigures`**. That is the name in `_extensions/`, in your `filters:`
+config, on npm, and in the Quarto extension listings — only the repo
+carries the conventional `quarto-` prefix.
+:::
+
 The only external requirement is **Node.js ≥ 18** on your PATH.
 Everything else — renderers, fonts, the rasterizer — ships inside the
 extension, and all local formats render fully offline. livefigures is

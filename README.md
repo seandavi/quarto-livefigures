@@ -58,6 +58,11 @@ as for any other Quarto figure.
 quarto add seandavi/quarto-livefigures
 ```
 
+> Installs as **`livefigures`** — that is the name in `_extensions/`, in
+> your `filters:` config, on npm, and in the Quarto extension listings.
+> The repo carries the conventional `quarto-` prefix; everything else
+> drops it.
+
 livefigures is listed in the official [Quarto extension
 listing](https://quarto.org/docs/extensions/).
 
