@@ -18,6 +18,10 @@ artifacts** (see ADR 0009 — `quarto add` cannot run a build). If you touch
 anything under `renderer/`, run `npm run build` and commit the result; CI
 rebuilds and fails on any diff.
 
+The build also copies `skills/livefigures/SKILL.md` into the extension, so
+**editing the skill needs the same rebuild** even though it lives outside
+`renderer/`.
+
 ## How the project makes decisions
 
 Every architectural decision is an ADR under [`docs/adr/`](docs/adr/) —
