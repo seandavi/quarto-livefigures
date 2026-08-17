@@ -132,5 +132,36 @@ claude mcp add --transport http livefigures https://mcp.livefigures.seandavis.ne
 claude mcp add livefigures -- node _extensions/seandavi/livefigures/mcp.mjs                     # local/offline
 ```
 
+## Layout problems (render succeeds, figure is wrong)
+
+Errors abort. Layout bugs don't — they ship. Rendering and looking is
+only half the job; these are the specific things to look FOR, and the
+standard repair for each:
+
+- **Aspect ratio vs. target.** A tall figure on a 16:9 slide is
+  height-bound and its text shrinks to unreadable. Check the output
+  dimensions against the medium; restructure if the ratio fights it.
+- **A row that came out as a diagonal staircase** (Graphviz):
+  `{rank=same; a; b; c; }`.
+- **Two opposing edges between the same pair** (`a -> b` and `b -> a`):
+  they overlap and their labels collide into mush. Use one `dir=both`
+  edge with a single label.
+- **Edge label sitting on top of the arrow**: shorten it, or lengthen
+  the edge (`nodesep` / `ranksep`).
+- **Cluster order changed after a `rankdir` edit** (Graphviz): the order
+  of *disconnected* clusters is not stable across `rankdir`. Verify
+  visually after any `rankdir` change — it can silently swap a
+  "BEFORE"/"AFTER" pair.
+- **Literal `{...}` text in the output** (nomnoml): inline directives
+  don't work in every position. Define `#.name: fill=…` and use
+  `[ Label]`.
+- **Truncated legend or axis labels** (Vega-Lite): raise `labelLimit`,
+  e.g. `legend: {labelLimit: 300}`.
+- **Label clipped at the figure edge** (Graphviz cluster labels): reduce
+  the figure width in the document, or add graph margin.
+
+If the figure looks slightly wrong, fix it — don't accept it. A silently
+bad figure is worse than an error, because nothing else will catch it.
+
 Full docs: <https://livefigures.seandavis.net> · repo:
 <https://github.com/seandavi/quarto-livefigures>
